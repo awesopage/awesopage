@@ -1,0 +1,13 @@
+{
+  "name": "ap-lib-typescript",
+  "private": true,
+  "scripts": {
+    "compile": "tsc"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "devDependencies": {
+    "typescript": "4.8.4"
+  }
+}
