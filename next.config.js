@@ -1,9 +1,14 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: false,
+})
+
 const workspacePackages = require('./workspace-packages.json')
 
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = {
+const nextConfig = withBundleAnalyzer({
   swcMinify: true,
   reactStrictMode: true,
   poweredByHeader: false,
@@ -20,6 +25,6 @@ const nextConfig = {
       'next.config.js',
     ],
   },
-}
+})
 
 module.exports = nextConfig
