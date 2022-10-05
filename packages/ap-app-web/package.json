@@ -1,0 +1,14 @@
+{
+  "name": "ap-app-web",
+  "private": true,
+  "scripts": {
+    "compile": "tsc"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "devDependencies": {
+    "ap-lib-typescript": "workspace:*",
+    "typescript": "4.8.4"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "./packages/ap-lib-typescript/ts-base-config.json",
+  "compilerOptions": {
+    "baseUrl": "./packages"
+  },
+  "include": [
+    "next-env.d.ts",
+    "packages/ap-lib-typescript/global.d.ts",
+    "packages/ap-*/src/**/*.ts",
+    "packages/ap-*/src/**/*.tsx",
+    "pages/**/*.ts",
+    "pages/**/*.tsx"
+  ],
+  "exclude": []
+}
