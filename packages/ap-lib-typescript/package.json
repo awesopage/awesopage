@@ -2,7 +2,9 @@
   "name": "ap-lib-typescript",
   "private": true,
   "scripts": {
-    "compile": "tsc"
+    "compile": "tsc",
+    "clean": "node ../../scripts/delete tsconfig.tsbuildinfo",
+    "clean-full": "npm run clean && node ../../scripts/delete node_modules"
   },
   "engines": {
     "node": "16.x"

@@ -10,7 +10,7 @@ module.exports = {
   },
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   setupFiles: ['jest-date-mock'],
-  setupFilesAfterEnv: ['jest-extended/all'],
+  setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/scripts/lib/dotenv-loader.js'],
   testPathIgnorePatterns: ['/node_modules/'],
   coverageDirectory: 'test-report/coverage',
   reporters: [
