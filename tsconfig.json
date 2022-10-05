@@ -5,6 +5,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "packages/ap-lib-typescript/global.d.ts",
     "packages/ap-*/src/**/*.ts",
     "packages/ap-*/src/**/*.tsx",
     "pages/**/*.ts",

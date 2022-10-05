@@ -7,6 +7,7 @@
     }
   },
   "include": [
+    "node_modules/ap-lib-typescript/global.d.ts",
     "node_modules/ap-*/src/**/*.ts",
     "node_modules/ap-*/src/**/*.tsx",
     "src/**/*.ts",
