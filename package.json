@@ -8,7 +8,8 @@
     "compile": "tsc",
     "test": "npm run compile && cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-unit-config.js --coverage",
     "test-quick": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-quick-config.js",
-    "dev": "npm run compile && cross-env NODE_ENV=development next dev -p 4000"
+    "dev": "npm run compile && cross-env NODE_ENV=development next dev -p 4000",
+    "clean": "node ./scripts/delete .next test-report tsconfig.tsbuildinfo && pnpm --filter ap-* run clean"
   },
   "engines": {
     "node": "16.x"
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "5.39.0",
     "@typescript-eslint/parser": "5.39.0",
     "cross-env": "7.0.3",
+    "del": "6.1.1",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",
     "eslint-config-prettier": "8.5.0",

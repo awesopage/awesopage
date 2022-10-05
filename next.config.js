@@ -14,6 +14,7 @@ const nextConfig = {
         .filter((name) => name.startsWith('ap-'))
         .flatMap((name) => [`packages/${name}/src`, `packages/${name}/test`]),
       'pages',
+      'scripts',
       'test',
       '.eslintrc.js',
       'next.config.js',
