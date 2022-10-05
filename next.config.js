@@ -12,8 +12,9 @@ const nextConfig = {
       ...workspacePackages
         .map(({ name }) => name)
         .filter((name) => name.startsWith('ap-'))
-        .map((name) => `packages/${name}/src`),
+        .flatMap((name) => [`packages/${name}/src`, `packages/${name}/test`]),
       'pages',
+      'test',
       '.eslintrc.js',
       'next.config.js',
     ],

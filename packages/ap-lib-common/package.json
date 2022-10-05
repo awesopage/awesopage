@@ -1,14 +1,11 @@
 {
-  "name": "ap-app-web",
+  "name": "ap-lib-common",
   "private": true,
   "scripts": {
     "compile": "tsc"
   },
   "engines": {
     "node": "16.x"
-  },
-  "dependencies": {
-    "ap-lib-common": "workspace:*"
   },
   "devDependencies": {
     "ap-lib-typescript": "workspace:*",

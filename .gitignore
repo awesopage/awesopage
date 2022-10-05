@@ -357,5 +357,6 @@ $RECYCLE.BIN/
 
 .idea
 .vscode
+test-report
 
 workspace-packages.json

@@ -9,7 +9,9 @@
     "packages/ap-*/src/**/*.ts",
     "packages/ap-*/src/**/*.tsx",
     "pages/**/*.ts",
-    "pages/**/*.tsx"
+    "pages/**/*.tsx",
+    "packages/ap-lib-typescript/global-test.d.ts",
+    "packages/ap-*/test/**/*.ts"
   ],
   "exclude": []
 }
