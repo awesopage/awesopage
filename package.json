@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "boot": "pnpm install && pnpm list --depth -1 --recursive --json > workspace-packages.json",
+    "boot": "pnpm install && node ./scripts/model-schema generate && pnpm list --depth -1 --recursive --json > workspace-packages.json",
     "lint": "next lint --fix",
     "compile": "tsc",
     "test": "npm run compile && cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-unit-config.js --coverage",
@@ -17,6 +17,8 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@prisma/client": "4.4.0",
+    "axios": "1.1.1",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -36,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "5.39.0",
     "@typescript-eslint/parser": "5.39.0",
     "cross-env": "7.0.3",
+    "cross-spawn": "7.0.3",
     "del": "6.1.1",
     "dotenv-flow": "3.2.0",
     "dotenv-flow-cli": "1.0.0",
@@ -55,6 +58,7 @@
     "jest-stare": "2.4.1",
     "jest-when": "3.5.1",
     "prettier": "2.7.1",
+    "prisma": "4.4.0",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   }

@@ -1,0 +1,14 @@
+{
+  "extends": "./node_modules/ap-lib-typescript/ts-base-config.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "ap-app-model/*": ["*"]
+    }
+  },
+  "include": [
+    "client/**/*.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": []
+}
