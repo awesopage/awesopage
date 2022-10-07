@@ -1,4 +1,4 @@
-import { assertDefined } from 'ap-lib-common/src/AssertUtils'
+import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 
 describe('assert defined', () => {
   test('should pass when value is defined', () => {

@@ -3,7 +3,7 @@ require('./lib/dotenv-loader')
 const { runScript } = require('./lib/script-runner')
 const { runCommand } = require('./lib/script-utils')
 
-const prismaArgv = ['--schema=packages/ap-app-model/schema/app.prisma']
+const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
 const argvByCommand = {
   migrate: ['migrate', 'dev', ...prismaArgv],

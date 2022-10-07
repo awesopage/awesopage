@@ -37,7 +37,7 @@ module.exports = {
           // external imports
           ['^'],
           // internal imports
-          ['^ap-'],
+          ['^pkg-'],
           // relative imports (should manually fix them to internal imports)
           ['^\\.'],
         ],

@@ -1,3 +1,3 @@
-import { HomePage } from 'ap-app-web/src/home/HomePage'
+import { HomePage } from 'pkg-app-web/src/home/HomePage'
 
 export default HomePage

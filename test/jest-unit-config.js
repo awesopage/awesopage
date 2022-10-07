@@ -32,5 +32,5 @@ module.exports = {
     ],
   ],
   coverageReporters: ['lcov', ['text', { skipFull: true }], 'text-summary'],
-  collectCoverageFrom: ['packages/ap-*/src/**/*.ts', '!**/__t/**/*'],
+  collectCoverageFrom: ['packages/pkg-*/src/**/*.ts', '!**/__t/**/*'],
 }

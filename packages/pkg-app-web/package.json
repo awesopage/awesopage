@@ -1,5 +1,5 @@
 {
-  "name": "ap-lib-common",
+  "name": "pkg-app-web",
   "private": true,
   "scripts": {
     "compile": "tsc",
@@ -9,8 +9,11 @@
   "engines": {
     "node": "16.x"
   },
+  "dependencies": {
+    "pkg-lib-common": "workspace:*"
+  },
   "devDependencies": {
-    "ap-lib-typescript": "workspace:*",
+    "pkg-lib-typescript": "workspace:*",
     "typescript": "4.8.4"
   }
 }

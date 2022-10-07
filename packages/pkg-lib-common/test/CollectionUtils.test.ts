@@ -1,4 +1,4 @@
-import { getRange } from 'ap-lib-common/src/CollectionUtils'
+import { getRange } from 'pkg-lib-common/src/CollectionUtils'
 
 describe('get range', () => {
   test('should return all numbers from min to max', () => {
