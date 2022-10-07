@@ -360,3 +360,4 @@ $RECYCLE.BIN/
 test-report
 
 workspace-packages.json
+workspace-cache-key.txt
