@@ -1,0 +1,50 @@
+# Based on https://circleci.com/developer/orbs/orb/circleci/node
+# and https://pnpm.io/continuous-integration#circleci
+
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.3
+
+jobs:
+  test:
+    machine:
+      image: ubuntu-2204:current
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run:
+          name: Check Node.js version
+          command: node -v
+      - run:
+          name: Install pnpm
+          command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
+      - run:
+          name: Create cache key
+          command: node ./scripts/workspace.js create-cache-key
+      - restore_cache:
+          name: Restore pnpm cache
+          keys:
+            - pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
+      - run:
+          name: Install dependencies
+          command: pnpm boot
+      - save_cache:
+          name: Save pnpm cache
+          key: pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
+          paths:
+            - node_modules
+      - run:
+          name: Run tests
+          command: pnpm test
+      - store_test_results:
+          path: ./test-report/junit.xml
+      - run:
+          name: Audit dependencies
+          command: pnpm audit --json
+
+workflows:
+  version: 2
+  circleci-test:
+    jobs:
+      - test
