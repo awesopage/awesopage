@@ -9,3 +9,9 @@ export interface IconProps extends ChakraIconProps {
 export const Icon: FunctionComponent<IconProps> = (props) => {
   return <ChakraIcon {...props} />
 }
+
+export type SvgIconProps = ChakraIconProps
+
+export const SvgIcon: FunctionComponent<SvgIconProps> = (props) => {
+  return <ChakraIcon {...props} />
+}
