@@ -1,13 +1,9 @@
 import NextHead from 'next/head'
 import { FunctionComponent, PropsWithChildren } from 'react'
 
+import { appTheme } from 'pkg-app-web/src/app/AppTheme'
 import { useOrientationEffect } from 'pkg-lib-ui/src/common/UiHooks'
-import { createTheme, ThemeProvider } from 'pkg-lib-ui/src/theme/ThemeProvider'
-
-export const appTheme = createTheme({
-  primaryColor: 'purple',
-  secondaryColor: 'blue',
-})
+import { ThemeProvider } from 'pkg-lib-ui/src/theme/ThemeProvider'
 
 export const AppProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   useOrientationEffect()
