@@ -1,15 +1,7 @@
-import {
-  useColorMode as useChakraColorMode,
-  useColorModeValue as useChakraColorModeValue,
-  useDisclosure as useChakraDisclosure,
-} from '@chakra-ui/react'
+import { useDisclosure as useChakraDisclosure } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
 export const useDisclosure = useChakraDisclosure
-
-export const useToggleColorMode = useChakraColorMode
-
-export const useColorModeValue = useChakraColorModeValue
 
 const repaintBody = () => {
   document.body.style.display = 'none'
