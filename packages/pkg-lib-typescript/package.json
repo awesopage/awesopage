@@ -1,16 +1,15 @@
 {
-  "name": "ap-app-model",
+  "name": "pkg-lib-typescript",
   "private": true,
   "scripts": {
     "compile": "tsc",
     "clean": "node ../../scripts/delete tsconfig.tsbuildinfo",
-    "clean-full": "npm run clean && node ../../scripts/delete node_modules client"
+    "clean-full": "npm run clean && node ../../scripts/delete node_modules"
   },
   "engines": {
     "node": "16.x"
   },
   "devDependencies": {
-    "ap-lib-typescript": "workspace:*",
     "typescript": "4.8.4"
   }
 }

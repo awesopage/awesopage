@@ -16,7 +16,7 @@ const nextConfig = withBundleAnalyzer({
     dirs: [
       ...workspacePackages
         .map(({ name }) => name)
-        .filter((name) => name.startsWith('ap-'))
+        .filter((name) => name.startsWith('pkg-'))
         .flatMap((name) => [`packages/${name}/src`, `packages/${name}/test`]),
       'pages',
       'scripts',

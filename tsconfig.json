@@ -1,17 +1,17 @@
 {
-  "extends": "./packages/ap-lib-typescript/ts-base-config.json",
+  "extends": "./packages/pkg-lib-typescript/ts-base-config.json",
   "compilerOptions": {
     "baseUrl": "./packages"
   },
   "include": [
     "next-env.d.ts",
-    "packages/ap-lib-typescript/global.d.ts",
-    "packages/ap-*/src/**/*.ts",
-    "packages/ap-*/src/**/*.tsx",
+    "packages/pkg-lib-typescript/global.d.ts",
+    "packages/pkg-*/src/**/*.ts",
+    "packages/pkg-*/src/**/*.tsx",
     "pages/**/*.ts",
     "pages/**/*.tsx",
-    "packages/ap-lib-typescript/global-test.d.ts",
-    "packages/ap-*/test/**/*.ts"
+    "packages/pkg-lib-typescript/global-test.d.ts",
+    "packages/pkg-*/test/**/*.ts"
   ],
   "exclude": []
 }

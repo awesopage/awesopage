@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app'
 
-import { AppProvider } from 'ap-app-web/src/app/AppProvider'
+import { AppProvider } from 'pkg-app-web/src/app/AppProvider'
 
 const AwesopageApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
