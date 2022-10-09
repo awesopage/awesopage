@@ -1,7 +1,7 @@
 import { FormControl as ChakraFormControl, FormLabel as ChakraFormLabel } from '@chakra-ui/react'
 import { FunctionComponent } from 'react'
 
-import { Select, SelectProps } from 'pkg-lib-ui/src/common/Select'
+import { Select, SelectProps } from 'pkg-lib-ui/src/form/Select'
 
 export interface SelectInputProps extends SelectProps {
   readonly inputId: string

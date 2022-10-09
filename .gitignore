@@ -358,6 +358,7 @@ $RECYCLE.BIN/
 .idea
 .vscode
 test-report
+!packages/pkg-lib-ui/src/icon
 
 workspace-packages.json
 workspace-cache-key.txt

@@ -2,7 +2,7 @@ import NextHead from 'next/head'
 import { FunctionComponent, PropsWithChildren } from 'react'
 
 import { appTheme } from 'pkg-app-web/src/app/AppTheme'
-import { useOrientationEffect } from 'pkg-lib-ui/src/common/UiHooks'
+import { useOrientationEffect } from 'pkg-lib-ui/src/hook/LayoutHooks'
 import { ThemeProvider } from 'pkg-lib-ui/src/theme/ThemeProvider'
 
 export const AppProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
