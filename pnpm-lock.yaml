@@ -101,9 +101,18 @@ importers:
       pkg-lib-typescript: link:../pkg-lib-typescript
       typescript: 4.8.4
 
+  packages/pkg-app-shared:
+    specifiers:
+      pkg-lib-typescript: workspace:*
+      typescript: 4.8.4
+    devDependencies:
+      pkg-lib-typescript: link:../pkg-lib-typescript
+      typescript: 4.8.4
+
   packages/pkg-app-store:
     specifiers:
       immer: 9.0.15
+      pkg-app-shared: workspace:*
       pkg-lib-common: workspace:*
       pkg-lib-typescript: workspace:*
       react: 18.2.0
@@ -111,6 +120,7 @@ importers:
       zustand: 4.1.2
     dependencies:
       immer: 9.0.15
+      pkg-app-shared: link:../pkg-app-shared
       pkg-lib-common: link:../pkg-lib-common
       react: 18.2.0
       zustand: 4.1.2_immer@9.0.15+react@18.2.0
@@ -120,11 +130,13 @@ importers:
 
   packages/pkg-app-web:
     specifiers:
+      pkg-app-shared: workspace:*
       pkg-app-store: workspace:*
       pkg-lib-common: workspace:*
       pkg-lib-typescript: workspace:*
       typescript: 4.8.4
     dependencies:
+      pkg-app-shared: link:../pkg-app-shared
       pkg-app-store: link:../pkg-app-store
       pkg-lib-common: link:../pkg-lib-common
     devDependencies:

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "immer": "9.0.15",
+    "pkg-app-shared": "workspace:*",
     "pkg-lib-common": "workspace:*",
     "react": "18.2.0",
     "zustand": "4.1.2"
