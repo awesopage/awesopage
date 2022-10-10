@@ -1,9 +1,7 @@
-# Based on https://circleci.com/developer/orbs/orb/circleci/node
-# and https://pnpm.io/continuous-integration#circleci
-
 version: 2.1
 
 orbs:
+  # Based on https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@5.0.3
 
 jobs:
@@ -18,6 +16,7 @@ jobs:
           command: node -v
       - run:
           name: Install pnpm
+          # Based on https://pnpm.io/continuous-integration#circleci
           command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
       - run:
           name: Create cache key
@@ -42,6 +41,14 @@ jobs:
       - run:
           name: Audit dependencies
           command: pnpm audit --json
+      - run:
+          name: Send coverage report to Code Climate
+          # Based on https://docs.codeclimate.com/docs/circle-ci-test-coverage-example
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter format-coverage -t lcov -o ./test-report/coverage/codeclimate.json ./test-report/coverage/lcov.info
+            ./cc-test-reporter upload-coverage -i ./test-report/coverage/codeclimate.json
 
 workflows:
   version: 2

@@ -1,5 +1,5 @@
 {
-  "name": "pkg-app-web",
+  "name": "pkg-lib-ui",
   "private": true,
   "scripts": {
     "compile": "tsc",
@@ -10,12 +10,15 @@
     "node": "16.x"
   },
   "dependencies": {
-    "pkg-app-shared": "workspace:*",
-    "pkg-app-store": "workspace:*",
-    "pkg-lib-common": "workspace:*",
-    "pkg-lib-ui": "workspace:*"
+    "@chakra-ui/react": "2.3.5",
+    "@emotion/react": "11.10.4",
+    "@emotion/styled": "11.10.4",
+    "framer-motion": "7.5.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@babel/core": "7.19.3",
     "pkg-lib-typescript": "workspace:*",
     "typescript": "4.8.4"
   }
