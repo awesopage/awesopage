@@ -1,5 +1,5 @@
 {
-  "name": "pkg-app-web",
+  "name": "pkg-app-store",
   "private": true,
   "scripts": {
     "compile": "tsc",
@@ -10,8 +10,10 @@
     "node": "16.x"
   },
   "dependencies": {
-    "pkg-app-store": "workspace:*",
-    "pkg-lib-common": "workspace:*"
+    "immer": "9.0.15",
+    "pkg-lib-common": "workspace:*",
+    "react": "18.2.0",
+    "zustand": "4.1.2"
   },
   "devDependencies": {
     "pkg-lib-typescript": "workspace:*",

@@ -1,0 +1,14 @@
+{
+  "extends": "./node_modules/pkg-lib-typescript/ts-base-config.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "pkg-app-store/*": ["*"]
+    }
+  },
+  "include": [
+    "node_modules/pkg-*/src/**/*.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": []
+}
