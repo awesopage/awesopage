@@ -1,9 +1,15 @@
 import NextHead from 'next/head'
 import { FunctionComponent, PropsWithChildren } from 'react'
 
+import { appTheme } from 'pkg-app-web/src/app/AppTheme'
+import { useOrientationEffect } from 'pkg-lib-ui/src/hook/LayoutHooks'
+import { ThemeProvider } from 'pkg-lib-ui/src/theme/ThemeProvider'
+
 export const AppProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
+  useOrientationEffect()
+
   return (
-    <>
+    <ThemeProvider theme={appTheme}>
       <NextHead>
         <title>Awesopage</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -12,6 +18,6 @@ export const AppProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         <link rel='icon' type='image/png' href='/favicon-16x16.png' sizes='16x16' />
       </NextHead>
       {children}
-    </>
+    </ThemeProvider>
   )
 }
