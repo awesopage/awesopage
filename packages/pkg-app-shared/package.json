@@ -1,5 +1,5 @@
 {
-  "name": "pkg-app-web",
+  "name": "pkg-app-shared",
   "private": true,
   "scripts": {
     "compile": "tsc",
@@ -8,12 +8,6 @@
   },
   "engines": {
     "node": "16.x"
-  },
-  "dependencies": {
-    "pkg-app-shared": "workspace:*",
-    "pkg-app-store": "workspace:*",
-    "pkg-lib-common": "workspace:*",
-    "pkg-lib-ui": "workspace:*"
   },
   "devDependencies": {
     "pkg-lib-typescript": "workspace:*",
