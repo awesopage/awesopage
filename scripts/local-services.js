@@ -1,9 +1,17 @@
+require('./lib/dotenv-loader')
+
 const axios = require('axios')
 
 const { runScript } = require('./lib/script-runner')
 const { runCommand, waitFor } = require('./lib/script-utils')
 
-const composeArgv = ['compose', '-p', 'ap_local', '-f', 'docker/docker-compose-local.yaml']
+const composeArgv = [
+  'compose',
+  '-p',
+  process.env.NODE_ENV === 'test' ? 'ap_test' : 'ap_local',
+  '-f',
+  'docker/docker-compose-local.yaml',
+]
 
 const argvByCommand = {
   start: [...composeArgv, 'up', '--detach'],
@@ -15,12 +23,13 @@ const argvByCommand = {
 const postHookByCommand = {
   start: async () => {
     await waitFor('Waiting for database to be ready...', 5, async () => {
-      await axios.get('http://localhost:4920/health')
+      await axios.get(`http://localhost:${process.env.DATABASE_CONSOLE_PORT ?? 4920}/health`)
 
       return true
     })
 
-    await runCommand('node', ['scripts/model-schema', 'migrate'])
+    const schemaCommand = process.env.NODE_ENV === 'test' ? 'push-accept-data-loss' : 'migrate'
+    await runCommand('node', ['scripts/model-schema', schemaCommand])
   },
 }
 

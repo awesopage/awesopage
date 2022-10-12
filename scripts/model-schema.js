@@ -6,6 +6,7 @@ const { runCommand } = require('./lib/script-utils')
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
 const argvByCommand = {
+  'push-accept-data-loss': ['db', 'push', '--accept-data-loss', ...prismaArgv],
   migrate: ['migrate', 'dev', ...prismaArgv],
   generate: ['generate', ...prismaArgv],
 }
