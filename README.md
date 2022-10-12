@@ -46,8 +46,8 @@ pnpm dev
 
 ### Run tests
 
-- Run unit tests with `pnpm test`.
-- Run unit tests in quick mode with `pnpm test-quick` (no TypeScript compilation, no code coverage, just default reporter).
+- Run tests with `pnpm test`.
+- Run tests in quick mode with `pnpm test-quick` (no TypeScript compilation, no code coverage, just default reporter).
 - Test report is created in `test-report/index.html`.
 
 ### Compile code (TypeScript)

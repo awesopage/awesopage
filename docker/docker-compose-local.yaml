@@ -6,8 +6,8 @@ services:
     volumes:
       - database_volume:/cockroach/cockroach-data
     ports:
-      - 4920:8080
-      - 4922:26257
+      - ${DATABASE_CONSOLE_PORT:-4920}:8080
+      - ${DATABASE_CONNECTION_PORT:-4922}:26257
 
 volumes:
   database_volume: {}

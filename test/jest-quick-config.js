@@ -1,4 +1,4 @@
-const jestUnitConfig = require('./jest-unit-config')
+const jestUnitConfig = require('./jest-config')
 
 module.exports = {
   ...jestUnitConfig,

@@ -33,4 +33,5 @@ module.exports = {
   ],
   coverageReporters: ['lcov', ['text', { skipFull: true }], 'text-summary'],
   collectCoverageFrom: ['packages/pkg-*/src/**/*.ts', '!packages/pkg-lib-ui/**/*', '!**/__t/**/*'],
+  globalSetup: '<rootDir>/test/setup.js',
 }
