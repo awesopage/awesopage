@@ -1,7 +1,7 @@
 import * as fake from 'fictional'
 
 import { getDemoLists } from 'pkg-app-api/src/list/__t/DemoListData'
-import { ResourceDTO, ResourceType } from 'pkg-app-shared/src/resource/ResourceDTO'
+import { ResourceDTO, ResourceLinkDTO, ResourceType } from 'pkg-app-shared/src/resource/ResourceDTO'
 import { getRange } from 'pkg-lib-common/src/CollectionUtils'
 
 export const getDemoResources = (): ResourceDTO[] => {
@@ -20,14 +20,15 @@ export const getDemoResources = (): ResourceDTO[] => {
       ]),
       domain: fake.oneOf(domains),
       type: fake.oneOf<ResourceType>(['CODE', 'VIDEO', 'DEFAULT']),
-      links: fake.times(
-        [1, 3],
-        fake.shape({
-          listRepoKey: fake.oneOf(listRepoKeys),
-          description: fake.sentence.options({ unicode: false }),
-          tags: fake.someOf([1, 3], tags),
-        }),
-      ),
+      links: (linkInput: fake.Input) => {
+        return fake.someOf(linkInput, [1, 3], listRepoKeys).map((listRepoKey): ResourceLinkDTO => {
+          return fake.shape(listRepoKey, {
+            listRepoKey,
+            description: fake.sentence.options({ unicode: false }),
+            tags: fake.someOf([1, 3], tags),
+          })
+        })
+      },
     })
   })
 }
