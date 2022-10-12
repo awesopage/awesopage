@@ -9,7 +9,7 @@ export const getDemoResources = (): ResourceDTO[] => {
   const domains = ['github.com', 'youtube.com', 'medium.com']
   const tags: string[] = getRange(1, 20).map((topicIndex) => `tag${topicIndex}`)
 
-  return getRange(1, 500).map((resourceIndex): ResourceDTO => {
+  return getRange(1, 180).map((resourceIndex): ResourceDTO => {
     return fake.shape(resourceIndex, {
       id: `${resourceIndex}`,
       url: fake.join('', [
