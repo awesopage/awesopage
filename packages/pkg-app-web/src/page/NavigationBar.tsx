@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import { FunctionComponent } from 'react'
 import { IoLogoGithub } from 'react-icons/io5'
 
 import { ColorModeToggle } from 'pkg-app-web/src/page/ColorModeToggle'
@@ -16,14 +16,15 @@ import { Link } from 'pkg-lib-ui/src/navigation/Link'
 import { LinkBox, LinkOverlay } from 'pkg-lib-ui/src/navigation/LinkBox'
 import { SPACE_MEDIUM, SPACE_SMALL } from 'pkg-lib-ui/src/theme/SpaceValues'
 
-interface NavLinkProps extends PropsWithChildren {
+interface NavLinkProps {
   readonly href: string
+  readonly text: string
   readonly currentPath: string
+  readonly activeColor: string
 }
 
-const NavLink: FunctionComponent<NavLinkProps> = ({ href, currentPath, children }) => {
+const NavLink: FunctionComponent<NavLinkProps> = ({ href, text, currentPath, activeColor }) => {
   const isActive = currentPath === href || currentPath.startsWith(`${href}/`) || currentPath.startsWith(`${href}?`)
-  const activeColor = useColorModeValue('primary.600', 'primary.200')
 
   return (
     <LinkBox
@@ -35,7 +36,7 @@ const NavLink: FunctionComponent<NavLinkProps> = ({ href, currentPath, children 
     >
       <NextLink href={href} passHref>
         <LinkOverlay fontWeight='semibold' paddingX={SPACE_MEDIUM}>
-          {children}
+          {text}
         </LinkOverlay>
       </NextLink>
     </LinkBox>
@@ -46,6 +47,9 @@ export const NavigationBar: FunctionComponent = () => {
   const router = useRouter()
 
   const borderColor = useColorModeValue('secondary.700', 'secondary.500')
+  const activeColor = useColorModeValue('primary.600', 'primary.200')
+
+  const navLinkProps = { currentPath: router.asPath, activeColor }
 
   return (
     <Box borderBottomWidth={1} borderBottomColor={borderColor} paddingX={SPACE_SMALL}>
@@ -58,12 +62,8 @@ export const NavigationBar: FunctionComponent = () => {
           </NextLink>
         </Box>
         <ButtonGroup variant='link' spacing={0} marginLeft={SPACE_MEDIUM}>
-          <NavLink href='/lists' currentPath={router.asPath}>
-            Lists
-          </NavLink>
-          <NavLink href='/resources' currentPath={router.asPath}>
-            Resources
-          </NavLink>
+          <NavLink href='/lists' text='Lists' {...navLinkProps} />
+          <NavLink href='/resources' text='Resources' {...navLinkProps} />
         </ButtonGroup>
         <Spacer />
         <ButtonGroup spacing={1} paddingY={1}>
