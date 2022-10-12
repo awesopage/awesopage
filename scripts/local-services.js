@@ -5,7 +5,13 @@ const axios = require('axios')
 const { runScript } = require('./lib/script-runner')
 const { runCommand, waitFor } = require('./lib/script-utils')
 
-const composeArgv = ['compose', '-p', process.env.NODE_ENV === 'test' ? 'ap_test' : 'ap_local', '-f', 'docker/docker-compose-local.yaml']
+const composeArgv = [
+  'compose',
+  '-p',
+  process.env.NODE_ENV === 'test' ? 'ap_test' : 'ap_local',
+  '-f',
+  'docker/docker-compose-local.yaml',
+]
 
 const argvByCommand = {
   start: [...composeArgv, 'up', '--detach'],
