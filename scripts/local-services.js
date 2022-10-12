@@ -5,23 +5,13 @@ const axios = require('axios')
 const { runScript } = require('./lib/script-runner')
 const { runCommand, waitFor } = require('./lib/script-utils')
 
-const composeArgv = ['compose', '-f', 'docker/docker-compose-local.yaml']
-const developmentComposeArv = [...composeArgv, '-p', 'ap_local']
-const testComposeArgv = [...composeArgv, '-p', 'ap_test']
+const composeArgv = ['compose', '-p', process.env.NODE_ENV === 'test' ? 'ap_test' : 'ap_local', '-f', 'docker/docker-compose-local.yaml']
 
 const argvByCommand = {
-  development: {
-    start: [...developmentComposeArv, 'up', '--detach'],
-    stop: [...developmentComposeArv, 'down'],
-    reset: [...developmentComposeArv, 'down', '--volumes'],
-    logs: [...developmentComposeArv, 'logs', '--follow', '--tail=50'],
-  },
-  test: {
-    start: [...testComposeArgv, 'up', '--detach'],
-    stop: [...testComposeArgv, 'down'],
-    reset: [...testComposeArgv, 'down', '--volumes'],
-    logs: [...testComposeArgv, 'logs', '--follow', '--tail=50'],
-  },
+  start: [...composeArgv, 'up', '--detach'],
+  stop: [...composeArgv, 'down'],
+  reset: [...composeArgv, 'down', '--volumes'],
+  logs: [...composeArgv, 'logs', '--follow', '--tail=50'],
 }
 
 const postHookByCommand = {
@@ -39,8 +29,7 @@ const postHookByCommand = {
 
 const localServicesScript = async (argv) => {
   const command = argv[0]
-  const nodeEnv = process.env.NODE_ENV ?? 'development'
-  const commandArgv = argvByCommand[nodeEnv][command]
+  const commandArgv = argvByCommand[command]
 
   if (!commandArgv) {
     throw new Error(`Unknown command: ${command}`)

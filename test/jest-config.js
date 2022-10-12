@@ -9,6 +9,7 @@ module.exports = {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
+  globalSetup: '<rootDir>/test/jest-setup.js',
   setupFiles: ['jest-date-mock'],
   setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/scripts/lib/dotenv-loader.js'],
   testPathIgnorePatterns: ['/node_modules/'],
@@ -33,5 +34,4 @@ module.exports = {
   ],
   coverageReporters: ['lcov', ['text', { skipFull: true }], 'text-summary'],
   collectCoverageFrom: ['packages/pkg-*/src/**/*.ts', '!packages/pkg-lib-ui/**/*', '!**/__t/**/*'],
-  globalSetup: '<rootDir>/test/jest-setup.js',
 }
