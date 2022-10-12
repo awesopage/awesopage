@@ -95,6 +95,23 @@ importers:
       react-test-renderer: 18.2.0_react@18.2.0
       typescript: 4.8.4
 
+  packages/pkg-app-api:
+    specifiers:
+      fictional: 0.6.0
+      pkg-app-model: workspace:*
+      pkg-app-shared: workspace:*
+      pkg-lib-common: workspace:*
+      pkg-lib-typescript: workspace:*
+      typescript: 4.8.4
+    dependencies:
+      pkg-app-model: link:../pkg-app-model
+      pkg-app-shared: link:../pkg-app-shared
+      pkg-lib-common: link:../pkg-lib-common
+    devDependencies:
+      fictional: 0.6.0
+      pkg-lib-typescript: link:../pkg-lib-typescript
+      typescript: 4.8.4
+
   packages/pkg-app-model:
     specifiers:
       pkg-lib-typescript: workspace:*
@@ -3218,6 +3235,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /charenc/0.0.2:
+    resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
+    dev: true
+
   /chart.js/3.9.1:
     resolution: {integrity: sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==}
     dev: true
@@ -3356,6 +3377,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /crypt/0.0.2:
+    resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
     dev: true
 
   /css-box-model/1.2.1:
@@ -4123,6 +4148,14 @@ packages:
       bser: 2.1.1
     dev: true
 
+  /fictional/0.6.0:
+    resolution: {integrity: sha512-oufB/dPLAxVBFPxMHLkpIqnvEYqvrpCr3Ryr2bCE37bYvkQc9zJWGQwpWO2cYlGj0V4rWwxZ6DRjKxsK5waHmA==}
+    dependencies:
+      decimal.js: 10.4.1
+      fast-json-stable-stringify: 2.1.0
+      md5: 2.3.0
+    dev: true
+
   /file-entry-cache/6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -4574,6 +4607,10 @@ packages:
     dependencies:
       call-bind: 1.0.2
       has-tostringtag: 1.0.0
+    dev: true
+
+  /is-buffer/1.1.6:
+    resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==}
     dev: true
 
   /is-callable/1.2.7:
@@ -5596,6 +5633,14 @@ packages:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
     dependencies:
       tmpl: 1.0.5
+    dev: true
+
+  /md5/2.3.0:
+    resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
+    dependencies:
+      charenc: 0.0.2
+      crypt: 0.0.2
+      is-buffer: 1.1.6
     dev: true
 
   /mdn-data/2.0.14:

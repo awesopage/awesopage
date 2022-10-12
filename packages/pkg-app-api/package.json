@@ -1,0 +1,22 @@
+{
+  "name": "pkg-app-api",
+  "private": true,
+  "scripts": {
+    "compile": "tsc",
+    "clean": "node ../../scripts/delete tsconfig.tsbuildinfo",
+    "clean-full": "npm run clean && node ../../scripts/delete node_modules"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "dependencies": {
+    "pkg-app-model": "workspace:*",
+    "pkg-app-shared": "workspace:*",
+    "pkg-lib-common": "workspace:*"
+  },
+  "devDependencies": {
+    "fictional": "0.6.0",
+    "pkg-lib-typescript": "workspace:*",
+    "typescript": "4.8.4"
+  }
+}
