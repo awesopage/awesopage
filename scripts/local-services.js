@@ -32,7 +32,8 @@ const postHookByCommand = {
       return true
     })
 
-    await runCommand('node', ['scripts/model-schema', 'migrate'])
+    const schemaCommand = process.env.NODE_ENV === 'test' ? 'push-accept-data-loss' : 'migrate'
+    await runCommand('node', ['scripts/model-schema', schemaCommand])
   },
 }
 
