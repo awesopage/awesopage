@@ -7,7 +7,7 @@
     "lint": "next lint --fix",
     "compile": "tsc",
     "test": "npm run compile && cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-config.js --coverage",
-    "test-quick": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-quick-config.js",
+    "test-quick": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-config.js",
     "dev": "npm run compile && cross-env NODE_ENV=development dotenv-flow -p config -- next dev -p 4000",
     "build": "cross-env NODE_ENV=production dotenv-flow -p config -- next build",
     "build-full": "cross-env NODE_ENV=production ANALYZE=true dotenv-flow -p config -- next build",
