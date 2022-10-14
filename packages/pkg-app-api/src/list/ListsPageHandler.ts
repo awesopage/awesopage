@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next'
 
-import { createDemoLists } from 'pkg-app-api/src/list/__t/DemoListData'
+import { createDemoLists } from 'pkg-app-api/src/list/__dev/DemoListData'
 import { ListsPageProps } from 'pkg-app-shared/src/list/ListsPageProps'
 
 export const getListsPageStaticProps: GetStaticProps<ListsPageProps> = () => {
