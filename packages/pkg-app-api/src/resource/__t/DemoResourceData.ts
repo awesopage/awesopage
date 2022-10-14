@@ -1,15 +1,15 @@
 import * as fake from 'fictional'
 
-import { getDemoLists } from 'pkg-app-api/src/list/__t/DemoListData'
+import { createDemoLists } from 'pkg-app-api/src/list/__t/DemoListData'
 import { ResourceDTO, ResourceLinkDTO, ResourceType } from 'pkg-app-shared/src/resource/ResourceDTO'
 import { getRange } from 'pkg-lib-common/src/CollectionUtils'
 
-export const getDemoResources = (): ResourceDTO[] => {
-  const listRepoKeys = getDemoLists().map(({ repoKey }) => repoKey)
+export const createDemoResources = (size = 180, defaultProps: Partial<ResourceDTO> = {}): ResourceDTO[] => {
+  const listRepoKeys = createDemoLists().map(({ repoKey }) => repoKey)
   const domains = ['github.com', 'youtube.com', 'medium.com']
   const tags: string[] = getRange(1, 20).map((topicIndex) => `tag${topicIndex}`)
 
-  return getRange(1, 180).map((resourceIndex): ResourceDTO => {
+  return getRange(1, size).map((resourceIndex): ResourceDTO => {
     return fake.shape(resourceIndex, {
       id: `${resourceIndex}`,
       url: fake.join('', [
@@ -29,6 +29,7 @@ export const getDemoResources = (): ResourceDTO[] => {
           })
         })
       },
+      ...defaultProps,
     })
   })
 }
