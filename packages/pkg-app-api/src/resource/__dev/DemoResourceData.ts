@@ -1,6 +1,6 @@
 import * as fake from 'fictional'
 
-import { createDemoLists } from 'pkg-app-api/src/list/__t/DemoListData'
+import { createDemoLists } from 'pkg-app-api/src/list/__dev/DemoListData'
 import { ResourceDTO, ResourceLinkDTO, ResourceType } from 'pkg-app-shared/src/resource/ResourceDTO'
 import { getRange } from 'pkg-lib-common/src/CollectionUtils'
 
