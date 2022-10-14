@@ -1,5 +1,5 @@
 {
-  "name": "pkg-app-api",
+  "name": "pkg-app-service",
   "private": true,
   "scripts": {
     "compile": "tsc",
@@ -10,13 +10,12 @@
     "node": "16.x"
   },
   "dependencies": {
+    "pino": "8.6.1",
+    "pino-pretty": "9.1.1",
     "pkg-app-model": "workspace:*",
-    "pkg-app-service": "workspace:*",
-    "pkg-app-shared": "workspace:*",
     "pkg-lib-common": "workspace:*"
   },
   "devDependencies": {
-    "fictional": "0.6.0",
     "pkg-lib-typescript": "workspace:*",
     "typescript": "4.8.4"
   }
