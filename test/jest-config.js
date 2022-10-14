@@ -2,6 +2,8 @@ const path = require('path')
 
 module.exports = {
   testTimeout: 10_000,
+  // Run one test at a time since the test services (database, etc.) are shared
+  maxWorkers: 1,
   rootDir: path.join(__dirname, '..'),
   roots: ['<rootDir>/packages'],
   resetMocks: true,
