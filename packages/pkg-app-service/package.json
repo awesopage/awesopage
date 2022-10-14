@@ -13,7 +13,8 @@
     "pino": "8.6.1",
     "pino-pretty": "9.1.1",
     "pkg-app-model": "workspace:*",
-    "pkg-lib-common": "workspace:*"
+    "pkg-lib-common": "workspace:*",
+    "safe-stable-stringify": "2.4.0"
   },
   "devDependencies": {
     "pkg-lib-typescript": "workspace:*",

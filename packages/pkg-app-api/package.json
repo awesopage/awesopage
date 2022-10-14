@@ -10,6 +10,8 @@
     "node": "16.x"
   },
   "dependencies": {
+    "iron-session": "6.2.1",
+    "next-connect": "1.0.0-next.3",
     "pkg-app-model": "workspace:*",
     "pkg-app-service": "workspace:*",
     "pkg-app-shared": "workspace:*",
