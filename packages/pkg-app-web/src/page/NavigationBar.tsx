@@ -6,6 +6,7 @@ import { IoLogoGithub } from 'react-icons/io5'
 import { ColorModeToggle } from 'pkg-app-web/src/page/ColorModeToggle'
 import { Logo } from 'pkg-app-web/src/page/Logo'
 import { NavIcon } from 'pkg-app-web/src/page/NavIcon'
+import { UserMenu } from 'pkg-app-web/src/page/UserMenu'
 import { ButtonGroup } from 'pkg-lib-ui/src/button/ButtonGroup'
 import { IconButton } from 'pkg-lib-ui/src/button/IconButton'
 import { useColorModeValue } from 'pkg-lib-ui/src/hook/ThemeHooks'
@@ -71,6 +72,7 @@ export const NavigationBar: FunctionComponent = () => {
             <IconButton as='a' aria-label='Awesopage GitHub' icon={<NavIcon as={IoLogoGithub} />} />
           </NextLink>
           <ColorModeToggle />
+          <UserMenu />
         </ButtonGroup>
       </Container>
     </Box>

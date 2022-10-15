@@ -44,10 +44,10 @@ export const createApiRouter = <
   router.handler = () => {
     return defaultHandler({
       onError: (err, req, res: NextApiResponse) => {
-        return sendApiError(res, 'INTERNAL_SERVER_ERROR', err as Error)
+        sendApiError(res, 'INTERNAL_SERVER_ERROR', err as Error)
       },
       onNoMatch: (req, res: NextApiResponse) => {
-        return sendApiError(res, 'ROUTE_HANDLER_NOT_FOUND')
+        sendApiError(res, 'ROUTE_HANDLER_NOT_FOUND')
       },
     })
   }
