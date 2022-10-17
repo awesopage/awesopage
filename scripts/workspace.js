@@ -10,9 +10,9 @@ const handlerByCommand = {
 
     const listContent = await fsp.readFile(listPath, 'utf-8')
 
-    const lines = listContent.split(/\r?\n/)
+    const listLines = listContent.split(/\r?\n/)
 
-    await fsp.writeFile(listPath, lines.slice(lines.indexOf('[')).join('\n'))
+    await fsp.writeFile(listPath, listLines.slice(listLines.indexOf('[')).join('\n'))
   },
   'create-cache-key': async () => {
     const timestamp = new Date()
