@@ -5,7 +5,7 @@ const { runScript } = require('./lib/script-runner')
 
 const handlerByCommand = {
   'fix-package-list': async () => {
-    // Remove all warning lines from pnpm to ensure that workspace-packages.json contains a JSON array
+    // Remove logs from pnpm to ensure that workspace-packages.json contains a JSON array
     const listPath = path.join(__dirname, '../workspace-packages.json')
 
     const listContent = await fsp.readFile(listPath, 'utf-8')
