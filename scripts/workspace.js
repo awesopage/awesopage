@@ -4,6 +4,16 @@ const fsp = require('fs/promises')
 const { runScript } = require('./lib/script-runner')
 
 const handlerByCommand = {
+  'fix-package-list': async () => {
+    // Remove logs from pnpm to ensure that workspace-packages.json contains a JSON array
+    const listPath = path.join(__dirname, '../workspace-packages.json')
+
+    const listContent = await fsp.readFile(listPath, 'utf-8')
+
+    const listLines = listContent.split(/\r?\n/)
+
+    await fsp.writeFile(listPath, listLines.slice(listLines.indexOf('[')).join('\n'))
+  },
   'create-cache-key': async () => {
     const timestamp = new Date()
 
