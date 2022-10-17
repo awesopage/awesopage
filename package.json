@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "boot": "pnpm install && node ./scripts/model-schema generate && pnpm list --depth -1 --recursive --json > workspace-packages.json",
+    "boot": "pnpm install && node ./scripts/model-schema generate && pnpm list --depth -1 --recursive --json > workspace-packages.json && node ./scripts/workspace.js fix-package-list",
     "lint": "next lint --fix",
     "compile": "tsc",
     "test": "npm run compile && cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-config.js --coverage",
