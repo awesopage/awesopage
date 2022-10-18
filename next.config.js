@@ -1,5 +1,7 @@
 require('./scripts/lib/dotenv-loader')
 
+const path = require('path')
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
   openAnalyzer: false,
@@ -26,6 +28,20 @@ const nextConfig = withBundleAnalyzer({
       '.eslintrc.js',
       'next.config.js',
     ],
+  },
+  webpack: (config, { isServer }) => {
+    // Based on https://github.com/prisma/prisma/issues/6327
+    if (isServer) {
+      config.externals.unshift(({ request }, callback) => {
+        if (request === 'pkg-app-model/client') {
+          return callback(undefined, `commonjs ${path.join(__dirname, 'packages/pkg-app-model/client')}`)
+        }
+
+        callback()
+      })
+    }
+
+    return config
   },
 })
 

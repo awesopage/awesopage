@@ -7,7 +7,7 @@ import { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCre
 import { DevSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevSignedAuthDataDTO'
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 
-export const DevAuthDataApiHandler: NextApiHandler = createApiRouter()
+export const devAuthDataApiHandler: NextApiHandler = createApiRouter()
   .post(async (req, res: NextApiResponse<DevSignedAuthDataDTO>) => {
     assertDefined(process.env.DEV_AUTH_SIGNER_PRIVATE_KEY, 'DEV_AUTH_SIGNER_PRIVATE_KEY')
     assertDefined(process.env.DEV_AUTH_PASSWORD, 'DEV_AUTH_PASSWORD')
