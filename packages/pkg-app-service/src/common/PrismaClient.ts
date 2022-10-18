@@ -1,5 +1,4 @@
-import { PrismaClient } from 'pkg-app-model/client'
-import { PrismaClientOptions } from 'pkg-app-model/client/runtime'
+import { Prisma, PrismaClient } from 'pkg-app-model/client'
 import { createLogger } from 'pkg-app-service/src/common/LoggingUtils'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -7,8 +6,8 @@ const globalThisAny = globalThis as any
 
 const logger = createLogger('PrismaClient')
 
-const getLogOptions = (): PrismaClientOptions['log'] => {
-  const queryLogOptions: PrismaClientOptions['log'] =
+const getLogOptions = (): Prisma.PrismaClientOptions['log'] => {
+  const queryLogOptions: Prisma.PrismaClientOptions['log'] =
     process.env.DATABASE_QUERY_DEBUG === 'true'
       ? [
           {
@@ -38,7 +37,7 @@ const getLogOptions = (): PrismaClientOptions['log'] => {
 const createPrismaClient = () => {
   const databaseUrl = process.env.DATABASE_URL
 
-  const client: PrismaClient<PrismaClientOptions, 'info' | 'warn' | 'error' | 'query'> = new PrismaClient({
+  const client: PrismaClient<Prisma.PrismaClientOptions, 'info' | 'warn' | 'error' | 'query'> = new PrismaClient({
     datasources: {
       ...(databaseUrl ? { db: { url: databaseUrl } } : {}),
     },
