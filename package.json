@@ -8,10 +8,10 @@
     "compile": "tsc",
     "test": "npm run compile && cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-config.js --coverage",
     "test-quick": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config test/jest-config.js",
-    "dev": "npm run compile && cross-env NODE_ENV=development dotenv-flow -p config -- next dev -p 4000",
-    "build": "cross-env NODE_ENV=production dotenv-flow -p config -- next build",
-    "build-full": "cross-env NODE_ENV=production ANALYZE=true dotenv-flow -p config -- next build",
-    "clean": "node ./scripts/delete .next test-report tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=test node ./scripts/local-services reset"
+    "dev": "npm run compile && cross-env NODE_ENV=development next dev -p 4000",
+    "build": "cross-env NODE_ENV=production next build",
+    "build-full": "cross-env NODE_ENV=production ANALYZE=true next build",
+    "clean": "node ./scripts/delete .next test-report tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
   },
   "engines": {
     "node": "16.x"
@@ -44,7 +44,6 @@
     "cross-spawn": "7.0.3",
     "del": "6.1.1",
     "dotenv-flow": "3.2.0",
-    "dotenv-flow-cli": "1.0.0",
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
     "eslint-config-prettier": "8.5.0",

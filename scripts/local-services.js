@@ -3,12 +3,12 @@ require('./lib/dotenv-loader')
 const axios = require('axios')
 
 const { runScript } = require('./lib/script-runner')
-const { runCommand, waitFor } = require('./lib/script-utils')
+const { getProfiles, runCommand, waitFor } = require('./lib/script-utils')
 
 const composeArgv = [
   'compose',
   '-p',
-  process.env.NODE_ENV === 'test' ? 'ap_test' : 'ap_local',
+  getProfiles().includes('test') ? 'ap_test' : 'ap_local',
   '-f',
   'docker/docker-compose-local.yaml',
 ]
@@ -28,7 +28,8 @@ const postHookByCommand = {
       return true
     })
 
-    const schemaCommand = process.env.NODE_ENV === 'test' ? 'push-accept-data-loss' : 'migrate'
+    const schemaCommand = getProfiles().includes('test') ? 'push-accept-data-loss' : 'migrate'
+
     await runCommand('node', ['scripts/model-schema', schemaCommand])
   },
 }

@@ -362,3 +362,4 @@ test-report
 
 workspace-packages.json
 workspace-cache-key.txt
+config/*.local

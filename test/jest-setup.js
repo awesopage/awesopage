@@ -5,5 +5,7 @@ module.exports = async () => {
   console.log('Setting up test services..')
   console.log()
 
-  await runCommand('node', ['scripts/local-services', 'start'])
+  await runCommand('node', ['scripts/local-services', 'start'], {
+    env: { APP_PROFILES: 'test' },
+  })
 }

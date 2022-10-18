@@ -1,3 +1,5 @@
+require('./scripts/lib/dotenv-loader')
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
   openAnalyzer: false,

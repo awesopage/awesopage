@@ -23,7 +23,6 @@ importers:
       cross-spawn: 7.0.3
       del: 6.1.1
       dotenv-flow: 3.2.0
-      dotenv-flow-cli: 1.0.0
       eslint: 8.25.0
       eslint-config-next: 12.3.1
       eslint-config-prettier: 8.5.0
@@ -76,7 +75,6 @@ importers:
       cross-spawn: 7.0.3
       del: 6.1.1
       dotenv-flow: 3.2.0
-      dotenv-flow-cli: 1.0.0
       eslint: 8.25.0
       eslint-config-next: 12.3.1_z4bbprzjrhnsfa24uvmcbu7f5q
       eslint-config-prettier: 8.5.0_eslint@8.25.0
@@ -3961,7 +3959,7 @@ packages:
     dev: false
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
     dev: true
 
   /convert-source-map/1.8.0:
@@ -4257,15 +4255,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       webidl-conversions: 7.0.0
-    dev: true
-
-  /dotenv-flow-cli/1.0.0:
-    resolution: {integrity: sha512-VlQoHyFUlg3Z5uS/hfk6Diu85Wjt7A4sPNBmd/fv7rxLUgGB5Kh8f7admim6C+O90/SIT46ybJXp6dQBtYE4dg==}
-    hasBin: true
-    dependencies:
-      cross-spawn: 7.0.3
-      dotenv-flow: 3.2.0
-      minimist: 1.2.6
     dev: true
 
   /dotenv-flow/3.2.0:
