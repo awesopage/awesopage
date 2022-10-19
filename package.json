@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "boot": "pnpm install && node ./scripts/model-schema generate && pnpm list --depth -1 --recursive --json > workspace-packages.json && node ./scripts/workspace.js fix-package-list",
+    "boot": "pnpm install && playwright install && node ./scripts/model-schema generate && pnpm list --depth -1 --recursive --json > workspace-packages.json && node ./scripts/workspace.js fix-package-list",
     "lint": "next lint --fix",
     "compile": "tsc",
-    "dev": "npm run compile && cross-env NODE_ENV=development next dev -p 4000",
+    "kill-apps": "kill-port 4000 4800",
+    "dev": "npm run compile && npm run kill-apps && cross-env NODE_ENV=development next dev -p 4000",
+    "start-test-app": "npm run compile && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services start && npm run kill-apps && cross-env NODE_ENV=development APP_PROFILES=test next dev -p 4800",
+    "test": "cross-env APP_PROFILES=test playwright test",
+    "test-full": "node ./scripts/delete tests-report && npm run compile && npm run kill-apps && cross-env START_APP=true APP_PROFILES=test COLLECT_COVERAGE=true ISTANBUL_TEMP_DIR=./tests-report/.nyc_output playwright test",
     "build": "cross-env NODE_ENV=production next build",
     "build-full": "cross-env NODE_ENV=production ANALYZE=true next build",
-    "clean": "node ./scripts/delete .next tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
+    "clean": "node ./scripts/delete .next tests-report tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
   },
   "engines": {
     "node": "16.x"
@@ -26,6 +30,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "12.3.1",
+    "@playwright/test": "1.27.1",
     "@types/node": "16.11.66",
     "@types/react": "18.0.21",
     "@typescript-eslint/eslint-plugin": "5.40.0",
@@ -42,8 +47,12 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-simple-import-sort": "8.0.0",
     "eslint-plugin-sonarjs": "0.16.0",
+    "kill-port": "2.0.1",
+    "nyc": "15.1.0",
+    "playwright-test-coverage": "1.2.0",
     "prettier": "2.7.1",
     "prisma": "4.4.0",
+    "swc-plugin-coverage-instrument": "0.0.12",
     "typescript": "4.8.4"
   }
 }

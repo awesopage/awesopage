@@ -14,6 +14,7 @@
 - [Chakra UI](https://chakra-ui.com)
 - [Prisma](https://www.prisma.io) + [CockroachDB](https://github.com/cockroachdb/cockroach)
 - [Zustand](https://github.com/pmndrs/zustand) + [Immer](https://immerjs.github.io/immer)
+- [Playwright](https://playwright.dev)
 
 ## Development
 
@@ -30,7 +31,7 @@
 - To stop the services, run `node scripts/local-services stop`.
 - To reset the services (all volumes will be deleted), run `node scripts/local-services reset`.
 - To tail logs of the services, run `node scripts/local-services logs`.
-- CockroachDB Console is at http://localhost:4920.
+- CockroachDB Console will be at http://localhost:4920.
 
 ### Manage database models (Prisma)
 
@@ -44,9 +45,14 @@
 pnpm dev
 ```
 
+The application will be at http://localhost:4000.
+
 ### Run tests
 
-TODO
+- To run tests during development or debugging, use `pnpm start-test-app` and `pnpm test`.
+- To run tests entirely with auto cleanup and coverage collection in one command, use `pnpm test-full`.
+- Playwright report is created in `tests-report/playwright/index.html`.
+- Coverage report is created in `tests-report/coverage/index.html`.
 
 ### Compile code (TypeScript)
 

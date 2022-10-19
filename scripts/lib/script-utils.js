@@ -6,15 +6,21 @@ const getProfiles = () => {
   return process.env.APP_PROFILES ? process.env.APP_PROFILES.split(',') : []
 }
 
-const runCommand = (command, argv, options = {}) => {
+const runCommand = async (command, argv, options = {}) => {
   console.log(`Running \`${command} ${argv.join(' ')}\`...`)
 
+  const { waitForExit = true } = options
+
+  if (!waitForExit) {
+    const childProcess = createChildProcess(command, argv, options)
+
+    childProcess.unref()
+
+    return
+  }
+
   return new Promise((resolve, reject) => {
-    const childProcess = spawn(command, argv, {
-      cwd: path.join(__dirname, '../../'),
-      stdio: [process.stdin, process.stdout, process.stderr],
-      env: { ...process.env, ...(options.env ?? {}) },
-    })
+    const childProcess = createChildProcess(command, argv, options)
 
     childProcess.on('exit', (code) => {
       if (code === 0) {
@@ -25,6 +31,14 @@ const runCommand = (command, argv, options = {}) => {
     })
 
     childProcess.on('error', reject)
+  })
+}
+
+const createChildProcess = (command, argv, options) => {
+  return spawn(command, argv, {
+    cwd: path.join(__dirname, '../../'),
+    stdio: [process.stdin, process.stdout, process.stderr],
+    env: { ...process.env, ...(options.env ?? {}) },
   })
 }
 

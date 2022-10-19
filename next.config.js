@@ -13,6 +13,9 @@ const workspacePackages = require('./workspace-packages.json')
  * @type {import('next').NextConfig}
  */
 const nextConfig = withBundleAnalyzer({
+  experimental: {
+    swcPlugins: [...(process.env.COLLECT_COVERAGE ? [['swc-plugin-coverage-instrument', {}]] : [])],
+  },
   swcMinify: true,
   reactStrictMode: true,
   poweredByHeader: false,
@@ -24,8 +27,11 @@ const nextConfig = withBundleAnalyzer({
         .map((name) => `packages/${name}/src`),
       'pages',
       'scripts',
+      'tests',
       '.eslintrc.js',
       'next.config.js',
+      'nyc.config.js',
+      'playwright.config.ts',
     ],
   },
   webpack: (config, { isServer }) => {
