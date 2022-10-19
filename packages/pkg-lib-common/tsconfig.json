@@ -7,9 +7,7 @@
     }
   },
   "include": [
-    "src/**/*.ts",
-    "node_modules/pkg-lib-typescript/global-test.d.ts",
-    "test/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": []
 }

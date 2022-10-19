@@ -1,8 +1,0 @@
-{
-  "extends": "./ts-base-config.json",
-  "include": [
-    "global.d.ts",
-    "global-test.d.ts"
-  ],
-  "exclude": []
-}

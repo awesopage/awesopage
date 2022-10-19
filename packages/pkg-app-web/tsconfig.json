@@ -7,7 +7,6 @@
     }
   },
   "include": [
-    "node_modules/pkg-lib-typescript/global.d.ts",
     "node_modules/pkg-*/src/**/*.ts",
     "node_modules/pkg-*/src/**/*.tsx",
     "src/**/*.ts",

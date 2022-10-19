@@ -5,14 +5,11 @@
   },
   "include": [
     "next-env.d.ts",
-    "packages/pkg-lib-typescript/global.d.ts",
     "packages/pkg-app-model/client/**/*.ts",
     "packages/pkg-*/src/**/*.ts",
     "packages/pkg-*/src/**/*.tsx",
     "pages/**/*.ts",
-    "pages/**/*.tsx",
-    "packages/pkg-lib-typescript/global-test.d.ts",
-    "packages/pkg-*/test/**/*.ts"
+    "pages/**/*.tsx"
   ],
   "exclude": []
 }

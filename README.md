@@ -46,9 +46,7 @@ pnpm dev
 
 ### Run tests
 
-- Run tests with `pnpm test`.
-- Run tests in quick mode with `pnpm test-quick` (no TypeScript compilation, no code coverage).
-- Test report is created in `test-report/index.html`.
+TODO
 
 ### Compile code (TypeScript)
 
