@@ -1,3 +1,5 @@
+require('./scripts/lib/dotenv-loader')
+
 const path = require('path')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

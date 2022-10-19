@@ -2,13 +2,18 @@ const path = require('path')
 
 const spawn = require('cross-spawn')
 
-const runCommand = (command, argv) => {
+const getProfiles = () => {
+  return process.env.APP_PROFILES ? process.env.APP_PROFILES.split(',') : []
+}
+
+const runCommand = (command, argv, options = {}) => {
   console.log(`Running \`${command} ${argv.join(' ')}\`...`)
 
   return new Promise((resolve, reject) => {
     const childProcess = spawn(command, argv, {
       cwd: path.join(__dirname, '../../'),
       stdio: [process.stdin, process.stdout, process.stderr],
+      env: { ...process.env, ...(options.env ?? {}) },
     })
 
     childProcess.on('exit', (code) => {
@@ -45,4 +50,4 @@ const waitFor = async (message, interval, condition) => {
   }
 }
 
-module.exports = { runCommand, delay, waitFor }
+module.exports = { getProfiles, runCommand, delay, waitFor }
