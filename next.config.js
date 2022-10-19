@@ -21,10 +21,9 @@ const nextConfig = withBundleAnalyzer({
       ...workspacePackages
         .map(({ name }) => name)
         .filter((name) => name.startsWith('pkg-'))
-        .flatMap((name) => [`packages/${name}/src`, `packages/${name}/test`]),
+        .map((name) => `packages/${name}/src`),
       'pages',
       'scripts',
-      'test',
       '.eslintrc.js',
       'next.config.js',
     ],

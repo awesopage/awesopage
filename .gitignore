@@ -357,7 +357,6 @@ $RECYCLE.BIN/
 
 .idea
 .vscode
-test-report
 !packages/pkg-lib-ui/src/icon
 
 workspace-packages.json
