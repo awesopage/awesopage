@@ -1,10 +1,28 @@
 // iron-session/express provides express-style middleware, which can be used with next-connect.
 import { ironSession } from 'iron-session/express'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createRouter, expressWrapper } from 'next-connect'
+import { createRouter, expressWrapper, NextHandler } from 'next-connect'
 
 import { sendApiError } from 'pkg-app-api/src/router/ApiResponseSender'
+import { createLogger } from 'pkg-app-service/src/common/LoggingUtils'
+import { getProfiles } from 'pkg-app-shared/src/common/EnvUtils'
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
+
+const logger = createLogger('ApiRouter')
+
+export const requireProfile = (profile: string) => {
+  return async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
+    const profiles = getProfiles()
+
+    if (!profiles.includes(profile)) {
+      logger.debug(`Profile ${profile} is required but not found in [${profiles.join(', ')}]`)
+
+      return sendApiError(res, 'INTERNAL_SERVER_ERROR')
+    }
+
+    return next()
+  }
+}
 
 // Declare email in session data by module augmentation
 declare module 'iron-session' {
