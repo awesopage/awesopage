@@ -15,7 +15,7 @@ const globalTeardown = async () => {
       console.log('Collecting api coverage...')
       console.log()
 
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/coverage`)
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/coverage`)
 
       await fsp.writeFile(
         path.join(__dirname, '../tests-report/.nyc_output/next_api_coverage.json'),
