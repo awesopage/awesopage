@@ -1,8 +1,8 @@
-require('../scripts/lib/dotenv-loader')
+require('../../scripts/lib/dotenv-loader')
 
 const axios = require('axios')
 
-const { runCommand, waitFor } = require('../scripts/lib/script-utils')
+const { runCommand, waitFor } = require('../../scripts/lib/script-utils')
 
 const globalSetup = async () => {
   if (process.env.START_APP) {
