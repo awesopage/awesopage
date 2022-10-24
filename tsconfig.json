@@ -1,10 +1,7 @@
 {
   "extends": "./packages/pkg-lib-typescript/ts-base-config.json",
   "compilerOptions": {
-    "baseUrl": "./packages",
-    "paths": {
-      "tests/*": ["../tests/*"]
-    }
+    "baseUrl": "./packages"
   },
   "include": [
     "next-env.d.ts",
@@ -13,7 +10,6 @@
     "packages/pkg-*/src/**/*.tsx",
     "pages/**/*.ts",
     "pages/**/*.tsx",
-    "tests/**/*.ts",
     "playwright.config.ts"
   ],
   "exclude": []
