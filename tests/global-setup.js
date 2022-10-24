@@ -32,6 +32,12 @@ const globalSetup = async () => {
       return true
     })
   }
+
+  console.log()
+  console.log('Creating test data...')
+  console.log()
+
+  await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/data`)
 }
 
 export default globalSetup
