@@ -11,7 +11,7 @@ const config: PlaywrightTestConfig = {
   // and https://github.com/bahmutov/next-and-cypress-example
   globalSetup: require.resolve('./packages/pkg-testing/global-setup'),
   globalTeardown: require.resolve('./packages/pkg-testing/global-teardown'),
-  outputDir: 'tests-report/results',
+  outputDir: 'tests-report/output/playwright',
   reportSlowTests: {
     max: 0,
     threshold: 60_000,
