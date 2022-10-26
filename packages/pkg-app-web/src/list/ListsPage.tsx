@@ -19,15 +19,15 @@ export const ListsPage: NextPage<ListsPageProps> = ({ lists }) => {
     <DefaultPageLayout>
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={5}>
         {lists.map((list) => (
-          <Box key={list.id} bg={bgColor} boxShadow={'2xl'} p={5}>
-            <Stack minH={'200px'}>
+          <Box key={list.id} backgroundColor={bgColor} boxShadow={'2xl'} padding={5}>
+            <Stack minHeight={'200px'}>
               <Text fontWeight={800} fontSize={'sm'}>
                 {list.starCount} &#9734;
               </Text>
               <Heading color={titleColor} fontSize={'2xl'}>
                 {list.repoKey}
               </Heading>
-              <Text minH={'50px'}> {list.description} </Text>
+              <Text minHeight={'50px'}> {list.description} </Text>
               <Text>
                 {list.tags.map((tag) => (
                   <Tag key={tag} mr={2}>
@@ -37,7 +37,7 @@ export const ListsPage: NextPage<ListsPageProps> = ({ lists }) => {
               </Text>
             </Stack>
             <NextLink href={`https://github.com/${list.repoKey}`} passHref>
-              <Button as='a' colorScheme='primary' variant='outline' size='sm' w={'full'}>
+              <Button as='a' colorScheme='primary' variant='outline' size='sm' width={'full'}>
                 View in Github
               </Button>
             </NextLink>
