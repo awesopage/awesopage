@@ -29,11 +29,11 @@ export const authCallbackApiHandler: NextApiHandler = createApiRouter()
 
       await req.session.save()
 
-      res.redirect(`${process.env.NEXT_PUBLIC_APP_BASE_URL}${returnPath ?? ''}`)
+      res.redirect(302, `${process.env.NEXT_PUBLIC_APP_BASE_URL}${returnPath ?? ''}`)
     } catch (err) {
       logger.debug(`Authentication error: ${mapErrorToString(err as Error)}`)
 
-      res.redirect(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth-error`)
+      res.redirect(302, `${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth-error`)
     }
   })
   .handler()
