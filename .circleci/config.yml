@@ -35,7 +35,9 @@ jobs:
             - node_modules
       - run:
           name: Run tests
-          command: pnpm test-full
+          command: |
+            npx --yes playwright install-deps
+            pnpm test-full
       - store_test_results:
           path: ./tests-report/junit.xml
       - run:
