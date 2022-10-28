@@ -13,6 +13,7 @@
     "test-full": "node ./scripts/delete tests-report && npm run compile && npm run kill-apps && cross-env START_APP=true APP_PROFILES=test COLLECT_COVERAGE=true playwright test",
     "build": "cross-env NODE_ENV=production next build",
     "build-full": "cross-env NODE_ENV=production ANALYZE=true next build",
+    "start": "cross-env NODE_ENV=production next start -p 4000",
     "clean": "node ./scripts/delete .next tests-report tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
   },
   "engines": {
