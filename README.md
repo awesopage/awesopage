@@ -53,6 +53,7 @@ The application will be at http://localhost:4000.
 - To run tests entirely with auto cleanup and coverage collection in one command, use `pnpm test-full`.
 - Playwright report is created in `tests-report/playwright/index.html`.
 - Coverage report is created in `tests-report/coverage/index.html`.
+- To serve test reports, run `pnpm serve-test-reports`.
 
 ### Compile code (TypeScript)
 

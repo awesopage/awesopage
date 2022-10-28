@@ -11,6 +11,7 @@
     "start-test-app": "npm run compile && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services start && npm run kill-apps && cross-env NODE_ENV=development APP_PROFILES=test next dev -p 4800",
     "test": "cross-env APP_PROFILES=test playwright test",
     "test-full": "node ./scripts/delete tests-report && npm run compile && npm run kill-apps && cross-env START_APP=true APP_PROFILES=test COLLECT_COVERAGE=true playwright test",
+    "serve-test-reports": "serve --no-clipboard -p 4890 tests-report",
     "build": "cross-env NODE_ENV=production next build",
     "build-full": "cross-env NODE_ENV=production ANALYZE=true next build",
     "start": "cross-env NODE_ENV=production next start -p 4000",
@@ -18,6 +19,11 @@
   },
   "engines": {
     "node": "16.x"
+  },
+  "pnpm": {
+    "overrides": {
+      "minimatch@3": "3.0.5"
+    }
   },
   "dependencies": {
     "@prisma/client": "4.5.0",
@@ -53,6 +59,7 @@
     "nyc": "15.1.0",
     "prettier": "2.7.1",
     "prisma": "4.5.0",
+    "serve": "14.0.1",
     "swc-plugin-coverage-instrument": "0.0.12",
     "typescript": "4.8.4"
   }
