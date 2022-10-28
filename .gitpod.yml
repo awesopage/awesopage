@@ -1,6 +1,6 @@
 tasks:
   - init: pnpm boot && npx --yes playwright install-deps && node scripts/local-services start
-    command: pnpm dev
+    command: pnpm lint && pnpm compile
 
 ports:
   - name: dev application
