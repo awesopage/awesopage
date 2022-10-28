@@ -1,7 +1,6 @@
 tasks:
   - init: pnpm boot && npx --yes playwright install-deps && node scripts/local-services start
     command: pnpm dev
-  - init: python -m http.server --directory tests-report 4890
 
 ports:
   - name: dev application
