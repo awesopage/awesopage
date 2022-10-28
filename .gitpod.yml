@@ -1,0 +1,16 @@
+tasks:
+  - init: pnpm boot && npx --yes playwright install-deps && node scripts/local-services start
+    command: pnpm dev
+  - init: python -m http.server --directory tests-report 4890
+
+ports:
+  - name: dev application
+    port: 4000
+    onOpen: ignore
+    visibility: public
+  - name: dev ports
+    port: 4900-4999
+    onOpen: ignore
+  - name: test ports
+    port: 4800-4899
+    onOpen: ignore

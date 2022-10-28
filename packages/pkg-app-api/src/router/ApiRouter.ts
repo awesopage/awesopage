@@ -5,14 +5,13 @@ import { createRouter, expressWrapper, NextHandler } from 'next-connect'
 
 import { sendApiError } from 'pkg-app-api/src/router/ApiResponseSender'
 import { createLogger } from 'pkg-app-service/src/common/LoggingUtils'
-import { getProfiles } from 'pkg-app-shared/src/common/EnvUtils'
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 
 const logger = createLogger('ApiRouter')
 
 export const requireProfile = (profile: string) => {
   return async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    const profiles = getProfiles()
+    const profiles = process.env.APP_PROFILES ? process.env.APP_PROFILES.split(',') : []
 
     if (!profiles.includes(profile)) {
       logger.debug(`Profile ${profile} is required but not found in [${profiles.join(', ')}]`)

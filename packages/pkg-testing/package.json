@@ -1,0 +1,22 @@
+{
+  "name": "pkg-testing",
+  "private": true,
+  "scripts": {
+    "compile": "tsc",
+    "clean": "node ../../scripts/delete tsconfig.tsbuildinfo",
+    "clean-full": "npm run clean && node ../../scripts/delete node_modules"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "dependencies": {
+    "@playwright/test": "1.27.1",
+    "pkg-app-shared": "workspace:*",
+    "playwright-core": "1.27.1",
+    "playwright-test-coverage": "1.2.0"
+  },
+  "devDependencies": {
+    "pkg-lib-typescript": "workspace:*",
+    "typescript": "4.8.4"
+  }
+}
