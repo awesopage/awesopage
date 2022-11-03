@@ -14,7 +14,7 @@
     "pkg-app-shared": "workspace:*",
     "pkg-lib-common": "workspace:*",
     "react": "18.2.0",
-    "zustand": "4.1.3"
+    "zustand": "4.1.4"
   },
   "devDependencies": {
     "pkg-lib-typescript": "workspace:*",
