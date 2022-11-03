@@ -37,15 +37,15 @@ jobs:
           name: Run tests
           command: pnpm test-full
       - store_test_results:
-          path: ./tests-report/junit.xml
+          path: ./test-output/junit.xml
       - run:
           name: Send coverage report to Code Climate
           # Based on https://docs.codeclimate.com/docs/circle-ci-test-coverage-example
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
-            ./cc-test-reporter format-coverage -t lcov -o ./tests-report/coverage/codeclimate.json ./tests-report/coverage/lcov.info
-            ./cc-test-reporter upload-coverage -i ./tests-report/coverage/codeclimate.json
+            ./cc-test-reporter format-coverage -t lcov -o ./test-output/coverage/codeclimate.json ./test-output/coverage/lcov.info
+            ./cc-test-reporter upload-coverage -i ./test-output/coverage/codeclimate.json
       - run:
           name: Audit dependencies
           command: pnpm audit --json

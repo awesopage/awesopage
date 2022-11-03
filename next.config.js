@@ -7,7 +7,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   openAnalyzer: false,
 })
 
+const { getProfiles } = require('./scripts/lib/script-utils')
 const workspacePackages = require('./workspace-packages.json')
+
+const profiles = getProfiles()
 
 /**
  * @type {import('next').NextConfig}
@@ -16,6 +19,8 @@ const nextConfig = withBundleAnalyzer({
   experimental: {
     swcPlugins: [...(process.env.COLLECT_COVERAGE ? [['swc-plugin-coverage-instrument', {}]] : [])],
   },
+  distDir:
+    process.env.NODE_ENV === 'production' ? 'dist' : profiles.includes('test') ? 'test-output/build/nextjs' : undefined,
   swcMinify: true,
   reactStrictMode: true,
   poweredByHeader: false,
