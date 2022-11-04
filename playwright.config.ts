@@ -7,6 +7,11 @@ const config: PlaywrightTestConfig = {
     baseURL: 'http://localhost:4800',
     screenshot: 'only-on-failure',
   },
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01,
+    },
+  },
   // Based on https://github.com/anishkny/playwright-test-coverage
   // and https://github.com/bahmutov/next-and-cypress-example
   globalSetup: require.resolve('./packages/pkg-testing/global-setup'),

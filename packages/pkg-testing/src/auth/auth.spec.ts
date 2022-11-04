@@ -18,6 +18,8 @@ test('Sign in', async ({ page }) => {
     email: 'admin1@example.com',
     displayName: 'Admin 1',
   })
+
+  await expect(page).toHaveScreenshot()
 })
 
 test('Sign out', async ({ page }) => {
@@ -40,6 +42,8 @@ test('Sign out', async ({ page }) => {
   const authMe = (await getAuthMe.json()) as AuthMeDTO
 
   expect(authMe.user).toBeUndefined()
+
+  await expect(page).toHaveScreenshot()
 })
 
 test('View current user', async ({ page }) => {
@@ -54,4 +58,6 @@ test('View current user', async ({ page }) => {
   await page.click('button[aria-label="User menu"]')
 
   await expect(page.getByText('Admin 1')).toBeVisible()
+
+  await expect(page).toHaveScreenshot()
 })
