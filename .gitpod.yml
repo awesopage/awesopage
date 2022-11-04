@@ -1,6 +1,9 @@
+image:
+  file: docker/gitpod.Dockerfile
+
 tasks:
-  - init: pnpm boot && npx --yes playwright install-deps && node scripts/local-services start && node scripts/workspace.js set-gitpod-env
-    command: pnpm lint && pnpm dev
+  - init: pnpm boot && node scripts/local-services start && node scripts/workspace.js set-gitpod-env
+    command: node scripts/local-services start && pnpm lint && pnpm dev
 
 ports:
   - name: dev application
