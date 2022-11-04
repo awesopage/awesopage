@@ -1,10 +1,10 @@
 tasks:
-  - name: Playwright
+  - name: chore
     init: >
       gp sync-await boot &&
-      npx --yes playwright install-deps
-    command: echo 'Playwright is ready'
-  - name: Development
+      ./node_modules/.bin/playwright install-deps
+    command: pnpm lint
+  - name: dev server
     init: >
       nvm install 18 &&
       pnpm boot &&
@@ -13,7 +13,6 @@ tasks:
       node scripts/workspace.js set-gitpod-env
     command: >
       node scripts/local-services start &&
-      pnpm lint &&
       pnpm dev
 
 ports:
