@@ -1,8 +1,20 @@
 tasks:
-  - init: nvm install 18 && pnpm boot && node scripts/local-services start && node scripts/workspace.js set-gitpod-env
-    command: node scripts/local-services start && pnpm lint && pnpm dev
-  - init: npx --yes playwright install-deps
+  - name: Playwright
+    init: >
+      gp sync-await boot &&
+      npx --yes playwright install-deps
     command: echo 'Playwright is ready'
+  - name: Development
+    init: >
+      nvm install 18 &&
+      pnpm boot &&
+      gp sync-done boot
+      node scripts/local-services start &&
+      node scripts/workspace.js set-gitpod-env
+    command: >
+      node scripts/local-services start &&
+      pnpm lint &&
+      pnpm dev
 
 ports:
   - name: dev application
