@@ -8,7 +8,7 @@ tasks:
     init: >
       nvm install 18 &&
       pnpm boot &&
-      gp sync-done boot
+      gp sync-done boot &&
       node scripts/local-services start &&
       node scripts/workspace.js set-gitpod-env
     command: >
