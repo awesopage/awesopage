@@ -17,7 +17,7 @@
     "clean": "node ./scripts/delete build tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "pnpm": {
     "overrides": {
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "12.3.2",
     "@playwright/test": "1.27.1",
-    "@types/node": "16.18.3",
+    "@types/node": "18.11.9",
     "@types/react": "18.0.24",
     "@types/webpack-env": "1.18.0",
     "@typescript-eslint/eslint-plugin": "5.42.0",
