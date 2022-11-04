@@ -14,9 +14,6 @@ jobs:
       - node/install:
           node-version: '18'
       - run:
-          name: Check Node.js version
-          command: node -v
-      - run:
           name: Install pnpm
           # Based on https://pnpm.io/continuous-integration#circleci
           command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
