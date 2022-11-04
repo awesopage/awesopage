@@ -20,7 +20,7 @@
 
 ### Install dependencies
 
-- Install Node.js v16 LTS
+- Install Node.js v18 LTS
 - Install pnpm v7 https://pnpm.io/installation
 - Run `pnpm boot`
 
