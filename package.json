@@ -6,16 +6,15 @@
     "boot": "pnpm install && playwright install && node ./scripts/model-schema generate && pnpm list --depth -1 --recursive --json > workspace-packages.json && node ./scripts/workspace.js fix-package-list",
     "lint": "next lint --fix",
     "compile": "tsc",
-    "kill-apps": "kill-port 4000 4800",
-    "dev": "npm run compile && npm run kill-apps && cross-env NODE_ENV=development next dev -p 4000",
-    "start-test-app": "npm run compile && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services start && npm run kill-apps && cross-env NODE_ENV=development APP_PROFILES=test next dev -p 4800",
+    "dev": "npm run compile && kill-port 4000 && cross-env NODE_ENV=development next dev -p 4000",
+    "start-test-app": "npm run compile && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services start && kill-port 4800 && cross-env NODE_ENV=development APP_PROFILES=test next dev -p 4800",
     "test": "cross-env APP_PROFILES=test playwright test",
-    "test-full": "node ./scripts/delete tests-report && npm run compile && npm run kill-apps && cross-env START_APP=true APP_PROFILES=test COLLECT_COVERAGE=true playwright test",
-    "serve-test-reports": "serve --no-clipboard -p 4890 tests-report",
+    "test-full": "node ./scripts/delete build/test && npm run compile && kill-port 4800 && cross-env START_APP=true APP_PROFILES=test COLLECT_COVERAGE=true playwright test",
+    "serve-test-reports": "serve --no-clipboard -p 4890 build/test/reports",
     "build": "cross-env NODE_ENV=production next build",
     "build-full": "cross-env NODE_ENV=production ANALYZE=true next build",
     "start": "cross-env NODE_ENV=production next start -p 4000",
-    "clean": "node ./scripts/delete .next tests-report tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
+    "clean": "node ./scripts/delete build tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services reset"
   },
   "engines": {
     "node": "16.x"

@@ -7,4 +7,4 @@ NEXT_PUBLIC_APP_BASE_URL=http://localhost:4800
 
 APP_SILENT_LOGGER=true
 
-ISTANBUL_TEMP_DIR=./tests-report/output/nyc
+ISTANBUL_TEMP_DIR=./build/test/coverage
