@@ -19,8 +19,7 @@ const nextConfig = withBundleAnalyzer({
   experimental: {
     swcPlugins: [...(process.env.COLLECT_COVERAGE ? [['swc-plugin-coverage-instrument', {}]] : [])],
   },
-  distDir:
-    process.env.NODE_ENV === 'production' ? 'dist' : profiles.includes('test') ? 'test-output/build/nextjs' : undefined,
+  distDir: profiles.includes('test') ? 'build/test/nextjs' : `build/${process.env.NODE_ENV}/nextjs`,
   swcMinify: true,
   reactStrictMode: true,
   poweredByHeader: false,

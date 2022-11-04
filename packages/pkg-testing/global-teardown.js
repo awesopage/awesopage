@@ -18,7 +18,7 @@ const globalTeardown = async () => {
       const { data } = await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/coverage`)
 
       await fsp.writeFile(
-        path.join(__dirname, '../../test-output/build/nyc/next_api_coverage.json'),
+        path.join(__dirname, '../../build/test/coverage/next_api_coverage.json'),
         JSON.stringify(data),
       )
     }
