@@ -22,7 +22,7 @@
 
 - Install Node.js v18 LTS
 - Install pnpm v7 https://pnpm.io/installation
-- Run `pnpm boot`
+- Run `pnpm boot-full`
 
 ### Manage local services (Docker Compose)
 
