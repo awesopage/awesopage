@@ -1,15 +1,20 @@
-require('./scripts/lib/dotenv-loader')
+import './scripts/lib/dotenv-loader.mjs'
 
-const path = require('path')
+import fsp from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+import bundleAnalyzer from '@next/bundle-analyzer'
+import { globby } from 'globby'
+
+import { getProfiles } from './scripts/lib/script-utils.mjs'
+
+const workspacePackages = JSON.parse(await fsp.readFile(new URL('./workspace-packages.json', import.meta.url)))
+const scriptFiles = await globby(['scripts/**/*.mjs'])
+
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
   openAnalyzer: false,
 })
-
-const { getProfiles } = require('./scripts/lib/script-utils')
-const workspacePackages = require('./workspace-packages.json')
-
 const profiles = getProfiles()
 
 /**
@@ -30,11 +35,9 @@ const nextConfig = withBundleAnalyzer({
         .filter((name) => name.startsWith('pkg-'))
         .map((name) => `packages/${name}/src`),
       'pages',
-      'scripts',
-      'packages/pkg-testing/global-setup.js',
-      'packages/pkg-testing/global-teardown.js',
+      ...scriptFiles,
       '.eslintrc.js',
-      'next.config.js',
+      'next.config.mjs',
       'nyc.config.js',
       'playwright.config.ts',
     ],
@@ -44,7 +47,10 @@ const nextConfig = withBundleAnalyzer({
     if (isServer) {
       config.externals.unshift(({ request }, callback) => {
         if (request === 'pkg-app-model/client') {
-          return callback(undefined, `commonjs ${path.join(__dirname, 'packages/pkg-app-model/client')}`)
+          return callback(
+            undefined,
+            `commonjs ${fileURLToPath(new URL('./packages/pkg-app-model/client', import.meta.url))}`,
+          )
         }
 
         callback()
@@ -55,4 +61,4 @@ const nextConfig = withBundleAnalyzer({
   },
 })
 
-module.exports = nextConfig
+export default nextConfig

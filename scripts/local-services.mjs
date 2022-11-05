@@ -1,9 +1,9 @@
-require('./lib/dotenv-loader')
+import './lib/dotenv-loader.mjs'
 
-const axios = require('axios')
+import axios from 'axios'
 
-const { runScript } = require('./lib/script-runner')
-const { getProfiles, runCommand, waitFor } = require('./lib/script-utils')
+import { isMainModule, runScript } from './lib/script-runner.mjs'
+import { getProfiles, runCommand, waitFor } from './lib/script-utils.mjs'
 
 const composeArgv = [
   'compose',
@@ -30,7 +30,7 @@ const postHookByCommand = {
 
     const schemaCommand = getProfiles().includes('test') ? 'push-accept-data-loss' : 'migrate'
 
-    await runCommand('node', ['scripts/model-schema', schemaCommand])
+    await runCommand('node', ['scripts/model-schema.mjs', schemaCommand])
   },
 }
 
@@ -53,6 +53,6 @@ const localServicesScript = async (argv) => {
   }
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   runScript(localServicesScript)
 }

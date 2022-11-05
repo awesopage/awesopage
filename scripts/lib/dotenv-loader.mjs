@@ -1,10 +1,12 @@
-const path = require('path')
-const fs = require('fs')
-const dotenvFlow = require('dotenv-flow')
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const { getProfiles } = require('./script-utils')
+import dotenvFlow from 'dotenv-flow'
 
-const configDirPath = path.join(__dirname, '../../config')
+import { getProfiles } from './script-utils.mjs'
+
+const configDirPath = fileURLToPath(new URL('../../config', import.meta.url))
 const nodeEnv = process.env.NODE_ENV ?? 'development'
 
 const loadEnv = (env) => {
