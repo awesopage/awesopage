@@ -7,6 +7,7 @@ tasks:
       ./node_modules/.bin/playwright install
     command: pnpm lint
   - name: dev server
+    # Based on https://www.gitpod.io/docs/introduction/languages/javascript#node-versions
     init: >
       nvm install 18 &&
       nvm alias default 18 &&
