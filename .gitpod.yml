@@ -2,6 +2,7 @@ tasks:
   - name: dev chore
     init: >
       gp sync-await boot &&
+      nvm use default &&
       ./node_modules/.bin/playwright install-deps &&
       ./node_modules/.bin/playwright install
     command: pnpm lint
