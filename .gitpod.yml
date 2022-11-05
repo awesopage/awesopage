@@ -1,12 +1,13 @@
 tasks:
-  - name: chore
+  - name: dev chore
     init: >
       gp sync-await boot &&
       ./node_modules/.bin/playwright install-deps
     command: pnpm lint
   - name: dev server
     init: >
-      nvm install 18 &&
+      nvm install 18 --default &&
+      echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix &&
       pnpm boot &&
       gp sync-done boot &&
       node scripts/local-services start &&
