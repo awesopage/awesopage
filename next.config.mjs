@@ -10,6 +10,7 @@ import { getProfiles } from './scripts/lib/script-utils.mjs'
 
 const workspacePackages = JSON.parse(await fsp.readFile(new URL('./workspace-packages.json', import.meta.url)))
 const scriptFiles = await globby(['scripts/**/*.mjs'])
+const configFiles = ['.eslintrc.js', 'next.config.mjs', 'nyc.config.js', 'playwright.config.ts']
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -36,10 +37,7 @@ const nextConfig = withBundleAnalyzer({
         .map((name) => `packages/${name}/src`),
       'pages',
       ...scriptFiles,
-      '.eslintrc.js',
-      'next.config.mjs',
-      'nyc.config.js',
-      'playwright.config.ts',
+      ...configFiles,
     ],
   },
   webpack: (config, { isServer }) => {
