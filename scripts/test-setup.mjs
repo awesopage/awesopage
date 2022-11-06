@@ -10,7 +10,7 @@ const globalSetup = async () => {
     console.log('Starting test services...')
     console.log()
 
-    await runCommand('node', ['scripts/local-services.mjs', 'start'])
+    await runCommand('node', ['./scripts/local-services.mjs', 'start'])
 
     console.log()
     console.log('Starting application...')

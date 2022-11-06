@@ -30,7 +30,7 @@ const postHookByCommand = {
 
     const schemaCommand = getProfiles().includes('test') ? 'push-accept-data-loss' : 'migrate'
 
-    await runCommand('node', ['scripts/model-schema.mjs', schemaCommand])
+    await runCommand('node', ['./scripts/model-schema.mjs', schemaCommand])
   },
 }
 
