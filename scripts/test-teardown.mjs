@@ -1,12 +1,11 @@
-require('../../scripts/lib/dotenv-loader')
+import './lib/dotenv-loader.mjs'
 
-const path = require('path')
-const fsp = require('fs/promises')
+import fsp from 'node:fs/promises'
 
-const axios = require('axios')
-const killPort = require('kill-port')
+import axios from 'axios'
+import killPort from 'kill-port'
 
-const { delay } = require('../../scripts/lib/script-utils')
+import { delay } from './lib/script-utils.mjs'
 
 const globalTeardown = async () => {
   if (process.env.START_APP) {
@@ -18,7 +17,7 @@ const globalTeardown = async () => {
       const { data } = await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/coverage`)
 
       await fsp.writeFile(
-        path.join(__dirname, '../../build/test/coverage/next_api_coverage.json'),
+        new URL('../build/test/coverage/next_api_coverage.json', import.meta.url),
         JSON.stringify(data),
       )
     }

@@ -1,12 +1,12 @@
-const path = require('path')
+import { fileURLToPath } from 'node:url'
 
-const spawn = require('cross-spawn')
+import spawn from 'cross-spawn'
 
-const getProfiles = () => {
+export const getProfiles = () => {
   return process.env.APP_PROFILES ? process.env.APP_PROFILES.split(',') : []
 }
 
-const runCommand = async (command, argv, options = {}) => {
+export const runCommand = async (command, argv, options = {}) => {
   console.log(`Running \`${command} ${argv.join(' ')}\`...`)
 
   const { waitForExit = true } = options
@@ -36,17 +36,17 @@ const runCommand = async (command, argv, options = {}) => {
 
 const createChildProcess = (command, argv, options) => {
   return spawn(command, argv, {
-    cwd: path.join(__dirname, '../../'),
+    cwd: fileURLToPath(new URL('../..', import.meta.url)),
     stdio: [process.stdin, process.stdout, process.stderr],
     env: { ...process.env, ...(options.env ?? {}) },
   })
 }
 
-const delay = async (seconds) => {
+export const delay = async (seconds) => {
   await new Promise((resolve) => setTimeout(resolve, seconds * 1_000))
 }
 
-const waitFor = async (message, interval, condition) => {
+export const waitFor = async (message, interval, condition) => {
   let isReady = false
 
   while (!isReady) {
@@ -63,5 +63,3 @@ const waitFor = async (message, interval, condition) => {
     }
   }
 }
-
-module.exports = { getProfiles, runCommand, delay, waitFor }

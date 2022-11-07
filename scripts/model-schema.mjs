@@ -1,7 +1,7 @@
-require('./lib/dotenv-loader')
+import './lib/dotenv-loader.mjs'
 
-const { runScript } = require('./lib/script-runner')
-const { runCommand } = require('./lib/script-utils')
+import { isMainModule, runScript } from './lib/script-runner.mjs'
+import { runCommand } from './lib/script-utils.mjs'
 
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
@@ -22,6 +22,6 @@ const modelScript = async (argv) => {
   await runCommand('./node_modules/.bin/prisma', commandArgv)
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   runScript(modelScript)
 }

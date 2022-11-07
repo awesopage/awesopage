@@ -14,22 +14,19 @@ jobs:
       - node/install:
           node-version: '18'
       - run:
-          name: Check Node.js version
-          command: node -v
-      - run:
           name: Install pnpm
           # Based on https://pnpm.io/continuous-integration#circleci
           command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
       - run:
           name: Create cache key
-          command: node ./scripts/workspace.js create-cache-key
+          command: node ./scripts/workspace.mjs create-cache-key
       - restore_cache:
           name: Restore pnpm cache
           keys:
             - pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
       - run:
           name: Install dependencies
-          command: pnpm boot
+          command: pnpm boot-full
       - save_cache:
           name: Save pnpm cache
           key: pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
