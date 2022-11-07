@@ -26,6 +26,15 @@ export const createOrUpdateUser = async (dbClient: DbClient, options: CreateOrUp
   return user
 }
 
+export const assignUserRoles = async (dbClient: DbClient, userId: bigint, roles: string[]): Promise<User> => {
+  const user = await dbClient.user.update({
+    where: { id: userId },
+    data: { roles },
+  })
+
+  return user
+}
+
 export const findUserByEmail = async (dbClient: DbClient, email: string): Promise<User> => {
   const user = await dbClient.user.findUniqueOrThrow({
     where: { email },
