@@ -18,10 +18,10 @@ const replaceEnv = (envLines, key, value) => {
 
 const setGitpodEnv = async (envPath) => {
   const envContent = fs.existsSync(envPath) ? await fsp.readFile(envPath, 'utf-8') : ''
-
   const envLines = envContent.split(/\r?\n/)
 
   const gitpodUrlSuffix = `${process.env.GITPOD_WORKSPACE_ID}.${process.env.GITPOD_WORKSPACE_CLUSTER_HOST}`
+
   replaceEnv(envLines, 'NEXT_PUBLIC_APP_BASE_URL', `https://4000-${gitpodUrlSuffix}`)
 
   await fsp.writeFile(envPath, envLines.join('\n'))
