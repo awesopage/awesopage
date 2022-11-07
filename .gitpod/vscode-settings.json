@@ -1,0 +1,26 @@
+{
+  "editor.tabSize": 2,
+  "typescript.format.semicolons": "remove",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 4922,
+      "driver": "PostgreSQL",
+      "name": "ap_local",
+      "database": "defaultdb",
+      "username": "root",
+      "password": ""
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 4822,
+      "driver": "PostgreSQL",
+      "name": "ap_test",
+      "database": "defaultdb",
+      "username": "root",
+      "password": ""
+    }
+  ]
+}
