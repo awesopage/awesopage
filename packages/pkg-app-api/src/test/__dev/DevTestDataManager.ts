@@ -1,7 +1,9 @@
+import { createTestUsers } from 'pkg-app-api/src/user/__dev/DevTestUsers'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 
 export const devManageCreateTestData = async () => {
   await truncateAllTables()
+  await createTestUsers()
 }
 
 const truncateAllTables = async (): Promise<string[]> => {
