@@ -2,6 +2,6 @@
   "name": "pkg-lib-typescript",
   "private": true,
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   }
 }

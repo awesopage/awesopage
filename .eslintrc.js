@@ -35,6 +35,8 @@ module.exports = {
         groups: [
           // side effect imports
           ['^\\u0000'],
+          // core imports
+          ['^node:'],
           // external imports
           ['^'],
           // internal imports
@@ -49,7 +51,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.js'],
+      files: ['*.js', '*.mjs'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },

@@ -1,8 +1,8 @@
-require('../../scripts/lib/dotenv-loader')
+import './lib/dotenv-loader.mjs'
 
-const axios = require('axios')
+import axios from 'axios'
 
-const { runCommand, waitFor } = require('../../scripts/lib/script-utils')
+import { runCommand, waitFor } from './lib/script-utils.mjs'
 
 const globalSetup = async () => {
   if (process.env.START_APP) {
@@ -10,7 +10,7 @@ const globalSetup = async () => {
     console.log('Starting test services...')
     console.log()
 
-    await runCommand('node', ['scripts/local-services', 'start'])
+    await runCommand('node', ['./scripts/local-services.mjs', 'start'])
 
     console.log()
     console.log('Starting application...')

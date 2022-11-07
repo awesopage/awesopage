@@ -7,6 +7,6 @@ module.exports = {
   include: ['packages/pkg-*/src/**'],
   exclude: ['packages/pkg-testing/**', 'packages/pkg-app-shared/**', '**/__dev/**'],
   'temp-dir': process.env.ISTANBUL_TEMP_DIR,
-  'report-dir': './tests-report/coverage',
+  'report-dir': './build/test/reports/coverage',
   reporter: ['text-summary', 'html', 'lcov'],
 }

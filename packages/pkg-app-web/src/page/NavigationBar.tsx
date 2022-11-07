@@ -35,7 +35,7 @@ const NavLink: FunctionComponent<NavLinkProps> = ({ href, text, currentPath, act
       borderBottomColor={activeColor}
       paddingTop={SPACE_SMALL}
     >
-      <NextLink href={href} passHref>
+      <NextLink href={href} passHref legacyBehavior>
         <LinkOverlay fontWeight='semibold' paddingX={SPACE_MEDIUM}>
           {text}
         </LinkOverlay>
@@ -56,11 +56,9 @@ export const NavigationBar: FunctionComponent = () => {
     <Box borderBottomWidth={1} borderBottomColor={borderColor} paddingX={SPACE_SMALL}>
       <Container maxWidth='container.xl' display='flex' flexWrap='wrap' paddingX={1}>
         <Box paddingY={1}>
-          <NextLink href='/' passHref>
-            <Link>
-              <Logo />
-            </Link>
-          </NextLink>
+          <Link as={NextLink} href='/'>
+            <Logo />
+          </Link>
         </Box>
         <ButtonGroup variant='link' spacing={0} marginLeft={SPACE_MEDIUM}>
           <NavLink href='/lists' text='Lists' {...navLinkProps} />
@@ -68,7 +66,7 @@ export const NavigationBar: FunctionComponent = () => {
         </ButtonGroup>
         <Spacer />
         <ButtonGroup spacing={1} paddingY={1}>
-          <NextLink href='https://github.com/awesopage/awesopage' passHref>
+          <NextLink href='https://github.com/awesopage/awesopage' passHref legacyBehavior>
             <IconButton as='a' aria-label='Awesopage GitHub' icon={<NavIcon as={IoLogoGithub} />} />
           </NextLink>
           <ColorModeToggle />

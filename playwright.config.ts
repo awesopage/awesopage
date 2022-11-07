@@ -9,17 +9,17 @@ const config: PlaywrightTestConfig = {
   },
   // Based on https://github.com/anishkny/playwright-test-coverage
   // and https://github.com/bahmutov/next-and-cypress-example
-  globalSetup: require.resolve('./packages/pkg-testing/global-setup'),
-  globalTeardown: require.resolve('./packages/pkg-testing/global-teardown'),
-  outputDir: 'tests-report/output/playwright',
+  globalSetup: require.resolve('./scripts/test-setup'),
+  globalTeardown: require.resolve('./scripts/test-teardown'),
+  outputDir: 'build/test/playwright',
   reportSlowTests: {
     max: 0,
     threshold: 60_000,
   },
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'tests-report/playwright' }],
-    ['junit', { outputFile: 'tests-report/junit.xml' }],
+    ['html', { open: 'never', outputFolder: 'build/test/reports/playwright' }],
+    ['junit', { outputFile: 'build/test/reports/junit.xml' }],
   ],
 }
 
