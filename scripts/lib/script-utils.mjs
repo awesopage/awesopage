@@ -48,6 +48,7 @@ export const delay = async (seconds) => {
 
 export const waitFor = async (message, interval, condition) => {
   let isReady = false
+  const startTime = Date.now()
 
   while (!isReady) {
     try {
@@ -60,6 +61,10 @@ export const waitFor = async (message, interval, condition) => {
       console.log(message)
 
       await delay(interval)
+    }
+
+    if (Date.now() - startTime > 300 * 1_000) {
+      process.exit(1)
     }
   }
 }
