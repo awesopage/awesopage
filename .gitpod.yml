@@ -14,9 +14,9 @@ tasks:
       echo "nvm use default" >> ~/.bashrc.d/51-nvm-fix &&
       pnpm boot &&
       gp sync-done boot &&
-      node scripts/workspace.js set-gitpod-env
+      node ./scripts/workspace.mjs set-gitpod-env
     command: >
-      node scripts/local-services start &&
+      node ./scripts/local-services.mjs start &&
       pnpm dev
 
 ports:

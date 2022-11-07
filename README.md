@@ -27,17 +27,17 @@
 ### Manage local services (Docker Compose)
 
 - Local services are defined in `docker/docker-compose-local.yaml`.
-- To start the services, run `node scripts/local-services start`.
-- To stop the services, run `node scripts/local-services stop`.
-- To reset the services (all volumes will be deleted), run `node scripts/local-services reset`.
-- To tail logs of the services, run `node scripts/local-services logs`.
+- To start the services, run `node ./scripts/local-services.mjs start`.
+- To stop the services, run `node ./scripts/local-services.mjs stop`.
+- To reset the services (all volumes will be deleted), run `node ./scripts/local-services.mjs reset`.
+- To tail logs of the services, run `node ./scripts/local-services.mjs logs`.
 - CockroachDB Console will be at http://localhost:4920.
 
 ### Manage database models (Prisma)
 
 - Prisma schema is defined in `packages/pkg-app-model/schema/app.prisma`.
-- To sync or create Prisma migrations, run `node scripts/model-schema migrate`.
-- To generate Prisma client, run `node scripts/model-schema generate`.
+- To sync or create Prisma migrations, run `node ./scripts/model-schema.mjs migrate`.
+- To generate Prisma client, run `node ./scripts/model-schema.mjs generate`.
 
 ### Start development
 

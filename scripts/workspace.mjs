@@ -1,14 +1,13 @@
-const path = require('path')
-const fs = require('fs')
-const fsp = require('fs/promises')
+import fs from 'node:fs'
+import fsp from 'node:fs/promises'
 
-const { runScript } = require('./lib/script-runner')
+import { isMainModule, runScript } from './lib/script-runner.mjs'
 
 const handlerByCommand = {
   'set-gitpod-env': async () => {
     const gitpodUrlSuffix = `${process.env.GITPOD_WORKSPACE_ID}.${process.env.GITPOD_WORKSPACE_CLUSTER_HOST}`
 
-    const envDevLocalPath = path.join(__dirname, '../config/.env.development.local')
+    const envDevLocalPath = new URL('../config/.env.development.local', import.meta.url)
 
     const envDevLocalContent = fs.existsSync(envDevLocalPath) ? await fsp.readFile(envDevLocalPath, 'utf-8') : ''
 
@@ -22,7 +21,7 @@ const handlerByCommand = {
   },
   'fix-package-list': async () => {
     // Remove logs from pnpm to ensure that workspace-packages.json contains a JSON array
-    const listPath = path.join(__dirname, '../workspace-packages.json')
+    const listPath = new URL('../workspace-packages.json', import.meta.url)
 
     const listContent = await fsp.readFile(listPath, 'utf-8')
 
@@ -43,7 +42,7 @@ const handlerByCommand = {
 
     console.log(`Use cache key: ${cacheKey}`)
 
-    await fsp.writeFile(path.join(__dirname, '../workspace-cache-key.txt'), cacheKey)
+    await fsp.writeFile(new URL('../workspace-cache-key.txt', import.meta.url), cacheKey)
   },
 }
 
@@ -58,6 +57,6 @@ const workspaceScript = async (argv) => {
   await handler()
 }
 
-if (require.main === module) {
+if (isMainModule(import.meta.url)) {
   runScript(workspaceScript)
 }

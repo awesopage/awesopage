@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "compile": "tsc",
-    "clean": "node ../../scripts/delete tsconfig.tsbuildinfo",
-    "clean-full": "npm run clean && node ../../scripts/delete node_modules client"
+    "clean": "node ../../scripts/delete.mjs tsconfig.tsbuildinfo",
+    "clean-full": "npm run clean && node ../../scripts/delete.mjs node_modules client"
   },
   "engines": {
     "node": "18.x"
