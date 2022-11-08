@@ -46,6 +46,8 @@ export const delay = async (seconds) => {
   await new Promise((resolve) => setTimeout(resolve, seconds * 1_000))
 }
 
+const WAIT_FOR_TIMEOUT_SECONDS = 300
+
 export const waitFor = async (message, interval, condition) => {
   let isReady = false
   const startTime = Date.now()
@@ -63,7 +65,7 @@ export const waitFor = async (message, interval, condition) => {
       await delay(interval)
     }
 
-    if (Date.now() - startTime > 300 * 1_000) {
+    if (Date.now() - startTime > WAIT_FOR_TIMEOUT_SECONDS * 1_000) {
       process.exit(1)
     }
   }
