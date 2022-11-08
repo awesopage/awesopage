@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { globby } from 'globby'
+import { createSecureHeaders } from 'next-secure-headers'
 
 import { getProfiles } from './scripts/lib/script-utils.mjs'
 
@@ -22,6 +23,7 @@ const profiles = getProfiles()
  * @type {import('next').NextConfig}
  */
 const nextConfig = withBundleAnalyzer({
+  headers: () => [{ source: '/(.*)', headers: createSecureHeaders() }],
   experimental: {
     swcPlugins: [...(process.env.COLLECT_COVERAGE ? [['swc-plugin-coverage-instrument', {}]] : [])],
   },
