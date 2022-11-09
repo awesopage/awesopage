@@ -1,7 +1,7 @@
 import { User } from 'pkg-app-model/client'
 import { AuthData, recoverSignerAddress } from 'pkg-app-service/src/auth/AuthDataSigner'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
-import { createOrUpdateUser, findUserByEmail } from 'pkg-app-service/src/user/UserService'
+import { findOrCreateUser, findUserByEmail } from 'pkg-app-service/src/user/UserService'
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 
 export const manageProcessAuthData = async (authData: AuthData, signature: string): Promise<User> => {
@@ -18,7 +18,7 @@ export const manageProcessAuthData = async (authData: AuthData, signature: strin
   }
 
   const user = await prismaClient.$transaction((dbClient) => {
-    return createOrUpdateUser(dbClient, {
+    return findOrCreateUser(dbClient, {
       email: authData.email,
       displayName: authData.displayName || authData.email.split('@')[0].toLowerCase(),
     })

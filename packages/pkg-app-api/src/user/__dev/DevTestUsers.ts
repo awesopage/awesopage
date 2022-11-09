@@ -1,5 +1,5 @@
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
-import { assignUserRoles, createOrUpdateUser } from 'pkg-app-service/src/user/UserService'
+import { assignUserRoles, findOrCreateUser } from 'pkg-app-service/src/user/UserService'
 import { Role } from 'pkg-app-shared/src/user/Role'
 
 export interface DevTestUser {
@@ -44,7 +44,7 @@ export const createTestUsers = async () => {
     for (const devTestUser of devTestUsers) {
       const { email, displayName, roles } = devTestUser
 
-      const user = await createOrUpdateUser(dbClient, { email, displayName })
+      const user = await findOrCreateUser(dbClient, { email, displayName })
 
       if (roles) {
         await assignUserRoles(dbClient, user.id, roles)

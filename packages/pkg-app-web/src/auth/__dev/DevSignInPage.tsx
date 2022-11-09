@@ -7,8 +7,9 @@ import { postForm } from 'pkg-app-store/src/common/FormRequest'
 import { ColorModeToggle } from 'pkg-app-web/src/page/ColorModeToggle'
 import { Button } from 'pkg-lib-ui/src/button/Button'
 import { useToast } from 'pkg-lib-ui/src/content/Alert'
-import { SelectInput } from 'pkg-lib-ui/src/form/SelectInput'
-import { TextInput } from 'pkg-lib-ui/src/form/TextInput'
+import { FormControl } from 'pkg-lib-ui/src/form/FormControl'
+import { Input } from 'pkg-lib-ui/src/form/Input'
+import { InputGroup, InputRightAddon } from 'pkg-lib-ui/src/form/InputGroup'
 import { Container } from 'pkg-lib-ui/src/layout/Container'
 import { Flex } from 'pkg-lib-ui/src/layout/Flex'
 import { Spacer } from 'pkg-lib-ui/src/layout/Spacer'
@@ -24,66 +25,32 @@ const TopBar: FunctionComponent = () => {
   )
 }
 
-interface SignInAccount {
-  readonly email: string
-  readonly displayName: string
-}
-
-const accounts: SignInAccount[] = [
-  {
-    email: 'admin1@example.com',
-    displayName: 'Admin 1',
-  },
-  {
-    email: 'admin2@example.com',
-    displayName: 'Admin 2',
-  },
-  {
-    email: 'user1@example.com',
-    displayName: 'User 1',
-  },
-  {
-    email: 'user2@example.com',
-    displayName: 'User 2',
-  },
-]
-
-interface AccountSelectInputProps {
-  readonly value: SignInAccount
-  readonly onChange: (value: SignInAccount) => void
-}
-
-const AccountSelectInput: FunctionComponent<AccountSelectInputProps> = ({ value, onChange }) => {
-  const onChangeEmail = (email: string) => {
-    onChange(accounts.find((account) => account.email === email) ?? accounts[0])
-  }
-
-  return (
-    <SelectInput inputId='account' label='Account' value={value?.email} onChange={onChangeEmail}>
-      {accounts.map((account) => (
-        <option key={account.email} value={account.email}>
-          {account.displayName}
-        </option>
-      ))}
-    </SelectInput>
-  )
-}
-
-interface PasswordTextInputProps {
+interface EmailIdInputProps {
   readonly value: string
   readonly onChange: (value: string) => void
 }
 
-const PasswordTextInput: FunctionComponent<PasswordTextInputProps> = ({ value, onChange }) => {
+const EmailIdInput: FunctionComponent<EmailIdInputProps> = ({ value, onChange }) => {
   return (
-    <TextInput
-      inputId='password'
-      label='Password'
-      value={value}
-      onChange={onChange}
-      type='password'
-      autoComplete='off'
-    />
+    <FormControl inputId='emailId' label='Email'>
+      <InputGroup>
+        <Input inputId='emailId' value={value} onChange={onChange} borderRightRadius={0} autoFocus />
+        <InputRightAddon>@example.com</InputRightAddon>
+      </InputGroup>
+    </FormControl>
+  )
+}
+
+interface PasswordInputProps {
+  readonly value: string
+  readonly onChange: (value: string) => void
+}
+
+const PasswordInput: FunctionComponent<PasswordInputProps> = ({ value, onChange }) => {
+  return (
+    <FormControl inputId='password' label='Password'>
+      <Input inputId='password' value={value} onChange={onChange} type='password' autoComplete='off' />
+    </FormControl>
   )
 }
 
@@ -91,21 +58,20 @@ export const DevSignInPage: NextPage = () => {
   const { createSignedAuthData } = useDevCreateSignedAuthData()
   const { toast } = useToast()
 
-  const [account, setAccount] = useState<SignInAccount>(accounts[0])
+  const [emailId, setEmailId] = useState('')
   const [password, setPassword] = useState('')
   const [isSigningIn, setSigningIn] = useState(false)
 
   const onClickSignIn = async () => {
-    if (!password) {
+    if (!emailId || !password) {
       return
     }
 
     setSigningIn(true)
 
     const options: DevCreateSignedAuthDataDTO = {
-      email: account.email,
+      email: `${emailId}@example.com`,
       password,
-      displayName: account.displayName,
       returnPath: '/',
     }
 
@@ -130,10 +96,16 @@ export const DevSignInPage: NextPage = () => {
     <Flex flexFlow='column' height='full'>
       <TopBar />
       <form onSubmit={onSubmitForm}>
-        <Stack width='xs' marginTop='20vh' marginX='auto'>
-          <AccountSelectInput value={account} onChange={setAccount} />
-          <PasswordTextInput value={password} onChange={setPassword} />
-          <Button isLoading={isSigningIn} onClick={onClickSignIn} colorScheme='primary' isDisabled={!password}>
+        <Stack width='sm' marginTop='20vh' marginX='auto'>
+          <EmailIdInput value={emailId} onChange={setEmailId} />
+          <PasswordInput value={password} onChange={setPassword} />
+          <Button
+            isLoading={isSigningIn}
+            onClick={onClickSignIn}
+            colorScheme='primary'
+            type='submit'
+            isDisabled={!emailId || !password}
+          >
             Sign in
           </Button>
         </Stack>

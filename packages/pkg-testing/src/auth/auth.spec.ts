@@ -4,7 +4,8 @@ import { expect, test } from 'pkg-testing/src/common/TestUtils'
 test('Sign in', async ({ page }) => {
   await page.goto('/auth/__dev/dev-signin')
 
-  await page.fill('input[type="password"]', 'awesome')
+  await page.fill('#emailId', 'admin1')
+  await page.fill('#password', 'awesome')
 
   await page.click('button:has-text("Sign in")')
 
@@ -23,7 +24,8 @@ test('Sign in', async ({ page }) => {
 test('Sign out', async ({ page }) => {
   await page.goto('/auth/__dev/dev-signin')
 
-  await page.fill('input[type="password"]', 'awesome')
+  await page.fill('#emailId', 'admin1')
+  await page.fill('#password', 'awesome')
 
   await page.click('button:has-text("Sign in")')
 
@@ -45,7 +47,8 @@ test('Sign out', async ({ page }) => {
 test('View current user', async ({ page }) => {
   await page.goto('/auth/__dev/dev-signin')
 
-  await page.fill('input[type="password"]', 'awesome')
+  await page.fill('#emailId', 'admin1')
+  await page.fill('#password', 'awesome')
 
   await page.click('button:has-text("Sign in")')
 
