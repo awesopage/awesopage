@@ -14,7 +14,7 @@ export const devAuthDataApiHandler: NextApiHandler = createApiRouter()
 
     const { email, password, displayName, returnPath } = req.body as DevCreateSignedAuthDataDTO
 
-    if (password !== process.env.DEV_AUTH_PASSWORD) {
+    if (!email.endsWith('@example.com') || password !== process.env.DEV_AUTH_PASSWORD) {
       return sendApiError(res, 'ACCESS_DENIED')
     }
 
