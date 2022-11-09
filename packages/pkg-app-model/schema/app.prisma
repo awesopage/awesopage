@@ -18,5 +18,47 @@ model User {
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
 
+  requestedList List[] @relation("requestedList")
+  approvedList List[] @relation("approvedList")
+
   @@map("app_user")
+}
+
+model List {
+  id BigInt @id @default(autoincrement())
+  repoKey String @unique @map("repo_key")
+  description String
+  starCount BigInt @map("star_count")
+  tags String[]
+  requestedAt DateTime @map("requested_at")
+  requestedById BigInt @map("requested_by_id")
+  updatedAt DateTime @map("updated_at")
+  approvedById BigInt? @map("approved_by_id")
+  resourceId BigInt? @map("resource_id")
+
+  requestedBy User @relation("requestedList", fields: [requestedById], references: [id])
+  approvedBy User? @relation("approvedList", fields: [approvedById], references: [id])
+  resource Resource? @relation(fields: [resourceId], references: [id])
+
+  @@map("list")
+}
+
+enum ResourceTypeEnum {
+  CODE
+  VIDEO
+  DEFAULT
+  @@map("resource_type")
+}
+
+model Resource {
+  id BigInt @id @default(autoincrement())
+  url String
+  domain String
+  type ResourceTypeEnum
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  links List[]
+
+  @@map("resource")
 }
