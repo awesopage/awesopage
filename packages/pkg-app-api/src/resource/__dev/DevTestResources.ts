@@ -68,7 +68,7 @@ export const devTestResources: DevTestResource[] = [
     links: [
       {
         listRepoKey: 'enaqx/awesome-react',
-        description: '',
+        description: 'Pete Hunt: React: Rethinking best practices - JSConf EU 2013',
         tags: ['videos', 'important-talks'],
       },
     ],
@@ -79,7 +79,7 @@ export const devTestResources: DevTestResource[] = [
     links: [
       {
         listRepoKey: 'enaqx/awesome-react',
-        description: '',
+        description: 'A Complete Guide to Flexbox',
         tags: ['react-native', 'react-native-tutorials'],
       },
     ],
