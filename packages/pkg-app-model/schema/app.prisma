@@ -18,8 +18,8 @@ model User {
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
 
-  requestedList List[] @relation("requestedList")
-  approvedList List[] @relation("approvedList")
+  requestedLists List[] @relation("requestedLists")
+  approvedLists List[] @relation("approvedLists")
 
   @@map("app_user")
 }
@@ -34,11 +34,10 @@ model List {
   requestedById BigInt @map("requested_by_id")
   updatedAt DateTime @map("updated_at")
   approvedById BigInt? @map("approved_by_id")
-  resourceId BigInt? @map("resource_id")
+  resources Resource[]
 
-  requestedBy User @relation("requestedList", fields: [requestedById], references: [id])
-  approvedBy User? @relation("approvedList", fields: [approvedById], references: [id])
-  resource Resource? @relation(fields: [resourceId], references: [id])
+  requestedBy User @relation("requestedLists", fields: [requestedById], references: [id])
+  approvedBy User? @relation("approvedLists", fields: [approvedById], references: [id])
 
   @@map("list")
 }
@@ -46,19 +45,20 @@ model List {
 enum ResourceTypeEnum {
   CODE
   VIDEO
-  DEFAULT
+  WEBSITE
   @@map("resource_type")
 }
 
 model Resource {
   id BigInt @id @default(autoincrement())
-  url String
+  url String @unique
   domain String
   type ResourceTypeEnum
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
+  listId BigInt @map("list_id")
 
-  links List[]
+  list List @relation(fields: [listId], references: [id])
 
   @@map("resource")
 }
