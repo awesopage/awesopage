@@ -24,9 +24,19 @@ CREATE TABLE "resource" (
     "type" "resource_type" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "list_id" INT8 NOT NULL,
 
     CONSTRAINT "resource_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "resource_link" (
+    "id" INT8 NOT NULL DEFAULT unique_rowid(),
+    "description" STRING NOT NULL,
+    "tags" STRING[],
+    "resource_id" INT8 NOT NULL,
+    "list_id" INT8 NOT NULL,
+
+    CONSTRAINT "resource_link_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -42,4 +52,7 @@ ALTER TABLE "list" ADD CONSTRAINT "list_requested_by_id_fkey" FOREIGN KEY ("requ
 ALTER TABLE "list" ADD CONSTRAINT "list_approved_by_id_fkey" FOREIGN KEY ("approved_by_id") REFERENCES "app_user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "resource" ADD CONSTRAINT "resource_list_id_fkey" FOREIGN KEY ("list_id") REFERENCES "list"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "resource_link" ADD CONSTRAINT "resource_link_list_id_fkey" FOREIGN KEY ("list_id") REFERENCES "list"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "resource_link" ADD CONSTRAINT "resource_link_resource_id_fkey" FOREIGN KEY ("resource_id") REFERENCES "resource"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
