@@ -13,7 +13,7 @@
     "@playwright/test": "1.27.1",
     "pkg-app-shared": "workspace:*",
     "playwright-core": "1.27.1",
-    "playwright-test-coverage": "1.2.3"
+    "playwright-test-coverage": "1.2.5"
   },
   "devDependencies": {
     "pkg-lib-typescript": "workspace:*",
