@@ -19,7 +19,7 @@ test('Navigation bar should contain GitHub link', async ({ page }) => {
   await expect(page.locator('nav >> a[href="https://github.com/awesopage/awesopage"]')).toBeVisible()
 })
 
-test('Navigation bar screenshot should match snapshot', async ({ page }) => {
+test('Navigation bar should match snapshot', async ({ page }) => {
   await page.setViewportSize({ width: 800, height: 600 })
 
   await page.goto('/')
