@@ -2,6 +2,7 @@ import { PlaywrightTestConfig } from '@playwright/test'
 
 const config: PlaywrightTestConfig = {
   testDir: 'packages/pkg-testing/src',
+  fullyParallel: true,
   maxFailures: 10,
   use: {
     baseURL: 'http://localhost:4800',
