@@ -8,6 +8,11 @@ const config: PlaywrightTestConfig = {
     baseURL: 'http://localhost:4800',
     screenshot: 'only-on-failure',
   },
+  expect: {
+    toMatchSnapshot: {
+      maxDiffPixelRatio: 0.01,
+    },
+  },
   // Based on https://github.com/anishkny/playwright-test-coverage
   // and https://github.com/bahmutov/next-and-cypress-example
   globalSetup: require.resolve('./scripts/test-setup'),
