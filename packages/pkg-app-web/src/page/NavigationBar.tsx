@@ -53,10 +53,10 @@ export const NavigationBar: FunctionComponent = () => {
   const navLinkProps = { currentPath: router.asPath, activeColor }
 
   return (
-    <Box borderBottomWidth={1} borderBottomColor={borderColor} paddingX={SPACE_SMALL}>
+    <Box as='nav' borderBottomWidth={1} borderBottomColor={borderColor} paddingX={SPACE_SMALL}>
       <Container maxWidth='container.xl' display='flex' flexWrap='wrap' paddingX={1}>
         <Box paddingY={1}>
-          <Link as={NextLink} href='/' data-test-id='logo'>
+          <Link as={NextLink} href='/'>
             <Logo />
           </Link>
         </Box>

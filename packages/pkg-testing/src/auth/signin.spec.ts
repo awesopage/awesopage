@@ -4,10 +4,10 @@ import { expect, test } from 'pkg-testing/src/common/TestUtils'
 test('Existing user can sign in', async ({ page }) => {
   await page.goto('/auth/__dev/dev-signin')
 
-  await page.fill('#emailId', 'admin1')
-  await page.fill('#password', 'awesome')
+  await page.locator('#emailId').fill('admin1')
+  await page.locator('#password').fill('awesome')
 
-  await page.click('button:has-text("Sign in")')
+  await page.getByText('Sign in').click()
 
   await page.waitForNavigation({ waitUntil: 'networkidle' })
 
@@ -24,10 +24,10 @@ test('Existing user can sign in', async ({ page }) => {
 test('New user can sign in', async ({ page }) => {
   await page.goto('/auth/__dev/dev-signin')
 
-  await page.fill('#emailId', 'unknown')
-  await page.fill('#password', 'awesome')
+  await page.locator('#emailId').fill('unknown')
+  await page.locator('#password').fill('awesome')
 
-  await page.click('button:has-text("Sign in")')
+  await page.getByText('Sign in').click()
 
   await page.waitForNavigation({ waitUntil: 'networkidle' })
 
