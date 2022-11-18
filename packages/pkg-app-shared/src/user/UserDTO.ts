@@ -1,4 +1,4 @@
-import { Role } from 'pkg-app-shared/src/user/Role'
+export type Role = 'ADMIN' | 'REVIEWER'
 
 export interface UserDTO {
   readonly id: string
