@@ -56,6 +56,7 @@ export const UserMenu: FunctionComponent = () => {
           aria-label='User menu'
           icon={<NavIcon as={!isAuthChecked ? TbCircleDotted : currentUser ? BiUser : BiUserX} />}
           colorScheme={isOpen ? 'primary' : 'background'}
+          data-test-id={isAuthChecked ? 'ready-user-menu' : ''}
         />
       </PopoverTrigger>
       <PopoverContent>

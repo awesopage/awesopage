@@ -6,7 +6,7 @@ import { runCommand } from './lib/script-utils.mjs'
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
 const argvByCommand = {
-  'push-accept-data-loss': ['db', 'push', '--accept-data-loss', ...prismaArgv],
+  'push-accept-data-loss': ['db', 'push', '--accept-data-loss', '--force-reset', ...prismaArgv],
   migrate: ['migrate', 'dev', ...prismaArgv],
   generate: ['generate', ...prismaArgv],
 }

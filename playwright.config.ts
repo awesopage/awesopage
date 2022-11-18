@@ -2,10 +2,16 @@ import { PlaywrightTestConfig } from '@playwright/test'
 
 const config: PlaywrightTestConfig = {
   testDir: 'packages/pkg-testing/src',
+  fullyParallel: true,
   maxFailures: 10,
   use: {
     baseURL: 'http://localhost:4800',
     screenshot: 'only-on-failure',
+  },
+  expect: {
+    toMatchSnapshot: {
+      maxDiffPixelRatio: 0.01,
+    },
   },
   // Based on https://github.com/anishkny/playwright-test-coverage
   // and https://github.com/bahmutov/next-and-cypress-example

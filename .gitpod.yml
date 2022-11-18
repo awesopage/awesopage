@@ -1,6 +1,6 @@
 tasks:
   - name: dev chore
-    init: >
+    before: >
       gp sync-await boot &&
       nvm use default &&
       ./node_modules/.bin/playwright install-deps &&
@@ -8,16 +8,15 @@ tasks:
     command: pnpm lint
   - name: dev server
     # Based on https://www.gitpod.io/docs/introduction/languages/javascript#node-versions
-    init: >
+    before: >
       nvm install 18 &&
       nvm alias default 18 &&
       echo "nvm use default" >> ~/.bashrc.d/51-nvm-fix &&
       pnpm boot &&
       gp sync-done boot &&
-      node ./scripts/workspace.mjs set-gitpod-env
-    command: >
-      node ./scripts/local-services.mjs start &&
-      pnpm dev
+      node ./scripts/prepare-gitpod.mjs &&
+      node ./scripts/local-services.mjs start
+    command: pnpm dev
 
 ports:
   - name: dev application
