@@ -5,8 +5,8 @@
 
 */
 -- CreateEnum
-CREATE TYPE "app_user_role" AS ENUM ('ADMIN', 'REVIEWER');
+CREATE TYPE "app_role" AS ENUM ('ADMIN', 'REVIEWER');
 
 -- AlterTable
 ALTER TABLE "app_user" DROP COLUMN "roles";
-ALTER TABLE "app_user" ADD COLUMN "roles" "app_user_role"[];
+ALTER TABLE "app_user" ADD COLUMN "roles" "app_role"[];

@@ -1,6 +1,6 @@
-import { User, UserRoleEnum } from 'pkg-app-model/client'
+import { RoleEnum, User } from 'pkg-app-model/client'
 
-export const requireRoles = (user: User, rolesToCheck: UserRoleEnum[]) => {
+export const requireRoles = (user: User, rolesToCheck: RoleEnum[]) => {
   if (user.roles.includes('ADMIN')) {
     return
   }

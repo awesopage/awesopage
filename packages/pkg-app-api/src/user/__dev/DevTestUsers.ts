@@ -1,11 +1,11 @@
-import { UserRoleEnum } from 'pkg-app-model/client'
+import { RoleEnum } from 'pkg-app-model/client'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { assignUserRoles, findOrCreateUser, findUserByEmail } from 'pkg-app-service/src/user/UserService'
 
 export interface DevTestUser {
   readonly email: string
   readonly displayName: string
-  readonly roles?: UserRoleEnum[]
+  readonly roles?: RoleEnum[]
 }
 
 export const devTestUsers: DevTestUser[] = [

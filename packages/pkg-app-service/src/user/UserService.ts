@@ -1,6 +1,6 @@
 import IsEmail from 'isemail'
 
-import { User, UserRoleEnum } from 'pkg-app-model/client'
+import { RoleEnum, User } from 'pkg-app-model/client'
 import { DbClient } from 'pkg-app-model/src/common/DbClient'
 import { requireRoles } from 'pkg-app-service/src/user/UserRoleChecker'
 
@@ -29,7 +29,7 @@ export const findOrCreateUser = async (dbClient: DbClient, options: FindOrCreate
 
 export interface AssignUserRolesOptions {
   readonly email: string
-  readonly roles: UserRoleEnum[]
+  readonly roles: RoleEnum[]
   readonly assignedByUser: User
 }
 
