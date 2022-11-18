@@ -8,4 +8,4 @@
 CREATE TYPE "list_status" AS ENUM ('PENDING', 'ACTIVE', 'INACTIVE');
 
 -- AlterTable
-ALTER TABLE "list" ADD COLUMN     "status" "list_status" NOT NULL;
+ALTER TABLE "list" ADD COLUMN "status" "list_status" NOT NULL;
