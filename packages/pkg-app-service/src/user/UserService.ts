@@ -1,7 +1,8 @@
 import IsEmail from 'isemail'
 
-import { User } from 'pkg-app-model/client'
+import { RoleEnum, User } from 'pkg-app-model/client'
 import { DbClient } from 'pkg-app-model/src/common/DbClient'
+import { requireRoles } from 'pkg-app-service/src/user/UserRoleChecker'
 
 export interface FindOrCreateUserOptions {
   readonly email: string
@@ -26,9 +27,21 @@ export const findOrCreateUser = async (dbClient: DbClient, options: FindOrCreate
   return user
 }
 
-export const assignUserRoles = async (dbClient: DbClient, userId: bigint, roles: string[]): Promise<User> => {
+export interface AssignUserRolesOptions {
+  readonly email: string
+  readonly roles: RoleEnum[]
+  readonly assignedByUser: User
+}
+
+export const assignUserRoles = async (dbClient: DbClient, options: AssignUserRolesOptions): Promise<User> => {
+  const { email, roles, assignedByUser } = options
+
+  if (assignedByUser.email !== process.env.EMAIL_CAN_ASSIGN_ROLES) {
+    requireRoles(assignedByUser, ['ADMIN'])
+  }
+
   const user = await dbClient.user.update({
-    where: { id: userId },
+    where: { email },
     data: { roles, updatedAt: new Date() },
   })
 

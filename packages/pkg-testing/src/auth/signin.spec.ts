@@ -4,7 +4,7 @@ import { expect, test } from 'pkg-testing/src/common/TestUtils'
 test('Existing user can sign in', async ({ page }) => {
   await page.goto('/auth/__dev/dev-signin')
 
-  await page.locator('#emailId').fill('admin1')
+  await page.locator('#emailId').fill('user1')
   await page.locator('#password').fill('awesome')
 
   await page.getByText('Sign in').click()
@@ -16,8 +16,8 @@ test('Existing user can sign in', async ({ page }) => {
   const authMe = (await getAuthMe.json()) as AuthMeDTO
 
   expect(authMe.user).toMatchObject({
-    email: 'admin1@example.com',
-    displayName: 'Admin 1',
+    email: 'user1@example.com',
+    displayName: 'User 1',
   })
 })
 
