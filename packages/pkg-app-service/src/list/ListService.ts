@@ -28,3 +28,9 @@ export const createList = async (dbClient: DbClient, options: CreateListOptions)
 
   return list
 }
+
+export const getLists = async (dbClient: DbClient): Promise<List[]> => {
+  const lists = await dbClient.list.findMany()
+
+  return lists
+}
