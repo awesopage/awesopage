@@ -1,6 +1,5 @@
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { createList } from 'pkg-app-service/src/list/ListService'
-import { findUserByEmail } from 'pkg-app-service/src/user/UserService'
 
 export interface DevTestList {
   readonly repoKey: string
@@ -39,9 +38,7 @@ export const createTestLists = async () => {
     for (const devTestList of devTestLists) {
       const { repoKey, description, starCount, tags, requestedByEmail } = devTestList
 
-      const requestedByUser = await findUserByEmail(dbClient, requestedByEmail)
-
-      await createList(dbClient, { repoKey, description, starCount, tags, requestedByUser })
+      await createList(dbClient, { repoKey, description, starCount, tags, requestedByEmail })
     }
   })
 }

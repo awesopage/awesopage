@@ -1,16 +1,16 @@
-import { List, User } from 'pkg-app-model/client'
+import { List } from 'pkg-app-model/client'
 import { DbClient } from 'pkg-app-model/src/common/DbClient'
 
-export interface createListOptions {
+export interface CreateListOptions {
   readonly repoKey: string
   readonly description: string
   readonly starCount: number
   readonly tags: string[]
-  readonly requestedByUser: User
+  readonly requestedByEmail: string
 }
 
-export const createList = async (dbClient: DbClient, options: createListOptions): Promise<List> => {
-  const { repoKey, description, starCount, requestedByUser, tags } = options
+export const createList = async (dbClient: DbClient, options: CreateListOptions): Promise<List> => {
+  const { repoKey, description, starCount, requestedByEmail, tags } = options
 
   const now = new Date()
 
@@ -20,7 +20,7 @@ export const createList = async (dbClient: DbClient, options: createListOptions)
       description,
       starCount,
       tags,
-      requestedBy: { connect: { id: requestedByUser.id } },
+      requestedBy: { connect: { email: requestedByEmail } },
       requestedAt: now,
       updatedAt: now,
     },
