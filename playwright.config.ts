@@ -2,6 +2,7 @@ import { PlaywrightTestConfig } from '@playwright/test'
 
 const config: PlaywrightTestConfig = {
   testDir: 'packages/pkg-testing/src',
+  snapshotPathTemplate: 'packages/pkg-testing/snapshot/{testFilePath}/{arg}{ext}',
   fullyParallel: true,
   maxFailures: 10,
   use: {
