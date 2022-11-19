@@ -1,5 +1,5 @@
 import { List, User } from 'pkg-app-model/client'
-import { DbClient } from 'pkg-app-model/src/common/DbClient'
+import { DbClient, maybe } from 'pkg-app-model/src/common/DbClient'
 import { requireRoles } from 'pkg-app-service/src/user/UserRoleChecker'
 
 export interface CreateListOptions {
@@ -9,6 +9,12 @@ export interface CreateListOptions {
 
 export const createList = async (dbClient: DbClient, options: CreateListOptions): Promise<List> => {
   const { repoKey, requestedByUser } = options
+
+  const existingList = await findOptionalListByRepoKey(dbClient, repoKey)
+
+  if (existingList) {
+    throw new Error(`List ${repoKey} already exists`)
+  }
 
   const now = new Date()
 
@@ -41,6 +47,8 @@ export const updateList = async (dbClient: DbClient, options: UpdateListOptions)
 
   requireRoles(updatedByUser, ['REVIEWER'])
 
+  await requireExistingList(dbClient, repoKey)
+
   const list = await dbClient.list.update({
     where: { repoKey },
     data: {
@@ -65,6 +73,12 @@ export const approveList = async (dbClient: DbClient, options: ApproveListOption
 
   requireRoles(approvedByUser, ['REVIEWER'])
 
+  const existingList = await requireExistingList(dbClient, repoKey)
+
+  if (approvedByUser.id === existingList.requestedById) {
+    throw new Error(`User ${approvedByUser.email} cannot approve their own requested list ${repoKey}`)
+  }
+
   const list = await dbClient.list.update({
     where: { repoKey },
     data: {
@@ -75,4 +89,22 @@ export const approveList = async (dbClient: DbClient, options: ApproveListOption
   })
 
   return list
+}
+
+const requireExistingList = async (dbClient: DbClient, repoKey: string): Promise<List> => {
+  const existingList = await findOptionalListByRepoKey(dbClient, repoKey)
+
+  if (!existingList) {
+    throw new Error(`List ${repoKey} does not exist`)
+  }
+
+  return existingList
+}
+
+const findOptionalListByRepoKey = async (dbClient: DbClient, repoKey: string): Promise<List | undefined> => {
+  const list = await dbClient.list.findUnique({
+    where: { repoKey },
+  })
+
+  return maybe(list)
 }
