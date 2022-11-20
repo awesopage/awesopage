@@ -16,7 +16,7 @@ export interface ListCardProps {
 }
 
 export const ListCard: FunctionComponent<ListCardProps> = ({ list }) => {
-  const backgroundColor = useColorModeValue('background.50', 'background.700')
+  const backgroundColor = useColorModeValue('white', 'background.700')
 
   return (
     <Card backgroundColor={backgroundColor}>

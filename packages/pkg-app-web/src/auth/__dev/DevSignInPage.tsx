@@ -10,6 +10,7 @@ import { useToast } from 'pkg-lib-ui/src/content/Alert'
 import { FormControl } from 'pkg-lib-ui/src/form/FormControl'
 import { Input } from 'pkg-lib-ui/src/form/Input'
 import { InputGroup, InputRightAddon } from 'pkg-lib-ui/src/form/InputGroup'
+import { useColorModeValue } from 'pkg-lib-ui/src/hook/ThemeHooks'
 import { Container } from 'pkg-lib-ui/src/layout/Container'
 import { Flex } from 'pkg-lib-ui/src/layout/Flex'
 import { Spacer } from 'pkg-lib-ui/src/layout/Spacer'
@@ -62,6 +63,8 @@ export const DevSignInPage: NextPage = () => {
   const [password, setPassword] = useState('')
   const [isSigningIn, setSigningIn] = useState(false)
 
+  const backgroundColor = useColorModeValue('blackAlpha.50', 'background.800')
+
   const onClickSignIn = async () => {
     if (!emailId || !password) {
       return
@@ -93,7 +96,7 @@ export const DevSignInPage: NextPage = () => {
   }
 
   return (
-    <Flex flexFlow='column' height='full'>
+    <Flex backgroundColor={backgroundColor} flexFlow='column' height='full'>
       <TopBar />
       <form onSubmit={onSubmitForm}>
         <Stack width='sm' marginTop='20vh' marginX='auto'>

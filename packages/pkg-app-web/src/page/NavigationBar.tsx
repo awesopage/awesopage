@@ -47,13 +47,20 @@ const NavLink: FunctionComponent<NavLinkProps> = ({ href, text, currentPath, act
 export const NavigationBar: FunctionComponent = () => {
   const router = useRouter()
 
+  const backgroundColor = useColorModeValue('white', 'background.800')
   const borderColor = useColorModeValue('secondary.700', 'secondary.500')
   const activeColor = useColorModeValue('primary.600', 'primary.200')
 
   const navLinkProps = { currentPath: router.asPath, activeColor }
 
   return (
-    <Box as='nav' borderBottomWidth={1} borderBottomColor={borderColor} paddingX={SPACE_SMALL}>
+    <Box
+      as='nav'
+      backgroundColor={backgroundColor}
+      borderBottomWidth={1}
+      borderBottomColor={borderColor}
+      paddingX={SPACE_SMALL}
+    >
       <Container maxWidth='container.xl' display='flex' flexWrap='wrap' paddingX={1}>
         <Box paddingY={1}>
           <Link as={NextLink} href='/'>
