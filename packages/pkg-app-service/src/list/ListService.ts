@@ -10,7 +10,11 @@ export interface CreateListOptions {
 export const createList = async (dbClient: DbClient, options: CreateListOptions): Promise<List> => {
   const { repoKey, requestedByUser } = options
 
-  const existingList = await findOptionalListByRepoKey(dbClient, repoKey)
+  const existingList = maybe(
+    await dbClient.list.findUnique({
+      where: { repoKey },
+    }),
+  )
 
   if (existingList) {
     throw new Error(`List ${repoKey} already exists`)
@@ -47,7 +51,9 @@ export const updateList = async (dbClient: DbClient, options: UpdateListOptions)
 
   requireRoles(updatedByUser, ['REVIEWER'])
 
-  await requireExistingList(dbClient, repoKey)
+  await dbClient.list.findUniqueOrThrow({
+    where: { repoKey },
+  })
 
   const list = await dbClient.list.update({
     where: { repoKey },
@@ -73,7 +79,9 @@ export const approveList = async (dbClient: DbClient, options: ApproveListOption
 
   requireRoles(approvedByUser, ['REVIEWER'])
 
-  const existingList = await requireExistingList(dbClient, repoKey)
+  const existingList = await dbClient.list.findUniqueOrThrow({
+    where: { repoKey },
+  })
 
   if (approvedByUser.id === existingList.requestedById) {
     throw new Error(`User ${approvedByUser.email} cannot approve their own requested list ${repoKey}`)
@@ -89,22 +97,4 @@ export const approveList = async (dbClient: DbClient, options: ApproveListOption
   })
 
   return list
-}
-
-const requireExistingList = async (dbClient: DbClient, repoKey: string): Promise<List> => {
-  const existingList = await findOptionalListByRepoKey(dbClient, repoKey)
-
-  if (!existingList) {
-    throw new Error(`List ${repoKey} does not exist`)
-  }
-
-  return existingList
-}
-
-const findOptionalListByRepoKey = async (dbClient: DbClient, repoKey: string): Promise<List | undefined> => {
-  const list = await dbClient.list.findUnique({
-    where: { repoKey },
-  })
-
-  return maybe(list)
 }
