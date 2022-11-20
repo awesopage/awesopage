@@ -10,13 +10,13 @@
     "node": "18.x"
   },
   "dependencies": {
-    "@playwright/test": "1.27.1",
+    "@playwright/test": "1.28.0",
     "pkg-app-shared": "workspace:*",
-    "playwright-core": "1.27.1",
-    "playwright-test-coverage": "1.2.5"
+    "playwright-core": "1.28.0",
+    "playwright-test-coverage": "1.2.6"
   },
   "devDependencies": {
     "pkg-lib-typescript": "workspace:*",
-    "typescript": "4.8.4"
+    "typescript": "4.9.3"
   }
 }
