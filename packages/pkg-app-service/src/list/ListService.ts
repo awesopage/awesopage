@@ -38,12 +38,6 @@ export const createList = async (dbClient: DbClient, options: CreateListOptions)
   return list
 }
 
-export const getLists = async (dbClient: DbClient): Promise<List[]> => {
-  const lists = await dbClient.list.findMany()
-
-  return lists
-}
-
 export interface UpdateListOptions {
   readonly repoKey: string
   readonly description?: string
@@ -103,4 +97,12 @@ export const approveList = async (dbClient: DbClient, options: ApproveListOption
   })
 
   return list
+}
+
+export const findActiveLists = async (dbClient: DbClient): Promise<List[]> => {
+  const lists = await dbClient.list.findMany({
+    where: { status: 'ACTIVE' },
+  })
+
+  return lists
 }
