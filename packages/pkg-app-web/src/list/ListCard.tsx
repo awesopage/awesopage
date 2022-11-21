@@ -19,7 +19,7 @@ export const ListCard: FunctionComponent<ListCardProps> = ({ list }) => {
   const backgroundColor = useColorModeValue('white', 'background.700')
 
   return (
-    <Card backgroundColor={backgroundColor}>
+    <Card backgroundColor={backgroundColor} data-test-id={`list-card/${list.repoKey}`}>
       <CardBody>
         <Heading fontSize='2xl'>{list.repoKey}</Heading>
         <Text fontWeight='semibold'>{list.starCount} &#9734;</Text>

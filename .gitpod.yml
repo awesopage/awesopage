@@ -16,7 +16,6 @@ tasks:
       gp sync-done boot &&
       node ./scripts/prepare-gitpod.mjs &&
       node ./scripts/local-services.mjs start
-    init: node ./scripts/model-schema.mjs seed
     command: pnpm dev
 
 ports:
