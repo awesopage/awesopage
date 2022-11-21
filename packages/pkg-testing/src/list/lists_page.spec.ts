@@ -6,6 +6,6 @@ test('List card should match snapshot', async ({ page }) => {
   await page.goto('/lists')
 
   expect(await page.locator('[data-test-id="list-card/sindresorhus/awesome-nodejs"]').screenshot()).toMatchSnapshot(
-    'list_card.png',
+    'list-card.png',
   )
 })

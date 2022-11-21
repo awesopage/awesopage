@@ -26,5 +26,5 @@ test('Navigation bar should match snapshot', async ({ page }) => {
 
   await page.waitForSelector('[data-test-id="ready-user-menu"]')
 
-  expect(await page.locator('nav').screenshot()).toMatchSnapshot('navigation_bar.png')
+  expect(await page.locator('nav').screenshot()).toMatchSnapshot('navigation-bar.png')
 })
