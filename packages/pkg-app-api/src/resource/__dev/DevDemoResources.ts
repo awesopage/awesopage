@@ -1,18 +1,18 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 
-export interface DevTestResource {
+export interface DevDemoResource {
   readonly url: string
   readonly type: 'CODE' | 'VIDEO' | 'WEBSITE'
-  readonly links: DevTestResourceLink[]
+  readonly links: DevDemoResourceLink[]
 }
 
-export interface DevTestResourceLink {
+export interface DevDemoResourceLink {
   readonly listRepoKey: string
   readonly description: string
   readonly tags: string[]
 }
 
-export const devTestResources: DevTestResource[] = [
+export const devDemoResources: DevDemoResource[] = [
   {
     url: 'https://github.com/webtorrent/webtorrent',
     type: 'CODE',

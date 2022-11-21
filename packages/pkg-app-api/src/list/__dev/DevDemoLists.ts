@@ -2,7 +2,7 @@ import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { approveList, createList, updateList } from 'pkg-app-service/src/list/ListService'
 import { findUserByEmail } from 'pkg-app-service/src/user/UserService'
 
-export interface DevTestList {
+export interface DevDemoList {
   readonly repoKey: string
   readonly description: string
   readonly starCount: number
@@ -11,7 +11,7 @@ export interface DevTestList {
   readonly approvedByEmail?: string
 }
 
-export const devTestLists: DevTestList[] = [
+export const devDemoLists: DevDemoList[] = [
   {
     repoKey: 'sindresorhus/awesome-nodejs',
     description: 'Delightful Node.js packages and resources',
@@ -37,12 +37,12 @@ export const devTestLists: DevTestList[] = [
   },
 ]
 
-export const createTestLists = async () => {
+export const createDemoLists = async () => {
   await prismaClient.$transaction(async (dbClient) => {
     const admin1 = await findUserByEmail(dbClient, 'admin1@example.com')
 
-    for (const devTestList of devTestLists) {
-      const { repoKey, description, starCount, tags, requestedByEmail, approvedByEmail } = devTestList
+    for (const devDemoList of devDemoLists) {
+      const { repoKey, description, starCount, tags, requestedByEmail, approvedByEmail } = devDemoList
 
       const requestedByUser = await findUserByEmail(dbClient, requestedByEmail)
 

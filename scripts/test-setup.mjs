@@ -34,10 +34,10 @@ const globalSetup = async () => {
   }
 
   console.log()
-  console.log('Creating test data...')
+  console.log('Creating demo data...')
   console.log()
 
-  await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/data`)
+  await runCommand('node', ['./scripts/model-schema.mjs', 'seed'])
 }
 
 export default globalSetup

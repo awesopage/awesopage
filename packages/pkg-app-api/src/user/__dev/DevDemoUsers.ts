@@ -2,13 +2,13 @@ import { RoleEnum } from 'pkg-app-model/client'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { assignUserRoles, findOrCreateUser, findUserByEmail } from 'pkg-app-service/src/user/UserService'
 
-export interface DevTestUser {
+export interface DevDemoUser {
   readonly email: string
   readonly displayName: string
   readonly roles?: RoleEnum[]
 }
 
-export const devTestUsers: DevTestUser[] = [
+export const devDemoUsers: DevDemoUser[] = [
   {
     email: 'admin1@example.com',
     displayName: 'Admin 1',
@@ -39,18 +39,18 @@ export const devTestUsers: DevTestUser[] = [
   },
 ]
 
-export const createTestUsers = async () => {
+export const createDemoUsers = async () => {
   await prismaClient.$transaction(async (dbClient) => {
-    for (const devTestUser of devTestUsers) {
-      const { email, displayName } = devTestUser
+    for (const devDemoUser of devDemoUsers) {
+      const { email, displayName } = devDemoUser
 
       await findOrCreateUser(dbClient, { email, displayName })
     }
 
     const admin1 = await findUserByEmail(dbClient, 'admin1@example.com')
 
-    for (const devTestUser of devTestUsers) {
-      const { email, roles } = devTestUser
+    for (const devDemoUser of devDemoUsers) {
+      const { email, roles } = devDemoUser
 
       if (roles) {
         await assignUserRoles(dbClient, { email, roles, assignedByUser: admin1 })

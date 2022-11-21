@@ -1,27 +1,39 @@
 import './lib/dotenv-loader.mjs'
 
+import axios from 'axios'
+
 import { isMainModule, runScript } from './lib/script-runner.mjs'
 import { runCommand } from './lib/script-utils.mjs'
 
+const prismaCmd = './node_modules/.bin/prisma'
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
-const argvByCommand = {
-  'push-accept-data-loss': ['db', 'push', '--accept-data-loss', '--force-reset', ...prismaArgv],
-  migrate: ['migrate', 'dev', ...prismaArgv],
-  generate: ['generate', ...prismaArgv],
+const taskById = {
+  'push-accept-data-loss': async () => {
+    await runCommand(prismaCmd, ['db', 'push', '--accept-data-loss', '--force-reset', ...prismaArgv])
+  },
+  migrate: async () => {
+    await runCommand(prismaCmd, ['migrate', 'dev', ...prismaArgv])
+  },
+  generate: async () => {
+    await runCommand(prismaCmd, ['generate', ...prismaArgv])
+  },
+  seed: async () => {
+    await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/demo/__dev/data`)
+  },
 }
 
-const modelScript = async (argv) => {
-  const command = argv[0]
-  const commandArgv = argvByCommand[command]
+const modelSchemaScript = async (argv) => {
+  const taskId = argv[0]
+  const task = taskById[taskId]
 
-  if (!commandArgv) {
-    throw new Error(`Unknown command: ${command}`)
+  if (!task) {
+    throw new Error(`Unknown task: ${taskId}`)
   }
 
-  await runCommand('./node_modules/.bin/prisma', commandArgv)
+  await task()
 }
 
 if (isMainModule(import.meta.url)) {
-  runScript(modelScript)
+  runScript(modelSchemaScript)
 }
