@@ -38,6 +38,7 @@
 - Prisma schema is defined in `packages/pkg-app-model/schema/app.prisma`.
 - To sync or create Prisma migrations, run `node ./scripts/model-schema.mjs migrate`.
 - To generate Prisma client, run `node ./scripts/model-schema.mjs generate`.
+- To create demo data, run `node ./scripts/model-schema.mjs seed`.
 
 ### Start development
 
