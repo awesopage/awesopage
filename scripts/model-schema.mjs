@@ -5,18 +5,18 @@ import axios from 'axios'
 import { isMainModule, runScript } from './lib/script-runner.mjs'
 import { runCommand } from './lib/script-utils.mjs'
 
-const prismaCli = './node_modules/.bin/prisma'
+const prismaCmd = './node_modules/.bin/prisma'
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
 const taskById = {
   'push-accept-data-loss': async () => {
-    await runCommand(prismaCli, ['db', 'push', '--accept-data-loss', '--force-reset', ...prismaArgv])
+    await runCommand(prismaCmd, ['db', 'push', '--accept-data-loss', '--force-reset', ...prismaArgv])
   },
   migrate: async () => {
-    await runCommand(prismaCli, ['migrate', 'dev', ...prismaArgv])
+    await runCommand(prismaCmd, ['migrate', 'dev', ...prismaArgv])
   },
   generate: async () => {
-    await runCommand(prismaCli, ['generate', ...prismaArgv])
+    await runCommand(prismaCmd, ['generate', ...prismaArgv])
   },
   seed: async () => {
     await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/demo/__dev/data`)
