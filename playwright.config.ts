@@ -5,6 +5,7 @@ const config: PlaywrightTestConfig = {
   snapshotPathTemplate: 'packages/pkg-testing/snapshot/{testFilePath}/{arg}{ext}',
   fullyParallel: true,
   maxFailures: 10,
+  workers: process.env.CI ? 2 : 4,
   use: {
     baseURL: 'http://localhost:4800',
     screenshot: 'only-on-failure',
