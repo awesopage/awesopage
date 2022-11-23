@@ -106,6 +106,7 @@ export const DevSignInPage: NextPage = () => {
             isLoading={isSigningIn}
             onClick={onClickSignIn}
             colorScheme='primary'
+            size='md'
             type='submit'
             isDisabled={!emailId || !password}
           >

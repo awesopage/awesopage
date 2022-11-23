@@ -37,7 +37,7 @@ export const ListCard: FunctionComponent<ListCardProps> = ({ list }) => {
       <CardFooter>
         <ButtonGroup>
           <NextLink href={`https://github.com/${list.repoKey}`} passHref legacyBehavior>
-            <Button as='a' colorScheme='primary' variant='outline' size='sm'>
+            <Button as='a' colorScheme='primary' variant='outline'>
               View in GitHub
             </Button>
           </NextLink>

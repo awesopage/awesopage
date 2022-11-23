@@ -4,5 +4,5 @@ import { forwardRef } from 'react'
 export type ButtonProps = ChakraButtonProps
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  return <ChakraButton ref={ref} {...props} />
+  return <ChakraButton ref={ref} size='sm' {...props} />
 })
