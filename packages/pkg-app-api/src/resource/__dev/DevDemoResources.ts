@@ -1,4 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
+import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
+import { createOrFindResource, linkResource } from 'pkg-app-service/src/resource/ResourceService'
 
 export interface DevDemoResource {
   readonly url: string
@@ -107,3 +109,19 @@ export const devDemoResources: DevDemoResource[] = [
     ],
   },
 ]
+
+export const createDemoResources = async () => {
+  await prismaClient.$transaction(async (dbClient) => {
+    for (const devDemoResource of devDemoResources) {
+      const { type, url, links } = devDemoResource
+
+      const resource = await createOrFindResource(dbClient, { url, type })
+
+      for (const link of links) {
+        const { description, listRepoKey, tags } = link
+
+        await linkResource(dbClient, { resource, description, listRepoKey, tags })
+      }
+    }
+  })
+}
