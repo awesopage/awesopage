@@ -15,7 +15,7 @@ import { Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger } f
 const SignInLinkButton: FunctionComponent = () => {
   return (
     <NextLink href='/auth/__dev/dev-signin' passHref legacyBehavior>
-      <Button as='a' colorScheme='primary' variant='outline' size='sm'>
+      <Button as='a' colorScheme='primary' variant='outline'>
         Sign in
       </Button>
     </NextLink>
@@ -30,7 +30,7 @@ const SignOutButton: FunctionComponent = () => {
   }
 
   return (
-    <Button isLoading={signOutState === 'loading'} onClick={onClickSignOut} variant='ghost' size='sm'>
+    <Button isLoading={signOutState === 'loading'} onClick={onClickSignOut} variant='ghost'>
       Sign out
     </Button>
   )
