@@ -1,16 +1,16 @@
 import parseUrl from 'parse-url'
 
-import { Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
+import { List, Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
 import { DbClient } from 'pkg-app-model/src/common/DbClient'
 
-export interface CreateOrFindResourceOption {
+export interface CreateOrUpdateResourceOptions {
   readonly url: string
   readonly type: ResourceTypeEnum
 }
 
-export const createOrFindResource = async (
+export const createOrUpdateResource = async (
   dbClient: DbClient,
-  options: CreateOrFindResourceOption,
+  options: CreateOrUpdateResourceOptions,
 ): Promise<Resource> => {
   const { url, type } = options
 
@@ -21,7 +21,10 @@ export const createOrFindResource = async (
     where: {
       url,
     },
-    update: {},
+    update: {
+      type,
+      updatedAt: now,
+    },
     create: {
       url,
       domain,
@@ -34,26 +37,22 @@ export const createOrFindResource = async (
   return resource
 }
 
-export interface LinkResourceOption {
+export interface LinkResourceOptions {
   readonly resource: Resource
-  readonly listRepoKey: string
+  readonly list: List
   readonly description: string
   readonly tags: string[]
 }
 
-export const linkResource = async (dbClient: DbClient, options: LinkResourceOption): Promise<ResourceLink> => {
-  const { resource, listRepoKey, description, tags } = options
+export const linkResource = async (dbClient: DbClient, options: LinkResourceOptions): Promise<ResourceLink> => {
+  const { resource, list, description, tags } = options
 
   const resourceLink = await dbClient.resourceLink.create({
     data: {
       description,
       tags,
-      resource: {
-        connect: { id: resource.id },
-      },
-      list: {
-        connect: { repoKey: listRepoKey },
-      },
+      resourceId: resource.id,
+      listId: list.id,
     },
   })
 
