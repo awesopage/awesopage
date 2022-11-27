@@ -26,7 +26,7 @@ jobs:
             - pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
       - run:
           name: Install dependencies
-          command: cat /etc/needrestart/needrestart.conf && pnpm boot-full
+          command: echo "$nrconf{restart} = 'a';" >> /etc/needrestart/needrestart.conf && pnpm boot-full
       - save_cache:
           name: Save pnpm cache
           key: pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
