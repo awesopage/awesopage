@@ -25,6 +25,10 @@ jobs:
           keys:
             - pnpm-packages-{{ checksum "workspace-cache-key.txt" }}
       - run:
+          name: Set auto restart services when upgrading
+          # Based on https://www.faqforge.com/linux/fixed-ubuntu-apt-get-upgrade-auto-restart-services/
+          command: sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+      - run:
           name: Install dependencies
           command: pnpm boot-full
       - save_cache:

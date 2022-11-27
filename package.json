@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "boot": "pnpm install && node ./scripts/model-schema.mjs generate && pnpm list --depth -1 --recursive --json > workspace-packages.json && node ./scripts/workspace.mjs fix-package-list",
-    "boot-full": "pnpm boot && playwright install",
+    "boot-full": "pnpm boot && playwright install-deps && playwright install",
     "lint": "next lint --fix",
     "compile": "tsc",
     "dev": "npm run compile && kill-port 4000 && cross-env NODE_ENV=development next dev -p 4000",
