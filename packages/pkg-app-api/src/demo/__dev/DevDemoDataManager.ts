@@ -1,4 +1,5 @@
 import { createDemoLists } from 'pkg-app-api/src/list/__dev/DevDemoLists'
+import { createDemoResources } from 'pkg-app-api/src/resource/__dev/DevDemoResources'
 import { createDemoUsers } from 'pkg-app-api/src/user/__dev/DevDemoUsers'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 
@@ -6,6 +7,7 @@ export const devManageCreateDemoData = async () => {
   await truncateAllTables()
   await createDemoUsers()
   await createDemoLists()
+  await createDemoResources()
 }
 
 const truncateAllTables = async (): Promise<string[]> => {

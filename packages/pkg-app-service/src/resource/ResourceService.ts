@@ -1,0 +1,60 @@
+import parseUrl from 'parse-url'
+
+import { List, Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
+import { DbClient } from 'pkg-app-model/src/common/DbClient'
+
+export interface CreateOrUpdateResourceOptions {
+  readonly url: string
+  readonly type: ResourceTypeEnum
+}
+
+export const createOrUpdateResource = async (
+  dbClient: DbClient,
+  options: CreateOrUpdateResourceOptions,
+): Promise<Resource> => {
+  const { url, type } = options
+
+  const domain = parseUrl(url).resource
+  const now = new Date()
+
+  const resource = await dbClient.resource.upsert({
+    where: {
+      url,
+    },
+    update: {
+      type,
+      updatedAt: now,
+    },
+    create: {
+      url,
+      domain,
+      type,
+      createdAt: now,
+      updatedAt: now,
+    },
+  })
+
+  return resource
+}
+
+export interface LinkResourceOptions {
+  readonly resource: Resource
+  readonly list: List
+  readonly description: string
+  readonly tags: string[]
+}
+
+export const linkResource = async (dbClient: DbClient, options: LinkResourceOptions): Promise<ResourceLink> => {
+  const { resource, list, description, tags } = options
+
+  const resourceLink = await dbClient.resourceLink.create({
+    data: {
+      description,
+      tags,
+      resourceId: resource.id,
+      listId: list.id,
+    },
+  })
+
+  return resourceLink
+}
