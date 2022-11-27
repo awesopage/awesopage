@@ -10,9 +10,9 @@
     "node": "18.x"
   },
   "dependencies": {
-    "@playwright/test": "1.28.0",
+    "@playwright/test": "1.28.1",
     "pkg-app-shared": "workspace:*",
-    "playwright-core": "1.28.0",
+    "playwright-core": "1.28.1",
     "playwright-test-coverage": "1.2.6"
   },
   "devDependencies": {
