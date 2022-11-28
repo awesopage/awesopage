@@ -1,4 +1,4 @@
-export type ResourceType = 'CODE' | 'VIDEO' | 'DEFAULT'
+export type ResourceType = 'CODE' | 'VIDEO' | 'WEBSITE'
 
 export interface ResourceDTO {
   readonly id: string
