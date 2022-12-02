@@ -1,5 +1,5 @@
 import NextLink from 'next/link'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, RefObject, useRef } from 'react'
 import { BiUser, BiUserX } from 'react-icons/bi'
 import { TbCircleDotted } from 'react-icons/tb'
 import { useEffectOnce } from 'react-use'
@@ -9,13 +9,21 @@ import { useAppState } from 'pkg-app-store/src/store/AppStore'
 import { NavIcon } from 'pkg-app-web/src/page/NavIcon'
 import { Button } from 'pkg-lib-ui/src/button/Button'
 import { IconButton } from 'pkg-lib-ui/src/button/IconButton'
-import { useDisclosure } from 'pkg-lib-ui/src/hook/StateHooks'
+import { EMPTY_REF, useDisclosure } from 'pkg-lib-ui/src/hook/StateHooks'
 import { Popover, PopoverBody, PopoverContent, PopoverHeader, PopoverTrigger } from 'pkg-lib-ui/src/layout/Popover'
 
 const SignInLinkButton: FunctionComponent = () => {
+  const linkRef = useRef<HTMLAnchorElement>(EMPTY_REF)
+
+  useEffectOnce(() => {
+    if (linkRef.current) {
+      linkRef.current.focus()
+    }
+  })
+
   return (
     <NextLink href='/auth/__dev/dev-signin' passHref legacyBehavior>
-      <Button as='a' colorScheme='primary' variant='outline'>
+      <Button as='a' ref={linkRef as unknown as RefObject<HTMLButtonElement>} colorScheme='primary' variant='outline'>
         Sign in
       </Button>
     </NextLink>
