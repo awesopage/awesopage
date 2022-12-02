@@ -20,7 +20,7 @@ export const ResourceCard: FunctionComponent<ResourceCardProps> = ({ resource })
   const backgroundColor = useColorModeValue('white', 'background.700')
 
   return (
-    <Card backgroundColor={backgroundColor} data-test-id={`resource-card/${resource.id}`}>
+    <Card backgroundColor={backgroundColor} data-test-id={`resource-card/${resource.url}`}>
       <CardBody>
         <Heading fontSize='2xl'>{resource.url}</Heading>
         <Text fontWeight='semibold'>{resource.type}</Text>
