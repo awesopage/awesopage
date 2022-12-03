@@ -62,6 +62,7 @@ export const linkResource = async (dbClient: DbClient, options: LinkResourceOpti
 export interface ResourceLinkWithList extends ResourceLink {
   readonly list: List
 }
+
 export interface ResourceWithLinks extends Resource {
   readonly links: ResourceLinkWithList[]
 }
