@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@types/busboy": "1.5.0",
-    "fictional": "0.7.7",
     "pkg-lib-typescript": "workspace:*",
     "typescript": "4.9.3"
   }
