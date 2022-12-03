@@ -23,22 +23,22 @@ export const ResourceCard: FunctionComponent<ResourceCardProps> = ({ resource })
     <Card backgroundColor={backgroundColor} data-test-id={`resource-card/${resource.url}`}>
       <CardBody>
         <Heading fontSize='2xl'>{resource.url}</Heading>
-        <Text fontWeight='semibold'>{resource.type}</Text>
-        {resource.links.map((link) => (
-          <Stack key={link.listRepoKey} paddingY={SPACE_SMALL}>
-            <Text fontWeight='semibold'>{link.listRepoKey}</Text>
-            <Text fontSize='lg' paddingY={SPACE_SMALL}>
-              {link.description}
-            </Text>
-            <Text>
-              {link.tags.map((tag) => (
-                <Tag key={tag} colorScheme='secondary' marginTop={SPACE_SMALL} marginRight={SPACE_SMALL}>
-                  {tag}
-                </Tag>
-              ))}
-            </Text>
-          </Stack>
-        ))}
+        <Text fontWeight='semibold'>Type: {resource.type}</Text>
+        <Stack marginTop={SPACE_SMALL}>
+          {resource.links.map((link) => (
+            <Stack key={link.listRepoKey} paddingY={SPACE_SMALL}>
+              <Text fontWeight='semibold'>{link.listRepoKey}</Text>
+              <Text fontSize='lg'>{link.description}</Text>
+              <Text>
+                {link.tags.map((tag) => (
+                  <Tag key={tag} colorScheme='secondary' marginTop={SPACE_SMALL} marginRight={SPACE_SMALL}>
+                    {tag}
+                  </Tag>
+                ))}
+              </Text>
+            </Stack>
+          ))}
+        </Stack>
       </CardBody>
       <CardFooter>
         <ButtonGroup>
