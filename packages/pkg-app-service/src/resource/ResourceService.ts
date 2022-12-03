@@ -58,3 +58,25 @@ export const linkResource = async (dbClient: DbClient, options: LinkResourceOpti
 
   return resourceLink
 }
+
+export interface ResourceLinkWithList extends ResourceLink {
+  readonly list: List
+}
+
+export interface ResourceWithLinks extends Resource {
+  readonly links: ResourceLinkWithList[]
+}
+
+export const findResources = async (dbClient: DbClient): Promise<ResourceWithLinks[]> => {
+  const resources = await dbClient.resource.findMany({
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resources
+}

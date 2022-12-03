@@ -19,7 +19,7 @@ export const createDemoResources = (size = 180, defaultProps: Partial<ResourceDT
         fake.word.options({ capitalize: false, unicode: false }),
       ]),
       domain: fake.oneOf(domains),
-      type: fake.oneOf<ResourceType>(['CODE', 'VIDEO', 'DEFAULT']),
+      type: fake.oneOf<ResourceType>(['CODE', 'VIDEO', 'WEBSITE']),
       links: (linkInput: fake.Input) => {
         return fake.someOf(linkInput, [1, 3], listRepoKeys).map((listRepoKey): ResourceLinkDTO => {
           return fake.shape(listRepoKey, {
