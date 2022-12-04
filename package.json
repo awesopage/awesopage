@@ -12,8 +12,8 @@
     "test": "cross-env APP_PROFILES=test playwright test",
     "test-full": "node ./scripts/delete.mjs build/test && npm run compile && kill-port 4800 && cross-env START_APP=true APP_PROFILES=test COLLECT_COVERAGE=true playwright test",
     "serve-test-reports": "http-server build/test/reports -p 4890",
-    "build": "cross-env NODE_ENV=production next build",
-    "build-full": "cross-env NODE_ENV=production ANALYZE=true next build",
+    "build": "node ./scripts/delete.mjs build/production && cross-env NODE_ENV=production next build",
+    "build-full": "node ./scripts/delete.mjs build/production && cross-env NODE_ENV=production ANALYZE=true next build",
     "start": "cross-env NODE_ENV=production next start -p 4000",
     "clean": "node ./scripts/delete.mjs build tsconfig.tsbuildinfo workspace-cache-key.txt && pnpm --filter pkg-* run clean && cross-env NODE_ENV=development APP_PROFILES=test node ./scripts/local-services.mjs reset"
   },
