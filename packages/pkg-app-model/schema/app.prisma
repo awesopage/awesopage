@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
   // Use a specific output path, based on https://github.com/prisma/prisma/issues/7661
   output = "../client"
-  previewFeatures = ["interactiveTransactions"]
+  previewFeatures = []
 }
 
 enum RoleEnum {
