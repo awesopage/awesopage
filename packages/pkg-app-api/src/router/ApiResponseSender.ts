@@ -8,6 +8,7 @@ import { ApiErrorDTO, ApiErrorType } from 'pkg-app-shared/src/error/ApiErrorDTO'
 const logger = createLogger('ApiResponseSender')
 
 const STATUS_CODE_BY_ERROR_TYPE: Partial<Record<ApiErrorType, number>> = {
+  UNAUTHORIZED: 401,
   ACCESS_DENIED: 403,
   ROUTE_HANDLER_NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,

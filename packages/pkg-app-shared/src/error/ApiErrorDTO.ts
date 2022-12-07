@@ -1,4 +1,4 @@
-export type ApiErrorType = 'ACCESS_DENIED' | 'ROUTE_HANDLER_NOT_FOUND' | 'INTERNAL_SERVER_ERROR'
+export type ApiErrorType = 'UNAUTHORIZED' | 'ACCESS_DENIED' | 'ROUTE_HANDLER_NOT_FOUND' | 'INTERNAL_SERVER_ERROR'
 
 export interface ApiErrorDTO {
   readonly type: ApiErrorType
