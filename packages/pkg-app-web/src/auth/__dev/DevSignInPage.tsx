@@ -65,8 +65,10 @@ export const DevSignInPage: NextPage = () => {
 
   const backgroundColor = useColorModeValue('blackAlpha.50', 'background.800')
 
+  const shouldBlockSignIn = !emailId || !password
+
   const onClickSignIn = async () => {
-    if (!emailId || !password) {
+    if (shouldBlockSignIn) {
       return
     }
 
@@ -108,7 +110,7 @@ export const DevSignInPage: NextPage = () => {
             colorScheme='primary'
             size='md'
             type='submit'
-            isDisabled={!emailId || !password}
+            isDisabled={shouldBlockSignIn}
           >
             Sign in
           </Button>
