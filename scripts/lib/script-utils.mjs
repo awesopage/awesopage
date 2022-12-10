@@ -53,19 +53,17 @@ export const waitFor = async (message, interval, condition) => {
   const startTime = Date.now()
 
   while (!isReady) {
+    console.log(message)
+
+    await delay(interval)
+
     try {
       isReady = await condition()
     } catch {
       // Do nothing
     }
 
-    if (!isReady) {
-      console.log(message)
-
-      await delay(interval)
-    }
-
-    if (Date.now() - startTime > WAIT_FOR_TIMEOUT_SECONDS * 1_000) {
+    if (!isReady && Date.now() - startTime > WAIT_FOR_TIMEOUT_SECONDS * 1_000) {
       process.exit(1)
     }
   }
