@@ -1,6 +1,6 @@
 import './lib/dotenv-loader.mjs'
 
-import axios from 'axios'
+import wretch from 'wretch'
 
 import { isMainModule, runScript } from './lib/script-runner.mjs'
 import { getProfiles, runCommand, waitFor } from './lib/script-utils.mjs'
@@ -19,7 +19,9 @@ const taskById = {
     await runCommand(dockerCmd, [...composeArgv, 'up', '--detach'])
 
     await waitFor('Waiting for database to be ready...', 5, async () => {
-      await axios.get(`http://localhost:${process.env.DATABASE_CONSOLE_PORT ?? 4920}/health`)
+      await wretch(`http://localhost:${process.env.DATABASE_CONSOLE_PORT ?? 4920}`)
+        .get('/health')
+        .res()
 
       return true
     })

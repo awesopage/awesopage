@@ -8,7 +8,7 @@ export const useGetCurrentUser = () => {
   const [getCurrentUser, getCurrentUserState, getCurrentUserResult, getCurrentUserError] = useAction<
     UserDTO | undefined
   >(async () => {
-    const authMe = (await apiClient.get<AuthMeDTO>('/auth/me')).data
+    const authMe = await apiClient.get('/auth/me').json<AuthMeDTO>()
 
     updateAppStore((state) => {
       state.isAuthChecked = true
@@ -23,7 +23,11 @@ export const useGetCurrentUser = () => {
 
 export const useSignOut = () => {
   const [signOut, signOutState, signOutResult, signOutError] = useAction(async () => {
-    await apiClient.post('/auth/signout')
+    try {
+      await apiClient.post({}, '/auth/signout').res()
+    } catch {
+      // Do nothing
+    }
 
     updateAppStore((state) => {
       state.currentUser = undefined
