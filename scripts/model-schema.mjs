@@ -1,6 +1,6 @@
 import './lib/dotenv-loader.mjs'
 
-import axios from 'axios'
+import wretch from 'wretch'
 
 import { isMainModule, runScript } from './lib/script-runner.mjs'
 import { runCommand } from './lib/script-utils.mjs'
@@ -19,7 +19,7 @@ const taskById = {
     await runCommand(prismaCmd, ['generate', ...prismaArgv])
   },
   seed: async () => {
-    await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/demo/__dev/data`)
+    await wretch(process.env.NEXT_PUBLIC_APP_BASE_URL).post({}, '/api/demo/__dev/data').res()
   },
 }
 

@@ -6,7 +6,7 @@ import { apiClient } from 'pkg-app-store/src/common/ApiClient'
 export const useDevCreateSignedAuthData = () => {
   const [createSignedAuthData, createSignedAuthDataState, createSignedAuthDataResult, createSignedAuthDataError] =
     useAction<DevSignedAuthDataDTO, DevCreateSignedAuthDataDTO>(async (options) => {
-      const signedAuthData = (await apiClient.post<DevSignedAuthDataDTO>('/auth/__dev/dev-auth-data', options)).data
+      const signedAuthData = await apiClient.post(options, '/auth/__dev/dev-auth-data').json<DevSignedAuthDataDTO>()
 
       return signedAuthData
     })

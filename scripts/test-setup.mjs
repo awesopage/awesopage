@@ -1,6 +1,6 @@
 import './lib/dotenv-loader.mjs'
 
-import axios from 'axios'
+import wretch from 'wretch'
 
 import { runCommand, waitFor } from './lib/script-utils.mjs'
 
@@ -27,7 +27,7 @@ const globalSetup = async () => {
     }
 
     await waitFor('Waiting for application to be ready...', 5, async () => {
-      await axios.get(process.env.NEXT_PUBLIC_APP_BASE_URL)
+      await wretch(process.env.NEXT_PUBLIC_APP_BASE_URL).get('/').res()
 
       return true
     })

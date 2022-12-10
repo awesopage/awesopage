@@ -2,8 +2,8 @@ import './lib/dotenv-loader.mjs'
 
 import fsp from 'node:fs/promises'
 
-import axios from 'axios'
 import killPort from 'kill-port'
+import wretch from 'wretch'
 
 import { delay } from './lib/script-utils.mjs'
 
@@ -14,12 +14,11 @@ const globalTeardown = async () => {
       console.log('Collecting api coverage...')
       console.log()
 
-      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/api/test/__dev/coverage`)
+      const coverageJSON = await wretch(process.env.NEXT_PUBLIC_APP_BASE_URL)
+        .post({}, '/api/test/__dev/coverage')
+        .text()
 
-      await fsp.writeFile(
-        new URL('../build/test/coverage/next_api_coverage.json', import.meta.url),
-        JSON.stringify(data),
-      )
+      await fsp.writeFile(new URL('../build/test/coverage/next_api_coverage.json', import.meta.url), coverageJSON)
     }
 
     console.log()
