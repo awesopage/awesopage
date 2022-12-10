@@ -13,7 +13,7 @@ export const mapResourceToDTO = (resource: ResourceWithLinks): ResourceDTO => {
     links: links.map((link): ResourceLinkDTO => {
       const { list, description, tags } = link
 
-      return { listRepoKey: list.repoKey, description, tags }
+      return { listOwner: list.owner, listRepo: list.repo, description, tags }
     }),
   }
 }

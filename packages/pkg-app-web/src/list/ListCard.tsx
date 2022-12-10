@@ -19,9 +19,11 @@ export const ListCard: FunctionComponent<ListCardProps> = ({ list }) => {
   const backgroundColor = useColorModeValue('white', 'background.700')
 
   return (
-    <Card backgroundColor={backgroundColor} data-test-id={`list-card/${list.repoKey}`}>
+    <Card backgroundColor={backgroundColor} data-test-id={`list-card/${list.owner}/${list.repo}`}>
       <CardBody>
-        <Heading fontSize='2xl'>{list.repoKey}</Heading>
+        <Heading fontSize='2xl'>
+          {list.owner}/{list.repo}
+        </Heading>
         <Text fontWeight='semibold'>{list.starCount} &#9734;</Text>
         <Text fontSize='lg' paddingY={SPACE_SMALL}>
           {list.description}
@@ -36,7 +38,7 @@ export const ListCard: FunctionComponent<ListCardProps> = ({ list }) => {
       </CardBody>
       <CardFooter>
         <ButtonGroup>
-          <NextLink href={`https://github.com/${list.repoKey}`} passHref legacyBehavior>
+          <NextLink href={`https://github.com/${list.owner}/${list.repo}`} passHref legacyBehavior>
             <Button as='a' colorScheme='primary' variant='outline'>
               View in GitHub
             </Button>

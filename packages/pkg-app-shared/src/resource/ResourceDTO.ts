@@ -9,7 +9,8 @@ export interface ResourceDTO {
 }
 
 export interface ResourceLinkDTO {
-  readonly listRepoKey: string
+  readonly listOwner: string
+  readonly listRepo: string
   readonly description: string
   readonly tags: string[]
 }
