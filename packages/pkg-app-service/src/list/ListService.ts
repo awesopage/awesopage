@@ -3,28 +3,30 @@ import { DbClient, maybe } from 'pkg-app-model/src/common/DbClient'
 import { requireRoles } from 'pkg-app-service/src/user/UserRoleChecker'
 
 export interface CreateListOptions {
-  readonly repoKey: string
+  readonly owner: string
+  readonly repo: string
   readonly requestedByUser: User
 }
 
 export const createList = async (dbClient: DbClient, options: CreateListOptions): Promise<List> => {
-  const { repoKey, requestedByUser } = options
+  const { owner, repo, requestedByUser } = options
 
   const existingList = maybe(
     await dbClient.list.findUnique({
-      where: { repoKey },
+      where: { owner_repo: { owner, repo } },
     }),
   )
 
   if (existingList) {
-    throw new Error(`List ${repoKey} already exists`)
+    throw new Error(`List ${owner}/${repo} already exists`)
   }
 
   const now = new Date()
 
   const list = await dbClient.list.create({
     data: {
-      repoKey,
+      owner,
+      repo,
       status: 'PENDING',
       description: '',
       starCount: 0,
@@ -39,7 +41,8 @@ export const createList = async (dbClient: DbClient, options: CreateListOptions)
 }
 
 export interface UpdateListOptions {
-  readonly repoKey: string
+  readonly owner: string
+  readonly repo: string
   readonly description?: string
   readonly starCount?: number
   readonly tags?: string[]
@@ -47,18 +50,17 @@ export interface UpdateListOptions {
 }
 
 export const updateList = async (dbClient: DbClient, options: UpdateListOptions): Promise<List> => {
-  const { repoKey, description, starCount, tags, updatedByUser } = options
+  const { owner, repo, description, starCount, tags, updatedByUser } = options
 
   requireRoles(updatedByUser, ['REVIEWER'])
 
   await dbClient.list.findUniqueOrThrow({
-    where: { repoKey },
+    where: { owner_repo: { owner, repo } },
   })
 
   const list = await dbClient.list.update({
-    where: { repoKey },
+    where: { owner_repo: { owner, repo } },
     data: {
-      repoKey,
       description,
       starCount,
       tags,
@@ -70,25 +72,26 @@ export const updateList = async (dbClient: DbClient, options: UpdateListOptions)
 }
 
 export interface ApproveListOptions {
-  readonly repoKey: string
+  readonly owner: string
+  readonly repo: string
   readonly approvedByUser: User
 }
 
 export const approveList = async (dbClient: DbClient, options: ApproveListOptions): Promise<List> => {
-  const { repoKey, approvedByUser } = options
+  const { owner, repo, approvedByUser } = options
 
   requireRoles(approvedByUser, ['REVIEWER'])
 
   const existingList = await dbClient.list.findUniqueOrThrow({
-    where: { repoKey },
+    where: { owner_repo: { owner, repo } },
   })
 
   if (approvedByUser.id === existingList.requestedById) {
-    throw new Error(`User ${approvedByUser.email} cannot approve their own requested list ${repoKey}`)
+    throw new Error(`User ${approvedByUser.email} cannot approve their own requested list ${owner}/${repo}`)
   }
 
   const list = await dbClient.list.update({
-    where: { repoKey },
+    where: { owner_repo: { owner, repo } },
     data: {
       status: 'ACTIVE',
       approvedById: approvedByUser.id,
@@ -107,9 +110,19 @@ export const findActiveLists = async (dbClient: DbClient): Promise<List[]> => {
   return lists
 }
 
-export const findListByRepoKey = async (dbClient: DbClient, repoKey: string): Promise<List> => {
+export interface FindListByOwnerAndRepoOptions {
+  readonly owner: string
+  readonly repo: string
+}
+
+export const findListByOwnerAndRepo = async (
+  dbClient: DbClient,
+  options: FindListByOwnerAndRepoOptions,
+): Promise<List> => {
+  const { owner, repo } = options
+
   const list = await dbClient.list.findUniqueOrThrow({
-    where: { repoKey },
+    where: { owner_repo: { owner, repo } },
   })
 
   return list

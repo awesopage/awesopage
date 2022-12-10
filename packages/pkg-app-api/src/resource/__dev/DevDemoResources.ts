@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
-import { findListByRepoKey } from 'pkg-app-service/src/list/ListService'
+import { findListByOwnerAndRepo } from 'pkg-app-service/src/list/ListService'
 import { createOrUpdateResource, linkResource } from 'pkg-app-service/src/resource/ResourceService'
 
 export interface DevDemoResource {
@@ -10,7 +10,8 @@ export interface DevDemoResource {
 }
 
 export interface DevDemoResourceLink {
-  readonly listRepoKey: string
+  readonly listOwner: string
+  readonly listRepo: string
   readonly description: string
   readonly tags: string[]
 }
@@ -21,7 +22,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'CODE',
     links: [
       {
-        listRepoKey: 'sindresorhus/awesome-nodejs',
+        listOwner: 'sindresorhus',
+        listRepo: 'awesome-nodejs',
         description: 'Streaming torrent client for Node.js and the browser.',
         tags: ['packages', 'mad-science'],
       },
@@ -32,12 +34,14 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'CODE',
     links: [
       {
-        listRepoKey: 'sindresorhus/awesome-nodejs',
+        listOwner: 'sindresorhus',
+        listRepo: 'awesome-nodejs',
         description: 'Minimalistic framework for server-rendered universal JavaScript web apps.',
         tags: ['packages', 'web-frameworks'],
       },
       {
-        listRepoKey: 'enaqx/awesome-react',
+        listOwner: 'enaqx',
+        listRepo: 'awesome-react',
         description: 'The React Framework',
         tags: ['react-tools', 'react-frameworks'],
       },
@@ -48,7 +52,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'CODE',
     links: [
       {
-        listRepoKey: 'sindresorhus/awesome-nodejs',
+        listOwner: 'sindresorhus',
+        listRepo: 'awesome-nodejs',
         description: 'Notes and resources related to V8 and thus Node.js performance.',
         tags: ['resources', 'miscellaneous'],
       },
@@ -59,7 +64,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'CODE',
     links: [
       {
-        listRepoKey: 'enaqx/awesome-react',
+        listOwner: 'enaqx',
+        listRepo: 'awesome-react',
         description: 'Inspection of React component hierarchy in the Chrome and Firefox Developer Tools',
         tags: ['react-tools', 'react-development-tools'],
       },
@@ -70,7 +76,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'VIDEO',
     links: [
       {
-        listRepoKey: 'enaqx/awesome-react',
+        listOwner: 'enaqx',
+        listRepo: 'awesome-react',
         description: 'Pete Hunt: React: Rethinking best practices - JSConf EU 2013',
         tags: ['videos', 'important-talks'],
       },
@@ -81,7 +88,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'WEBSITE',
     links: [
       {
-        listRepoKey: 'enaqx/awesome-react',
+        listOwner: 'enaqx',
+        listRepo: 'awesome-react',
         description: 'A Complete Guide to Flexbox',
         tags: ['react-native', 'react-native-tutorials'],
       },
@@ -92,7 +100,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'WEBSITE',
     links: [
       {
-        listRepoKey: 'RunaCapital/awesome-oss-alternatives',
+        listOwner: 'RunaCapital',
+        listRepo: 'awesome-oss-alternatives',
         description: 'Automated provisioning of cloud development environments with multiple git providers & IDEs',
         tags: ['cloud-development-environment'],
       },
@@ -103,7 +112,8 @@ export const devDemoResources: DevDemoResource[] = [
     type: 'WEBSITE',
     links: [
       {
-        listRepoKey: 'RunaCapital/awesome-oss-alternatives',
+        listOwner: 'RunaCapital',
+        listRepo: 'awesome-oss-alternatives',
         description: 'Typo tolerant fuzzy search engine',
         tags: ['enterprise-search'],
       },
@@ -119,9 +129,9 @@ export const createDemoResources = async () => {
       const resource = await createOrUpdateResource(dbClient, { url, type })
 
       for (const link of links) {
-        const { description, listRepoKey, tags } = link
+        const { description, listOwner, listRepo, tags } = link
 
-        const list = await findListByRepoKey(dbClient, listRepoKey)
+        const list = await findListByOwnerAndRepo(dbClient, { owner: listOwner, repo: listRepo })
 
         await linkResource(dbClient, { resource, description, list, tags })
       }

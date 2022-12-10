@@ -26,8 +26,10 @@ export const ResourceCard: FunctionComponent<ResourceCardProps> = ({ resource })
         <Text fontWeight='semibold'>Type: {resource.type}</Text>
         <Stack marginTop={SPACE_SMALL}>
           {resource.links.map((link) => (
-            <Stack key={link.listRepoKey} paddingY={SPACE_SMALL}>
-              <Text fontWeight='semibold'>{link.listRepoKey}</Text>
+            <Stack key={`${link.listOwner}/${link.listRepo}`} paddingY={SPACE_SMALL}>
+              <Text fontWeight='semibold'>
+                {link.listOwner}/{link.listRepo}
+              </Text>
               <Text fontSize='lg'>{link.description}</Text>
               <Text>
                 {link.tags.map((tag) => (
