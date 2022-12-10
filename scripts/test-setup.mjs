@@ -27,7 +27,7 @@ const globalSetup = async () => {
     }
 
     await waitFor('Waiting for application to be ready...', 5, async () => {
-      await wretch(process.env.NEXT_PUBLIC_APP_BASE_URL).get().res()
+      await wretch(process.env.NEXT_PUBLIC_APP_BASE_URL).get('/').res()
 
       return true
     })
