@@ -14,7 +14,7 @@ export const createOrUpdateResource = async (
 ): Promise<Resource> => {
   const { url, type } = options
 
-  const domain = parseUrl(url).resource
+  const { resource: domain } = parseUrl(url)
   const now = new Date()
 
   const resource = await dbClient.resource.upsert({

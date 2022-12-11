@@ -15,6 +15,9 @@ const taskById = {
   migrate: async () => {
     await runCommand(prismaCmd, ['migrate', 'dev', ...prismaArgv])
   },
+  reset: async () => {
+    await runCommand(prismaCmd, ['migrate', 'reset', ...prismaArgv])
+  },
   generate: async () => {
     await runCommand(prismaCmd, ['generate', ...prismaArgv])
   },
@@ -24,6 +27,10 @@ const taskById = {
 }
 
 const modelSchemaScript = async (argv) => {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Should not run this script in production')
+  }
+
   const taskId = argv[0]
   const task = taskById[taskId]
 
