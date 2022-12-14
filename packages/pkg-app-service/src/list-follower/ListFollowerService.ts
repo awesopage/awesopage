@@ -12,8 +12,6 @@ export const findOrCreateListFollower = async (
 ): Promise<ListFollower> => {
   const { list, user } = options
 
-  const now = new Date()
-
   const listFollower = await dbClient.listFollower.upsert({
     where: {
       listId_userId: {
@@ -24,7 +22,7 @@ export const findOrCreateListFollower = async (
     create: {
       listId: list.id,
       userId: user.id,
-      followedAt: now,
+      followedAt: new Date(),
     },
     update: {},
   })
