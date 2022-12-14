@@ -27,6 +27,7 @@ model User {
 
   requestedLists List[] @relation("requested_lists")
   approvedLists List[] @relation("approved_lists")
+  following ListFollower[]
 
   @@map("app_user")
 }
@@ -54,6 +55,7 @@ model List {
 
   requestedBy User @relation("requested_lists", fields: [requestedById], references: [id])
   approvedBy User? @relation("approved_lists", fields: [approvedById], references: [id])
+  followers ListFollower[]
   resourceLinks ResourceLink[]
 
   @@unique([owner, repo])
@@ -92,4 +94,17 @@ model ResourceLink {
   resource Resource @relation(fields: [resourceId], references: [id])
 
   @@map("resource_link")
+}
+
+model ListFollower {
+  id BigInt @id @default(autoincrement())
+  listId BigInt @map("list_id")
+  userId BigInt @map("user_id")
+  followedAt DateTime @map("followed_at")
+
+  list List @relation(fields: [listId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([listId, userId])
+  @@map("list_follower")
 }
