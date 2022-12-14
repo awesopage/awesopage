@@ -1,27 +1,38 @@
-import { List, ListFollower, User } from 'pkg-app-model/client'
+import { ListFollower, User } from 'pkg-app-model/client'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { findListByOwnerAndRepo } from 'pkg-app-service/src/list/ListService'
 import { findOrCreateListFollower, removeListFollower } from 'pkg-app-service/src/list-follower/ListFollowerService'
 
-export const manageFindListByOwnerAndRepo = async (owner: string, repo: string): Promise<List> => {
-  const list = await prismaClient.$transaction((dbClient) => {
-    return findListByOwnerAndRepo(dbClient, { owner, repo })
-  })
-
-  return list
+export interface ManageFindOrCreateListFollowerOptions {
+  readonly owner: string
+  readonly repo: string
+  readonly user: User
 }
 
-export const manageFindOrCreateListFollower = async (user: User, list: List): Promise<ListFollower> => {
-  const listFollower = await prismaClient.$transaction((dbClient) => {
-    return findOrCreateListFollower(dbClient, { user, list })
+export const manageFindOrCreateListFollower = async (
+  options: ManageFindOrCreateListFollowerOptions,
+): Promise<ListFollower> => {
+  const { owner, repo, user } = options
+  const listFollower = await prismaClient.$transaction(async (dbClient) => {
+    const list = await findListByOwnerAndRepo(dbClient, { owner, repo })
+    const re = findOrCreateListFollower(dbClient, { user, list })
+    return re
   })
 
   return listFollower
 }
 
-export const manageRemoveListFollower = async (user: User, list: List): Promise<ListFollower> => {
-  const listFollower = await prismaClient.$transaction((dbClient) => {
-    return removeListFollower(dbClient, { user, list })
+export interface ManageRemoveListFollowerOptions {
+  readonly owner: string
+  readonly repo: string
+  readonly user: User
+}
+export const manageRemoveListFollower = async (options: ManageRemoveListFollowerOptions): Promise<ListFollower> => {
+  const { owner, repo, user } = options
+  const listFollower = await prismaClient.$transaction(async (dbClient) => {
+    const list = await findListByOwnerAndRepo(dbClient, { owner, repo })
+    const re = removeListFollower(dbClient, { user, list })
+    return re
   })
 
   return listFollower

@@ -21,12 +21,12 @@ export const findOrCreateListFollower = async (
         userId: user.id,
       },
     },
-    update: {},
     create: {
       listId: list.id,
       userId: user.id,
       followedAt: now,
     },
+    update: {},
   })
 
   return listFollower
