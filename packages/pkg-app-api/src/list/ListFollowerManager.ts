@@ -13,10 +13,11 @@ export const manageFindOrCreateListFollower = async (
   options: ManageFindOrCreateListFollowerOptions,
 ): Promise<ListFollower> => {
   const { owner, repo, user } = options
+
   const listFollower = await prismaClient.$transaction(async (dbClient) => {
     const list = await findListByOwnerAndRepo(dbClient, { owner, repo })
-    const re = findOrCreateListFollower(dbClient, { user, list })
-    return re
+
+    return findOrCreateListFollower(dbClient, { user, list })
   })
 
   return listFollower
@@ -27,12 +28,14 @@ export interface ManageRemoveListFollowerOptions {
   readonly repo: string
   readonly user: User
 }
+
 export const manageRemoveListFollower = async (options: ManageRemoveListFollowerOptions): Promise<ListFollower> => {
   const { owner, repo, user } = options
+
   const listFollower = await prismaClient.$transaction(async (dbClient) => {
     const list = await findListByOwnerAndRepo(dbClient, { owner, repo })
-    const re = removeListFollower(dbClient, { user, list })
-    return re
+
+    return removeListFollower(dbClient, { user, list })
   })
 
   return listFollower
