@@ -1,3 +1,4 @@
+import { createDemoListFollowers } from 'pkg-app-api/src/list/__dev/DevDemoListFollowers'
 import { createDemoLists } from 'pkg-app-api/src/list/__dev/DevDemoLists'
 import { createDemoResources } from 'pkg-app-api/src/resource/__dev/DevDemoResources'
 import { createDemoUsers } from 'pkg-app-api/src/user/__dev/DevDemoUsers'
@@ -7,6 +8,7 @@ export const devManageCreateDemoData = async () => {
   await truncateAllTables()
   await createDemoUsers()
   await createDemoLists()
+  await createDemoListFollowers()
   await createDemoResources()
 }
 
