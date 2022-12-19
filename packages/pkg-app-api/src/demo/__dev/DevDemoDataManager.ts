@@ -8,8 +8,8 @@ export const devManageCreateDemoData = async () => {
   await truncateAllTables()
   await createDemoUsers()
   await createDemoLists()
-  await createDemoResources()
   await createDemoListFollowers()
+  await createDemoResources()
 }
 
 const truncateAllTables = async (): Promise<string[]> => {
