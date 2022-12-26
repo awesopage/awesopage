@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler, NextApiResponse } from 'next'
 
 import { devManageCreateDemoData } from 'pkg-app-api/src/demo/__dev/DevDemoDataManager'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseSender'

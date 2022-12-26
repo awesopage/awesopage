@@ -1,5 +1,5 @@
 import { Flex as ChakraFlex, FlexProps as ChakraFlexProps } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type FlexProps = ChakraFlexProps
 

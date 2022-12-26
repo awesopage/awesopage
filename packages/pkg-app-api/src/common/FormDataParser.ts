@@ -1,5 +1,5 @@
 import busboy from 'busboy'
-import { NextApiRequest } from 'next'
+import type { NextApiRequest } from 'next'
 
 export const parseFormData = async <K extends string>(req: NextApiRequest): Promise<Partial<Record<K, string>>> => {
   const formData: Partial<Record<K, string>> = {}

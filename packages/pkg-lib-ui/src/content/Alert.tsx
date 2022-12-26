@@ -5,7 +5,7 @@ import {
   AlertStatus as ChakraAlertStatus,
   useToast as useChakraToast,
 } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type AlertProps = ChakraAlertProps
 

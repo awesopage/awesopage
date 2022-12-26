@@ -1,5 +1,5 @@
 import { Heading as ChakraHeading, HeadingProps as ChakraHeadingProps } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type HeadingProps = ChakraHeadingProps
 

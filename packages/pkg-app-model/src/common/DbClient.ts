@@ -1,6 +1,6 @@
 /* eslint-disable no-null/no-null */
 
-import { Prisma } from 'pkg-app-model/client'
+import type { Prisma } from 'pkg-app-model/client'
 
 export type DbClient = Prisma.TransactionClient
 

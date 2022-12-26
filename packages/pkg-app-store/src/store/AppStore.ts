@@ -2,7 +2,7 @@ import produce, { Draft } from 'immer'
 import createStoreHook from 'zustand'
 import createStore from 'zustand/vanilla'
 
-import { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
 
 export interface AppState {
   readonly isAuthChecked: boolean

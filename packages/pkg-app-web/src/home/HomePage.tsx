@@ -1,4 +1,4 @@
-import { NextPage } from 'next'
+import type { NextPage } from 'next'
 
 import { DefaultPageLayout } from 'pkg-app-web/src/page/DefaultPageLayout'
 

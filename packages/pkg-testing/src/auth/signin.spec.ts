@@ -1,4 +1,4 @@
-import { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
+import type { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
 import { expect, test } from 'pkg-testing/src/common/TestUtils'
 
 test('Existing user can sign in', async ({ page }) => {

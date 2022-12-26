@@ -1,4 +1,4 @@
-import { RoleEnum } from 'pkg-app-model/client'
+import type { RoleEnum } from 'pkg-app-model/client'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { assignUserRoles, findOrCreateUser, findUserByEmail } from 'pkg-app-service/src/user/UserService'
 

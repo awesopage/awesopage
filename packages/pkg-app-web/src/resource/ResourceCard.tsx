@@ -1,7 +1,7 @@
 import NextLink from 'next/link'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
-import { ResourceDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
+import type { ResourceDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
 import { Button } from 'pkg-lib-ui/src/button/Button'
 import { ButtonGroup } from 'pkg-lib-ui/src/button/ButtonGroup'
 import { Heading } from 'pkg-lib-ui/src/content/Heading'

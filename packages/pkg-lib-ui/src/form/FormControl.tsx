@@ -1,5 +1,5 @@
 import { FormControl as ChakraFormControl, FormLabel as ChakraFormLabel } from '@chakra-ui/react'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import type { FunctionComponent, PropsWithChildren } from 'react'
 
 export interface FormControlProps extends PropsWithChildren {
   readonly inputId: string

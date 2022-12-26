@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 import { useColorModeValue, useColorToken } from 'pkg-lib-ui/src/hook/ThemeHooks'
 import { SvgIcon } from 'pkg-lib-ui/src/icon/SvgIcon'

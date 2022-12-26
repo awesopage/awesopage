@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren } from 'react'
+import type { FunctionComponent, PropsWithChildren } from 'react'
 
 import { NavigationBar } from 'pkg-app-web/src/page/NavigationBar'
 import { useColorModeValue } from 'pkg-lib-ui/src/hook/ThemeHooks'

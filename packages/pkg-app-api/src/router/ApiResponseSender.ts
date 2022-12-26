@@ -1,9 +1,9 @@
-import { NextApiResponse } from 'next'
+import type { NextApiResponse } from 'next'
 
 import { mapErrorToString } from 'pkg-app-api/src/common/MapperUtils'
 import { createLogger } from 'pkg-app-service/src/common/LoggingUtils'
 import { ApplicationError } from 'pkg-app-service/src/error/ApplicationError'
-import { ApiErrorDTO, ApiErrorType } from 'pkg-app-shared/src/error/ApiErrorDTO'
+import type { ApiErrorDTO, ApiErrorType } from 'pkg-app-shared/src/error/ApiErrorDTO'
 
 const logger = createLogger('ApiResponseSender')
 

@@ -1,5 +1,5 @@
-import { List, ListFollower, User } from 'pkg-app-model/client'
-import { DbClient } from 'pkg-app-model/src/common/DbClient'
+import type { List, ListFollower, User } from 'pkg-app-model/client'
+import type { DbClient } from 'pkg-app-model/src/common/DbClient'
 
 export interface FindOrCreateListFollowerOptions {
   readonly list: List

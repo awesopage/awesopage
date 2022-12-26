@@ -1,5 +1,5 @@
 import { Stack as ChakraStack, StackProps as ChakraStackProps } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 import { SPACE_SMALL } from 'pkg-lib-ui/src/theme/SpaceValues'
 

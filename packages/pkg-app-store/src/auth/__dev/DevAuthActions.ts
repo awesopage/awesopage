@@ -1,5 +1,5 @@
-import { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCreateSignedAuthDataDTO'
-import { DevSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevSignedAuthDataDTO'
+import type { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCreateSignedAuthDataDTO'
+import type { DevSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevSignedAuthDataDTO'
 import { useAction } from 'pkg-app-store/src/common/ActionUtils'
 import { apiClient } from 'pkg-app-store/src/common/ApiClient'
 

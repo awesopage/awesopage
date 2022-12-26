@@ -2,7 +2,7 @@ import {
   ColorModeScript as ChakraColorModeScript,
   ColorModeScriptProps as ChakraColorModeScriptProps,
 } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type ColorModeScriptProps = ChakraColorModeScriptProps
 

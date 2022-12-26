@@ -1,4 +1,4 @@
-import { ListFollower, User } from 'pkg-app-model/client'
+import type { ListFollower, User } from 'pkg-app-model/client'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { findListByOwnerAndRepo } from 'pkg-app-service/src/list/ListService'
 import { findOrCreateListFollower, removeListFollower } from 'pkg-app-service/src/list-follower/ListFollowerService'

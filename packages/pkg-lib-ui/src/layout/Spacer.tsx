@@ -1,5 +1,5 @@
 import { Spacer as ChakraSpacer, SpacerProps as ChakraSpacerProps } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type SpacerProps = ChakraSpacerProps
 
