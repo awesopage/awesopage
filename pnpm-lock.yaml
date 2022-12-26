@@ -196,9 +196,9 @@ importers:
 
   packages/pkg-lib-typescript:
     specifiers:
-      '@tsconfig/node16-strictest-esm': 1.0.3
+      '@tsconfig/node18-strictest-esm': 1.0.1
     dependencies:
-      '@tsconfig/node16-strictest-esm': 1.0.3
+      '@tsconfig/node18-strictest-esm': 1.0.1
 
   packages/pkg-lib-ui:
     specifiers:
@@ -2323,8 +2323,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@tsconfig/node16-strictest-esm/1.0.3:
-    resolution: {integrity: sha512-0/QTPDkKmE2dy0dMRstPCv4VJ+gUGgvMKzaWd5P3hgdlmPqYqe1pJxDGUlNYbSgUBlncIvvX+mIeZarokysNgg==}
+  /@tsconfig/node18-strictest-esm/1.0.1:
+    resolution: {integrity: sha512-cHzmAqw7CMbyqROWeBgVhard3F2V6zxOSJnQ4E6SJWruXD5ypuP9/QKekwBdfXQ4oUTaizIICKIwb+v3v33t0w==}
     dev: false
 
   /@types/accepts/1.3.5:

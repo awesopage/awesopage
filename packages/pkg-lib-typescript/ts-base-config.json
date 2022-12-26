@@ -1,16 +1,17 @@
 {
-  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+  "extends": "@tsconfig/node18-strictest-esm/tsconfig.json",
   "compilerOptions": {
     "lib": [
       "dom",
       "dom.iterable",
-      "es2021"
+      "es2022"
     ],
     "noPropertyAccessFromIndexSignature": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "exactOptionalPropertyTypes": false,
-    "allowJs": true,
+    "allowJs": false,
+    "checkJs": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "module": "esnext",
