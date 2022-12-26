@@ -1,4 +1,4 @@
-import { NextApiRequest } from 'next'
+import type { NextApiRequest } from 'next'
 
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 import { getQueryValue } from 'pkg-lib-common/src/QueryUtils'

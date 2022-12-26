@@ -1,4 +1,4 @@
-import { List, User } from 'pkg-app-model/client'
+import type { List, User } from 'pkg-app-model/client'
 import { DbClient, maybe } from 'pkg-app-model/src/common/DbClient'
 import { requireRoles } from 'pkg-app-service/src/user/UserRoleChecker'
 

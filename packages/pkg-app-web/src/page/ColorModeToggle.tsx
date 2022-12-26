@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 import { RiMoonFill, RiSunLine } from 'react-icons/ri'
 
 import { NavIcon } from 'pkg-app-web/src/page/NavIcon'

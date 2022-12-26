@@ -1,10 +1,10 @@
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { manageProcessAuthData } from 'pkg-app-api/src/auth/AuthManager'
 import { parseFormData } from 'pkg-app-api/src/common/FormDataParser'
 import { mapErrorToString } from 'pkg-app-api/src/common/MapperUtils'
 import { createApiRouter } from 'pkg-app-api/src/router/ApiRouter'
-import { AuthData } from 'pkg-app-service/src/auth/AuthDataSigner'
+import type { AuthData } from 'pkg-app-service/src/auth/AuthDataSigner'
 import { createLogger } from 'pkg-app-service/src/common/LoggingUtils'
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 

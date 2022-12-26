@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 import { Icon, IconProps } from 'pkg-lib-ui/src/icon/Icon'
 

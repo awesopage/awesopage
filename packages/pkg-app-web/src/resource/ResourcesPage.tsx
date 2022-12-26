@@ -1,6 +1,6 @@
-import { NextPage } from 'next'
+import type { NextPage } from 'next'
 
-import { ResourcesPageProps } from 'pkg-app-shared/src/resource/ResourcesPageProps'
+import type { ResourcesPageProps } from 'pkg-app-shared/src/resource/ResourcesPageProps'
 import { DefaultPageLayout } from 'pkg-app-web/src/page/DefaultPageLayout'
 import { ResourceCard } from 'pkg-app-web/src/resource/ResourceCard'
 import { Stack } from 'pkg-lib-ui/src/layout/Stack'

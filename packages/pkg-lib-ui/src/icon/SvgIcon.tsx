@@ -1,5 +1,5 @@
 import { Icon as ChakraIcon, IconProps as ChakraIconProps } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type SvgIconProps = ChakraIconProps
 

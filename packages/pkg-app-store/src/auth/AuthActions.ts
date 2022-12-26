@@ -1,5 +1,5 @@
-import { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
-import { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import type { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
+import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
 import { useAction } from 'pkg-app-store/src/common/ActionUtils'
 import { apiClient } from 'pkg-app-store/src/common/ApiClient'
 import { updateAppStore, useAppState } from 'pkg-app-store/src/store/AppStore'

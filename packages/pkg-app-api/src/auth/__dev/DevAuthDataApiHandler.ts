@@ -1,10 +1,10 @@
-import { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler, NextApiResponse } from 'next'
 
 import { sendApiError, sendApiResponse } from 'pkg-app-api/src/router/ApiResponseSender'
 import { createApiRouter } from 'pkg-app-api/src/router/ApiRouter'
 import { signAuthData } from 'pkg-app-service/src/auth/AuthDataSigner'
-import { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCreateSignedAuthDataDTO'
-import { DevSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevSignedAuthDataDTO'
+import type { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCreateSignedAuthDataDTO'
+import type { DevSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevSignedAuthDataDTO'
 import { assertDefined } from 'pkg-lib-common/src/AssertUtils'
 
 export const devAuthDataApiHandler: NextApiHandler = createApiRouter()

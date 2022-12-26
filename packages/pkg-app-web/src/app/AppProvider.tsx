@@ -1,5 +1,5 @@
 import NextHead from 'next/head'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import type { FunctionComponent, PropsWithChildren } from 'react'
 
 import { appTheme } from 'pkg-app-web/src/app/AppTheme'
 import { useOrientationEffect } from 'pkg-lib-ui/src/hook/LayoutHooks'

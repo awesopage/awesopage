@@ -8,7 +8,7 @@ import {
   PopoverProps as ChakraPopoverProps,
   PopoverTrigger as ChakraPopoverTrigger,
 } from '@chakra-ui/react'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import type { FunctionComponent, PropsWithChildren } from 'react'
 
 import { Stack } from 'pkg-lib-ui/src/layout/Stack'
 import { SPACE_MEDIUM } from 'pkg-lib-ui/src/theme/SpaceValues'

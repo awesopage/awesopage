@@ -1,6 +1,6 @@
 import 'pkg-app-web/src/app/main.css'
 
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 
 import { AppProvider } from 'pkg-app-web/src/app/AppProvider'
 

@@ -1,7 +1,7 @@
 import IsEmail from 'isemail'
 
-import { RoleEnum, User } from 'pkg-app-model/client'
-import { DbClient } from 'pkg-app-model/src/common/DbClient'
+import type { RoleEnum, User } from 'pkg-app-model/client'
+import type { DbClient } from 'pkg-app-model/src/common/DbClient'
 import { requireRoles } from 'pkg-app-service/src/user/UserRoleChecker'
 
 export interface FindOrCreateUserOptions {

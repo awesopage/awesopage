@@ -1,10 +1,9 @@
-// iron-session/express provides express-style middleware, which can be used with next-connect.
-import { ironSession } from 'iron-session/express'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { createRouter, expressWrapper, NextHandler } from 'next-connect'
+import { withIronSessionApiRoute } from 'iron-session/next'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { createRouter, NextHandler } from 'next-connect'
 
 import { sendApiError } from 'pkg-app-api/src/router/ApiResponseSender'
-import { User } from 'pkg-app-model/client'
+import type { User } from 'pkg-app-model/client'
 import { createLogger } from 'pkg-app-service/src/common/LoggingUtils'
 import { prismaClient } from 'pkg-app-service/src/common/PrismaClient'
 import { findUserByEmail } from 'pkg-app-service/src/user/UserService'
@@ -31,22 +30,6 @@ declare module 'iron-session' {
   interface IronSessionData {
     email?: string
   }
-}
-
-const enableCookieSession = () => {
-  assertDefined(process.env.APP_SESSION_SECRET, 'APP_SESSION_SECRET')
-
-  const sessionHandler = ironSession({
-    password: process.env.APP_SESSION_SECRET,
-    cookieName: 'app-session',
-    cookieOptions: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    },
-  })
-
-  return expressWrapper(sessionHandler)
 }
 
 export const checkSignedIn = () => {
@@ -80,11 +63,8 @@ export const requireUser = (req: NextApiRequest): User => {
   return user
 }
 
-export const createApiRouter = <
-  REQUEST extends NextApiRequest = NextApiRequest,
-  RESPONSE extends NextApiResponse = NextApiResponse,
->() => {
-  const router = createRouter<REQUEST, RESPONSE>().use(enableCookieSession())
+export const createApiRouter = () => {
+  const router = createRouter<NextApiRequest, NextApiResponse>()
 
   // next-connect v1 does not allow to set default handler when creating router
   // so need to work around based on https://github.com/hoangvvo/next-connect/issues/201
@@ -93,14 +73,31 @@ export const createApiRouter = <
   const defaultHandler = router.handler.bind(router)
 
   router.handler = () => {
-    return defaultHandler({
-      onError: (err, req, res: NextApiResponse) => {
-        sendApiError(res, 'INTERNAL_SERVER_ERROR', err as Error)
+    assertDefined(process.env.APP_SESSION_SECRET, 'APP_SESSION_SECRET')
+
+    const handlerWithSession = withIronSessionApiRoute(
+      defaultHandler({
+        onError: (err, req, res: NextApiResponse) => {
+          sendApiError(res, 'INTERNAL_SERVER_ERROR', err as Error)
+        },
+        onNoMatch: (req, res: NextApiResponse) => {
+          sendApiError(res, 'ROUTE_HANDLER_NOT_FOUND')
+        },
+      }),
+      {
+        password: process.env.APP_SESSION_SECRET,
+        cookieName: 'app-session',
+        cookieOptions: {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+        },
       },
-      onNoMatch: (req, res: NextApiResponse) => {
-        sendApiError(res, 'ROUTE_HANDLER_NOT_FOUND')
-      },
-    })
+    )
+
+    return async (req, res) => {
+      await handlerWithSession(req, res)
+    }
   }
 
   return router

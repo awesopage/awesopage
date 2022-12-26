@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 import { IoLogoGithub } from 'react-icons/io5'
 
 import { ColorModeToggle } from 'pkg-app-web/src/page/ColorModeToggle'

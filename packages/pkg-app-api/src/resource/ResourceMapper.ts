@@ -1,6 +1,6 @@
 import { mapValueToString } from 'pkg-app-api/src/common/MapperUtils'
-import { ResourceWithLinks } from 'pkg-app-service/src/resource/ResourceService'
-import { ResourceDTO, ResourceLinkDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
+import type { ResourceWithLinks } from 'pkg-app-service/src/resource/ResourceService'
+import type { ResourceDTO, ResourceLinkDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
 
 export const mapResourceToDTO = (resource: ResourceWithLinks): ResourceDTO => {
   const { id, domain, type, url, links } = resource

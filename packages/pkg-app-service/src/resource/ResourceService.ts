@@ -1,7 +1,7 @@
 import parseUrl from 'parse-url'
 
-import { List, Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
-import { DbClient } from 'pkg-app-model/src/common/DbClient'
+import type { List, Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
+import type { DbClient } from 'pkg-app-model/src/common/DbClient'
 
 export interface CreateOrUpdateResourceOptions {
   readonly url: string

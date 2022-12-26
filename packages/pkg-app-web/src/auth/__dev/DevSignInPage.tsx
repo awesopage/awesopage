@@ -1,7 +1,7 @@
-import { NextPage } from 'next'
+import type { NextPage } from 'next'
 import { FormEvent, FunctionComponent, useState } from 'react'
 
-import { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCreateSignedAuthDataDTO'
+import type { DevCreateSignedAuthDataDTO } from 'pkg-app-shared/src/auth/__dev/DevCreateSignedAuthDataDTO'
 import { useDevCreateSignedAuthData } from 'pkg-app-store/src/auth/__dev/DevAuthActions'
 import { postForm } from 'pkg-app-store/src/common/FormRequest'
 import { ColorModeToggle } from 'pkg-app-web/src/page/ColorModeToggle'

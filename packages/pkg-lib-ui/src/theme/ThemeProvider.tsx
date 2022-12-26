@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { FunctionComponent, PropsWithChildren } from 'react'
+import type { FunctionComponent, PropsWithChildren } from 'react'
 
-import { createTheme } from 'pkg-lib-ui/src/theme/ThemeFactory'
+import type { createTheme } from 'pkg-lib-ui/src/theme/ThemeFactory'
 
 export interface ThemeProviderProps extends PropsWithChildren {
   readonly theme: ReturnType<typeof createTheme>

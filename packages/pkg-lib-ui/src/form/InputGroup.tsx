@@ -5,7 +5,7 @@ import {
   InputLeftAddon as ChakraInputLeftAddon,
   InputRightAddon as ChakraInputRightAddon,
 } from '@chakra-ui/react'
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 export type InputGroupProps = ChakraInputGroupProps
 
