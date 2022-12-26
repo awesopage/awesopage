@@ -10,7 +10,7 @@
     "node": "18.x"
   },
   "dependencies": {
-    "@chakra-ui/react": "2.4.3",
+    "@chakra-ui/react": "2.4.4",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "framer-motion": "8.0.2",
@@ -18,7 +18,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.20.5",
+    "@babel/core": "7.20.7",
     "pkg-lib-typescript": "workspace:*",
     "typescript": "4.9.4"
   }
