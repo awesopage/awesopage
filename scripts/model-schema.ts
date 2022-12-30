@@ -8,10 +8,7 @@ import { runCommand } from './lib/script-utils.mjs'
 const prismaCmd = './node_modules/.bin/prisma'
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']
 
-const taskById = {
-  'push-accept-data-loss': async () => {
-    await runCommand(prismaCmd, ['db', 'push', '--accept-data-loss', '--force-reset', ...prismaArgv])
-  },
+const taskById: Record<string, () => Promise<void>> = {
   migrate: async () => {
     await runCommand(prismaCmd, ['migrate', 'dev', ...prismaArgv])
   },
@@ -26,12 +23,12 @@ const taskById = {
   },
 }
 
-const modelSchemaScript = async (argv) => {
+const modelSchemaScript = async (argv: string[]) => {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('Should not run this script in production')
   }
 
-  const taskId = argv[0]
+  const taskId = argv[0] ?? ''
   const task = taskById[taskId]
 
   if (!task) {

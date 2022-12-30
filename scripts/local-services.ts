@@ -14,7 +14,7 @@ const composeArgv = [
   'docker/docker-compose-local.yaml',
 ]
 
-const taskById = {
+const taskById: Record<string, () => Promise<void>> = {
   start: async () => {
     await runCommand(dockerCmd, [...composeArgv, 'up', '--detach'])
 
@@ -26,9 +26,7 @@ const taskById = {
       return true
     })
 
-    const schemaCommand = getProfiles().includes('test') ? 'push-accept-data-loss' : 'migrate'
-
-    await runCommand('node', ['./scripts/model-schema.mjs', schemaCommand])
+    await runCommand('npm', ['run', 'model-schema', 'migrate'])
   },
   stop: async () => {
     await runCommand(dockerCmd, [...composeArgv, 'down'])
@@ -41,8 +39,8 @@ const taskById = {
   },
 }
 
-const localServicesScript = async (argv) => {
-  const taskId = argv[0]
+const localServicesScript = async (argv: string[]) => {
+  const taskId = argv[0] ?? ''
   const task = taskById[taskId]
 
   if (!task) {

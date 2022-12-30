@@ -4,13 +4,11 @@ import fsp from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
 import bundleAnalyzer from '@next/bundle-analyzer'
-import { globby } from 'globby'
 import { createSecureHeaders } from 'next-secure-headers'
 
 import { getProfiles } from './scripts/lib/script-utils.mjs'
 
 const workspacePackages = JSON.parse(await fsp.readFile(new URL('./workspace-packages.json', import.meta.url)))
-const scriptFiles = await globby(['scripts/**/*.mjs'])
 const configFiles = ['.eslintrc.js', 'next.config.mjs', 'nyc.config.js', 'playwright.config.ts']
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -38,7 +36,7 @@ const nextConfig = withBundleAnalyzer({
         .filter((name) => name.startsWith('pkg-'))
         .map((name) => `packages/${name}/src`),
       'pages',
-      ...scriptFiles,
+      'scripts',
       ...configFiles,
     ],
   },
