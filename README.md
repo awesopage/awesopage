@@ -27,19 +27,19 @@
 ### Manage local services (Docker Compose)
 
 - Local services are defined in `docker/docker-compose-local.yaml`.
-- To start the services, run `node ./scripts/local-services.mjs start`.
-- To stop the services, run `node ./scripts/local-services.mjs stop`.
-- To reset the services (all volumes will be deleted), run `node ./scripts/local-services.mjs reset`.
-- To tail logs of the services, run `node ./scripts/local-services.mjs logs`.
+- To start the services, run `pnpm local-services start`.
+- To stop the services, run `pnpm local-services stop`.
+- To reset the services (all volumes will be deleted), run `pnpm local-services reset`.
+- To tail logs of the services, run `pnpm local-services logs`.
 - CockroachDB Console will be at http://localhost:4920.
 
 ### Manage database models (Prisma)
 
 - Prisma schema is defined in `packages/pkg-app-model/schema/app.prisma`.
-- To sync or create Prisma migrations, run `node ./scripts/model-schema.mjs migrate`.
-- To reset Prisma migrations, run `node ./scripts/model-schema.mjs reset`.
-- To generate Prisma client, run `node ./scripts/model-schema.mjs generate`.
-- To create demo data, run `node ./scripts/model-schema.mjs seed` (after starting application).
+- To sync or create Prisma migrations, run `pnpm model-schema migrate`.
+- To reset Prisma migrations, run `pnpm model-schema reset`.
+- To generate Prisma client, run `pnpm model-schema generate`.
+- To create demo data, run `pnpm model-schema seed` (after starting application).
 
 ### Start development
 
@@ -51,7 +51,7 @@ The application will be at http://localhost:4000.
 
 ### Run tests
 
-- To run tests during development or debugging, use `pnpm start-test-app` and `pnpm test`.
+- To run tests during development or debugging, use `pnpm test:start-app` and `pnpm test`.
 - To run tests entirely with auto cleanup and coverage collection in one command, use `pnpm test-full`.
 - Playwright report is created in `build/test/reports/playwright/index.html`.
 - Coverage report is created in `build/test/reports/coverage/index.html`.

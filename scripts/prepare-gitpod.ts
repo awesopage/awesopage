@@ -5,7 +5,7 @@ import cpy from 'cpy'
 
 import { isMainModule, runScript } from './lib/script-runner.mjs'
 
-const replaceEnv = (envLines, key, value) => {
+const replaceEnv = (envLines: string[], key: string, value: string) => {
   const newEnvLine = `${key}=${value}`
   const index = envLines.findIndex((envLine) => envLine.includes(key))
 
@@ -16,7 +16,7 @@ const replaceEnv = (envLines, key, value) => {
   }
 }
 
-const setGitpodEnv = async (envPath) => {
+const setGitpodEnv = async (envPath: URL) => {
   const envLines = fs.existsSync(envPath) ? (await fsp.readFile(envPath, 'utf-8')).split(/\r?\n/) : []
 
   const gitpodUrlSuffix = `${process.env.GITPOD_WORKSPACE_ID}.${process.env.GITPOD_WORKSPACE_CLUSTER_HOST}`

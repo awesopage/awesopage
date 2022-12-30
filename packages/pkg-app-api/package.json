@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "compile": "tsc",
-    "clean": "node ../../scripts/delete.mjs tsconfig.tsbuildinfo",
-    "clean-full": "npm run clean && node ../../scripts/delete.mjs node_modules"
+    "clean": "del-cli tsconfig.tsbuildinfo",
+    "clean-full": "npm run clean && del-cli node_modules"
   },
   "engines": {
     "node": "18.x"
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/busboy": "1.5.0",
+    "del-cli": "5.0.0",
     "pkg-lib-typescript": "workspace:*",
     "typescript": "4.9.4"
   }

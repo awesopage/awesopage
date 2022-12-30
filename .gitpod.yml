@@ -14,8 +14,8 @@ tasks:
       echo "nvm use default" >> ~/.bashrc.d/51-nvm-fix &&
       pnpm boot &&
       gp sync-done boot &&
-      node ./scripts/prepare-gitpod.mjs &&
-      node ./scripts/local-services.mjs start
+      ./node_modules/.bin/tsx ./scripts/prepare-gitpod.ts &&
+      pnpm local-services start
     command: pnpm dev
 
 ports:

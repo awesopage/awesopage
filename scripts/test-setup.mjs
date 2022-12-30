@@ -10,7 +10,7 @@ const globalSetup = async () => {
     console.log('Starting test services...')
     console.log()
 
-    await runCommand('node', ['./scripts/local-services.mjs', 'start'])
+    await runCommand('npm', ['run', 'local-services', 'start'])
 
     console.log()
     console.log('Starting application...')
@@ -37,7 +37,7 @@ const globalSetup = async () => {
   console.log('Creating demo data...')
   console.log()
 
-  await runCommand('node', ['./scripts/model-schema.mjs', 'seed'])
+  await runCommand('npm', ['run', 'model-schema', 'seed'])
 }
 
 export default globalSetup

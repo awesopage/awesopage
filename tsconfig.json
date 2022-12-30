@@ -1,6 +1,7 @@
 {
   "extends": "./packages/pkg-lib-typescript/ts-base-config.json",
   "compilerOptions": {
+    "allowJs": true,
     "baseUrl": "./packages"
   },
   "include": [
@@ -10,6 +11,7 @@
     "packages/pkg-*/src/**/*.tsx",
     "pages/**/*.ts",
     "pages/**/*.tsx",
+    "scripts/**/*.ts",
     "playwright.config.ts"
   ],
   "exclude": []

@@ -18,7 +18,11 @@ const globalTeardown = async () => {
         .post({}, '/api/test/__dev/coverage')
         .text()
 
-      await fsp.writeFile(new URL('../build/test/coverage/next_api_coverage.json', import.meta.url), coverageJSON)
+      const outputDirPath = new URL('../build/test/coverage/', import.meta.url)
+
+      await fsp.mkdir(outputDirPath, { recursive: true })
+
+      await fsp.writeFile(new URL('./next_api_coverage.json', outputDirPath), coverageJSON)
     }
 
     console.log()
