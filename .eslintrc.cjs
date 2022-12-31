@@ -41,7 +41,7 @@ module.exports = {
           ['^'],
           // internal imports
           ['^pkg-'],
-          // relative imports (should manually fix them to internal imports)
+          // relative imports (should convert them to internal imports if possible)
           ['^\\.'],
         ],
       },
@@ -51,7 +51,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.js', '*.mjs'],
+      files: ['*.cjs'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },

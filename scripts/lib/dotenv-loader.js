@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 import dotenvFlow from 'dotenv-flow'
 
-import { getProfiles } from './script-utils.mjs'
+import { getProfiles } from './script-utils.js'
 
 const configDirPath = fileURLToPath(new URL('../../config', import.meta.url))
 const nodeEnv = process.env.NODE_ENV ?? 'development'
