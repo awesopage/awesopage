@@ -1,6 +1,6 @@
 import fsp from 'node:fs/promises'
 
-import { isMainModule, runScript } from './lib/script-runner.mjs'
+import { isMainModule, runScript } from './lib/script-runner.js'
 
 const handlerByCommand = {
   'fix-package-list': async () => {

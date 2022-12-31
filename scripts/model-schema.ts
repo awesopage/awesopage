@@ -1,9 +1,9 @@
-import './lib/dotenv-loader.mjs'
+import './lib/dotenv-loader.js'
 
 import wretch from 'wretch'
 
-import { isMainModule, runScript } from './lib/script-runner.mjs'
-import { runCommand } from './lib/script-utils.mjs'
+import { isMainModule, runScript } from './lib/script-runner.js'
+import { runCommand } from './lib/script-utils.js'
 
 const prismaCmd = './node_modules/.bin/prisma'
 const prismaArgv = ['--schema=packages/pkg-app-model/schema/app.prisma']

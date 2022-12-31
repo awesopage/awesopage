@@ -1,5 +1,6 @@
 {
   "name": "pkg-lib-typescript",
+  "type": "module",
   "private": true,
   "engines": {
     "node": "18.x"

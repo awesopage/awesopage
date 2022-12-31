@@ -3,7 +3,7 @@ import fsp from 'node:fs/promises'
 
 import cpy from 'cpy'
 
-import { isMainModule, runScript } from './lib/script-runner.mjs'
+import { isMainModule, runScript } from './lib/script-runner.js'
 
 const replaceEnv = (envLines: string[], key: string, value: string) => {
   const newEnvLine = `${key}=${value}`

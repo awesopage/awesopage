@@ -1,5 +1,6 @@
 {
   "name": "pkg-testing",
+  "type": "module",
   "private": true,
   "scripts": {
     "compile": "tsc",

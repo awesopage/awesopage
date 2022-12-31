@@ -19,7 +19,7 @@ jobs:
           command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
       - run:
           name: Create cache key
-          command: node ./scripts/workspace.mjs create-cache-key
+          command: node ./scripts/workspace.js create-cache-key
       - restore_cache:
           name: Restore pnpm cache
           keys:

@@ -1,9 +1,9 @@
-import './lib/dotenv-loader.mjs'
+import './lib/dotenv-loader.js'
 
 import wretch from 'wretch'
 
-import { isMainModule, runScript } from './lib/script-runner.mjs'
-import { getProfiles, runCommand, waitFor } from './lib/script-utils.mjs'
+import { isMainModule, runScript } from './lib/script-runner.js'
+import { getProfiles, runCommand, waitFor } from './lib/script-utils.js'
 
 const dockerCmd = 'docker'
 const composeArgv = [

@@ -1,5 +1,6 @@
 {
   "name": "pkg-lib-common",
+  "type": "module",
   "private": true,
   "scripts": {
     "compile": "tsc",

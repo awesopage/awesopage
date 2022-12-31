@@ -1,5 +1,6 @@
 {
   "name": "pkg-app-shared",
+  "type": "module",
   "private": true,
   "scripts": {
     "compile": "tsc",

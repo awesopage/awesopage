@@ -1,5 +1,6 @@
 {
   "name": "pkg-app-web",
+  "type": "module",
   "private": true,
   "scripts": {
     "compile": "tsc",
