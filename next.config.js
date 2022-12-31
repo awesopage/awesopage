@@ -9,7 +9,7 @@ import { createSecureHeaders } from 'next-secure-headers'
 import { getProfiles } from './scripts/lib/script-utils.js'
 
 const workspacePackages = JSON.parse(await fsp.readFile(new URL('./workspace-packages.json', import.meta.url)))
-const configFiles = ['.eslintrc.cjs', 'next.config.js', 'nyc.config.cjs', 'playwright.config.ts']
+const configFiles = ['next.config.js', '.eslintrc.cjs', 'nyc.config.cjs', 'playwright.config.ts']
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
