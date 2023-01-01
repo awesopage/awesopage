@@ -15,7 +15,7 @@
     "pkg-app-shared": "workspace:*",
     "pkg-lib-common": "workspace:*",
     "react": "18.2.0",
-    "zustand": "4.1.5"
+    "zustand": "4.2.0"
   },
   "devDependencies": {
     "del-cli": "5.0.0",
