@@ -11,10 +11,10 @@
     "node": "18.x"
   },
   "dependencies": {
-    "@playwright/test": "1.29.1",
+    "@playwright/test": "1.29.2",
     "pkg-app-shared": "workspace:*",
-    "playwright-core": "1.29.1",
-    "playwright-test-coverage": "1.2.7"
+    "playwright-core": "1.29.2",
+    "playwright-test-coverage": "1.2.8"
   },
   "devDependencies": {
     "del-cli": "5.0.0",
