@@ -1,114 +1,107 @@
-import type { APIRequestContext, APIResponse } from '@playwright/test'
-
-import type { AssignUserRolesOptionsDTO } from 'pkg-app-shared/src/user/RoleApiOptions'
+import { assignRolesApiConfig } from 'pkg-app-shared/src/user/RolesApiConfig'
 import type { Role, UserDTO } from 'pkg-app-shared/src/user/UserDTO'
-import { expect, test, testDataApi } from 'tests/common/TestUtils'
-import { findTestUser, withAuth } from 'tests/data/TestUserData'
+import { createTestApiRequest, expect, test, testDataApi } from 'tests/common/TestUtils'
+import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
-const getAssignUserRolesResponse = async (
-  request: APIRequestContext,
-  options: AssignUserRolesOptionsDTO,
-): Promise<APIResponse> => {
-  return request.post('/api/roles', { data: options })
-}
-
-test.describe('given signed in as role manager', () => {
-  withAuth(findTestUser(({ isRoleManager }) => isRoleManager).any())
-
-  test.describe('when assign ADMIN role to user', () => {
-    test('should receive correct user', async ({ request }) => {
-      expect(await getCurrentRoles('user1@example.com')).not.toContain('ADMIN')
-
-      const assignUserRolesResponse = await getAssignUserRolesResponse(request, {
-        email: 'user1@example.com',
-        roles: ['ADMIN'],
-      })
-      const user: UserDTO = await assignUserRolesResponse.json()
-
-      expect(user).toMatchObject({
-        email: 'user1@example.com',
-        roles: ['ADMIN'],
-      })
-
-      expect(await getCurrentRoles('user1@example.com')).toContain('ADMIN')
-    })
-  })
-})
-
-test.describe('given signed in as admin but not role manager', () => {
-  withAuth(
-    findTestUser(({ hasRole, isRoleManager, and, not }) => {
-      return and(hasRole('ADMIN'), not(isRoleManager))
-    }).any(),
-  )
-
-  test.describe('when assign ADMIN role to user', () => {
-    test('should receive error', async ({ request }) => {
-      expect(await getCurrentRoles('user1@example.com')).not.toContain('ADMIN')
-
-      const assignUserRolesResponse = await getAssignUserRolesResponse(request, {
-        email: 'user1@example.com',
-        roles: ['ADMIN'],
-      })
-
-      expect(assignUserRolesResponse.ok()).toBe(false)
-    })
-  })
-})
-
-test.describe('given signed in as admin', () => {
-  withAuth(findTestUser(({ hasRole }) => hasRole('ADMIN')).any())
-
-  test.describe('when assign role to user', () => {
-    test('should receive correct user', async ({ request }) => {
-      expect(await getCurrentRoles('user1@example.com')).not.toContain('REVIEWER')
-
-      const assignUserRolesResponse = await getAssignUserRolesResponse(request, {
-        email: 'user1@example.com',
-        roles: ['REVIEWER'],
-      })
-      const user: UserDTO = await assignUserRolesResponse.json()
-
-      expect(user).toMatchObject({
-        email: 'user1@example.com',
-        roles: ['REVIEWER'],
-      })
-
-      expect(await getCurrentRoles('user1@example.com')).toContain('REVIEWER')
-    })
-  })
-})
-
-test.describe('given signed in but not admin', () => {
-  withAuth(findTestUser(({ hasRole, not }) => not(hasRole('ADMIN'))).any())
-
-  test.describe('when assign role to user', () => {
-    test('should receive error', async ({ request }) => {
-      const assignUserRolesResponse = await getAssignUserRolesResponse(request, {
-        email: 'user1@example.com',
-        roles: ['REVIEWER'],
-      })
-
-      expect(assignUserRolesResponse.ok()).toBe(false)
-    })
-  })
-})
-
-test.describe('given not signed in', () => {
-  test.describe('when assign role to user', () => {
-    test('should receive error', async ({ request }) => {
-      const assignUserRolesResponse = await getAssignUserRolesResponse(request, {
-        email: 'user1@example.com',
-        roles: ['REVIEWER'],
-      })
-
-      expect(assignUserRolesResponse.ok()).toBe(false)
-    })
-  })
-})
+const assignRoles = createTestApiRequest(assignRolesApiConfig)
 
 const getCurrentRoles = async (email: string): Promise<Role[]> => {
   const users = await testDataApi.post({ email }, '/users').json<UserDTO[]>()
 
   return users[0]?.roles ?? []
 }
+
+test.describe(assignRolesApiConfig.name, () => {
+  test.describe('given signed in as role manager and role is ADMIN', () => {
+    withAuth(testUserFinder.any(({ isRoleManager }) => isRoleManager))
+
+    test('should return correct user', async ({ request }) => {
+      expect(await getCurrentRoles('user1@example.com')).not.toContain('ADMIN')
+
+      const assignRolesResponse = await assignRoles(request, {
+        email: 'user1@example.com',
+        roles: ['ADMIN'],
+      })
+      const user = await assignRolesResponse.json()
+
+      const expectedUser: Partial<UserDTO> = {
+        email: 'user1@example.com',
+        roles: ['ADMIN'],
+      }
+
+      expect(user).toMatchObject(expectedUser)
+      expect(await getCurrentRoles('user1@example.com')).toContain('ADMIN')
+    })
+  })
+})
+
+test.describe(assignRolesApiConfig.name, () => {
+  test.describe('given signed in as admin but not role manager and role is ADMIN', () => {
+    withAuth(
+      testUserFinder.any(({ hasRole, isRoleManager, and, not }) => {
+        return and(hasRole('ADMIN'), not(isRoleManager))
+      }),
+    )
+
+    test('should return error', async ({ request }) => {
+      const assignRolesResponse = await assignRoles(request, {
+        email: 'user1@example.com',
+        roles: ['ADMIN'],
+      })
+
+      expect(assignRolesResponse.ok()).toBe(false)
+    })
+  })
+})
+
+test.describe(assignRolesApiConfig.name, () => {
+  test.describe('given signed in as admin and role is not ADMIN', () => {
+    withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
+
+    test('should return correct user', async ({ request }) => {
+      expect(await getCurrentRoles('user2@example.com')).not.toContain('REVIEWER')
+
+      const assignRolesResponse = await assignRoles(request, {
+        email: 'user2@example.com',
+        roles: ['REVIEWER'],
+      })
+      const user = await assignRolesResponse.json()
+
+      const expectedUser: Partial<UserDTO> = {
+        email: 'user2@example.com',
+        roles: ['REVIEWER'],
+      }
+
+      expect(user).toMatchObject(expectedUser)
+      expect(await getCurrentRoles('user2@example.com')).toContain('REVIEWER')
+    })
+  })
+})
+
+test.describe(assignRolesApiConfig.name, () => {
+  test.describe('given signed in but not admin', () => {
+    withAuth(testUserFinder.any(({ hasRole, not }) => not(hasRole('ADMIN'))))
+
+    test('should return error', async ({ request }) => {
+      const assignRolesResponse = await assignRoles(request, {
+        email: 'user1@example.com',
+        roles: ['REVIEWER'],
+      })
+
+      expect(assignRolesResponse.ok()).toBe(false)
+    })
+  })
+})
+
+test.describe(assignRolesApiConfig.name, () => {
+  test.describe('given not signed in', () => {
+    test('should return error', async ({ request }) => {
+      const assignRolesResponse = await assignRoles(request, {
+        email: 'user2@example.com',
+        roles: ['REVIEWER'],
+      })
+
+      expect(assignRolesResponse.ok()).toBe(false)
+    })
+  })
+})

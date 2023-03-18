@@ -1,71 +1,99 @@
-import type { APIRequestContext, APIResponse } from '@playwright/test'
+import fastSort from 'fast-sort'
 
-import type { CreateListOptionsDTO } from 'pkg-app-shared/src/list/ListApiOptions'
+import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
 import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
-import { expect, test } from 'tests/common/TestUtils'
-import { findTestUser, withAuth } from 'tests/data/TestUserData'
+import { createListApiConfig, findActiveListsApiConfig } from 'pkg-app-shared/src/list/ListsApiConfig'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
+import { testListFinder } from 'tests/data/TestListData'
+import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
-const getCreateListResponse = async (
-  request: APIRequestContext,
-  options: CreateListOptionsDTO,
-): Promise<APIResponse> => {
-  return request.post('/api/lists', { data: options })
-}
+const createList = createTestApiRequest(createListApiConfig)
+const findActiveLists = createTestApiRequest(findActiveListsApiConfig)
 
-const getFindActiveListsResponse = async (request: APIRequestContext): Promise<APIResponse> => {
-  return request.get('/api/lists')
-}
+test.describe(createListApiConfig.name, () => {
+  test.describe('given signed in', () => {
+    const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
 
-test.describe('given signed in but no role', () => {
-  withAuth(findTestUser(({ hasNoRole }) => hasNoRole).any())
+    withAuth(user)
 
-  test.describe('when create list', () => {
-    test('should receive correct list', async ({ request }) => {
-      const createListResponse = await getCreateListResponse(request, {
-        owner: 'owner',
-        repo: 'repo',
+    test('should return correct list', async ({ request }) => {
+      const createListResponse = await createList(request, {
+        owner: 'test_owner',
+        repo: 'test_repo',
       })
-      const list: ListDTO = await createListResponse.json()
-      expect(list).toMatchObject({
-        owner: 'owner',
-        repo: 'repo',
-      })
+      const listDetails = await createListResponse.json()
+
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: 'test_owner',
+        repo: 'test_repo',
+        status: 'INACTIVE',
+        description: '',
+        starCount: 0,
+        tags: [],
+        isApproved: false,
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(listDetails.requestedBy.email).toBe(user.email)
     })
   })
 })
 
-test.describe('given not signed in', () => {
-  test.describe('when create list', () => {
-    test('should receive error', async ({ request }) => {
-      const createListResponse = await getCreateListResponse(request, {
-        owner: 'owner',
-        repo: 'repo',
+test.describe(createListApiConfig.name, () => {
+  test.describe('given not signed in', () => {
+    test('should return error', async ({ request }) => {
+      const createListResponse = await createList(request, {
+        owner: 'test_owner',
+        repo: 'test_repo',
       })
 
       expect(createListResponse.ok()).toBe(false)
     })
   })
+})
 
-  test.describe('when find active lists', () => {
-    test('should receive correct lists', async ({ request }) => {
-      const findListsResponse = await getFindActiveListsResponse(request)
+test.describe(createListApiConfig.name, () => {
+  test.describe('given list already exists', () => {
+    const testList = testListFinder.any()
 
-      const lists: ListDTO[] = await findListsResponse.json()
+    withAuth(testUserFinder.any(({ hasNoRole }) => hasNoRole))
 
-      expect(lists).toMatchObject([
-        {
-          owner: 'owner1',
-          repo: 'repo1',
-        },
-        {
-          owner: 'owner1',
-          repo: 'repo2',
-        },
-        {
-          owner: 'owner2',
-          repo: 'repo3',
-        },
-      ])
+    test('should return error', async ({ request }) => {
+      const createListResponse = await createList(request, {
+        owner: testList.owner,
+        repo: testList.repo,
+      })
+
+      expect(createListResponse.ok()).toBe(false)
+    })
+  })
+})
+
+test.describe(findActiveListsApiConfig.name, () => {
+  const testActiveLists = testListFinder.all(({ isApproved, hasStatus, and }) => and(isApproved, hasStatus('ACTIVE')))
+  fastSort.inPlaceSort(testActiveLists).asc(['owner', 'repo'])
+
+  test('should return correct lists', async ({ request }) => {
+    const findActiveListsResponse = await findActiveLists(request)
+    const activeLists = await findActiveListsResponse.json()
+    fastSort.inPlaceSort(activeLists).asc(['owner', 'repo'])
+
+    const expectedActiveLists = testActiveLists.map(
+      (testActiveList): Partial<ListDTO> => ({
+        owner: testActiveList.owner,
+        repo: testActiveList.repo,
+        status: 'ACTIVE',
+        isApproved: true,
+        description: testActiveList.description,
+        starCount: testActiveList.starCount,
+        tags: testActiveList.tags,
+      }),
+    )
+
+    expect(activeLists.length).toBe(testActiveLists.length)
+
+    activeLists.forEach((activeList, index) => {
+      expect(activeList).toMatchObject(expectedActiveLists[index] ?? {})
     })
   })
 })

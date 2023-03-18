@@ -1,20 +1,20 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { createApiRouter } from 'pkg-app-api/src/router/ApiRouter'
+import { createApiRouter, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
 import { checkDatabaseHealth } from 'pkg-app-api/src/server/HealthService'
-import type { HealthStatusDTO } from 'pkg-app-shared/src/server/HealthStatusDTO'
+import { getHealthStatusApiConfig } from 'pkg-app-shared/src/server/HealthApiConfig'
 
 export const healthApiHandler: NextApiHandler = createApiRouter()
-  .get(async (req, res: NextApiResponse<HealthStatusDTO>) => {
-    const database = await checkDatabaseHealth(prismaClient)
-    const ok = database
+  .get(
+    withApiConfig(getHealthStatusApiConfig, async (req, res) => {
+      const database = await checkDatabaseHealth(prismaClient)
+      const ok = database
 
-    const healthStatus: HealthStatusDTO = {
-      ok,
-      database,
-    }
-
-    res.status(ok ? 200 : 500).json(healthStatus)
-  })
+      res.status(ok ? 200 : 500).json({
+        ok,
+        database,
+      })
+    }),
+  )
   .handler()

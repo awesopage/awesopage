@@ -1,31 +1,34 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { requireListOwnerAndRepo } from 'pkg-app-api/src/list/ListApiHelper'
-import { mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
-import { setListStatus } from 'pkg-app-api/src/list/ListService'
-import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponse'
-import { checkSignedIn, createApiRouter, requireCurrentUser } from 'pkg-app-api/src/router/ApiRouter'
-import type { List } from 'pkg-app-model/client'
-import type { SetListStatusDTO } from 'pkg-app-shared/src/list/ListApiOptions'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
+import { requireListKey } from 'pkg-app-api/src/list/ListApiHelper'
+import { mapListDetailsToDTO } from 'pkg-app-api/src/list/ListMapper'
+import type { ListDetails } from 'pkg-app-api/src/list/ListService'
+import { findListByKey, setListStatus } from 'pkg-app-api/src/list/ListService'
+import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
+import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
+import type { SetListStatusDTO } from 'pkg-app-shared/src/list/ListByKeyStatusApiConfig'
+import { setListStatusApiConfig } from 'pkg-app-shared/src/list/ListByKeyStatusApiConfig'
 
 export const listByKeyStatusApiHandler: NextApiHandler = createApiRouter()
-  .use(checkSignedIn())
-  .put(async (req, res: NextApiResponse<ListDTO>) => {
-    const { status } = req.body as SetListStatusDTO
-    const currentUser = requireCurrentUser(req)
-    const { owner, repo } = requireListOwnerAndRepo(req)
+  .put(
+    withApiConfig(setListStatusApiConfig, async (req, res) => {
+      const { status } = req.body as SetListStatusDTO
+      const currentUser = requireCurrentUser(req)
+      const { owner, repo } = requireListKey(req)
 
-    const list: List = await prismaClient.$transaction((dbClient) => {
-      return setListStatus(dbClient, {
-        owner,
-        repo,
-        status,
-        updatedByUser: currentUser,
+      const listDetails: ListDetails = await prismaClient.$transaction(async (dbClient) => {
+        await setListStatus(dbClient, {
+          owner,
+          repo,
+          status,
+          updatedByUser: currentUser,
+        })
+
+        return findListByKey(dbClient, { owner, repo })
       })
-    })
 
-    sendApiResponse(res, mapListToDTO(list))
-  })
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
+    }),
+  )
   .handler()

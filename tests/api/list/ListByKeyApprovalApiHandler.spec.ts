@@ -1,79 +1,134 @@
-import assert from 'node:assert'
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
+import { approveListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApprovalApiConfig'
+import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
+import { testListFinder } from 'tests/data/TestListData'
+import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
-import type { APIRequestContext, APIResponse } from '@playwright/test'
+const approveList = createTestApiRequest(approveListApiConfig)
 
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
-import { expect, test } from 'tests/common/TestUtils'
-import { findTestList } from 'tests/data/TestListData'
-import { findTestUser, withAuth } from 'tests/data/TestUserData'
+test.describe(approveListApiConfig.name, () => {
+  test.describe('given signed in as reviewer and list is unappoved and requested by different user', () => {
+    const reviewers = testUserFinder.all(({ hasRole }) => hasRole('REVIEWER'))
+    const { reviewer, listRequestedByDiffUser } =
+      reviewers
+        .map((reviewer) => {
+          const listRequestedByDiffUser = testListFinder.peek(({ isRequestedBy, isApproved, and, not }) =>
+            and(not(isApproved), not(isRequestedBy(reviewer.email))),
+          )
 
-const getApproveListResponse = async (
-  request: APIRequestContext,
-  owner: string,
-  repo: string,
-): Promise<APIResponse> => {
-  return request.post(`/api/lists/${owner}/${repo}/approval`)
-}
+          return { reviewer, listRequestedByDiffUser }
+        })
+        .find(({ listRequestedByDiffUser }) => !!listRequestedByDiffUser) ?? {}
 
-test.describe('given signed in as reviewer', () => {
-  const reviewers = findTestUser(({ hasRole }) => hasRole('REVIEWER')).all()
-  const { reviewer, listRequestedBySameUser, listRequestedByDiffUser } =
-    reviewers
-      .map((reviewer) => {
-        const listRequestedBySameUser = findTestList(({ isRequestedBy }) => isRequestedBy(reviewer.email)).peek()
-        const listRequestedByDiffUser = findTestList(({ isRequestedBy, not }) =>
-          not(isRequestedBy(reviewer.email)),
-        ).peek()
+    assertDefined(reviewer, 'reviewer')
+    assertDefined(listRequestedByDiffUser, 'listRequestedByDiffUser')
 
-        return { reviewer, listRequestedBySameUser, listRequestedByDiffUser }
+    withAuth(reviewer)
+
+    test('should return correct list', async ({ request }) => {
+      const approveListResponse = await approveList(request, {
+        owner: listRequestedByDiffUser.owner,
+        repo: listRequestedByDiffUser.repo,
       })
-      .find(
-        ({ listRequestedBySameUser, listRequestedByDiffUser }) => listRequestedBySameUser && listRequestedByDiffUser,
-      ) ?? {}
+      const listDetails = await approveListResponse.json()
 
-  assert.ok(reviewer)
-  assert.ok(listRequestedBySameUser)
-  assert.ok(listRequestedByDiffUser)
-
-  withAuth(reviewer)
-
-  test.describe('when approve list requested by different user', () => {
-    test('should receive correct list', async ({ request }) => {
-      const approveListResponse = await getApproveListResponse(
-        request,
-        listRequestedByDiffUser.owner,
-        listRequestedByDiffUser.repo,
-      )
-
-      const list: ListDTO = await approveListResponse.json()
-
-      expect(list).toMatchObject({
+      const expectedListDetails: Partial<ListDetailsDTO> = {
         owner: listRequestedByDiffUser.owner,
         repo: listRequestedByDiffUser.repo,
         isApproved: true,
-      })
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(listDetails.approvedBy?.email).toBe(reviewer.email)
     })
   })
+})
 
-  test.describe('when approve list requested by same user', () => {
-    test('should receive error', async ({ request }) => {
-      const approveListResponse = await getApproveListResponse(
-        request,
-        listRequestedBySameUser.owner,
-        listRequestedBySameUser.repo,
-      )
+test.describe(approveListApiConfig.name, () => {
+  test.describe('given signed in as reviewer and list is appoved and requested by different user', () => {
+    const reviewers = testUserFinder.all(({ hasRole }) => hasRole('REVIEWER'))
+    const { reviewer, listRequestedByDiffUser } =
+      reviewers
+        .map((reviewer) => {
+          const listRequestedByDiffUser = testListFinder.peek(({ isRequestedBy, isApproved, and, not }) =>
+            and(isApproved, not(isRequestedBy(reviewer.email))),
+          )
+
+          return { reviewer, listRequestedByDiffUser }
+        })
+        .find(({ listRequestedByDiffUser }) => !!listRequestedByDiffUser) ?? {}
+
+    assertDefined(reviewer, 'reviewer')
+    assertDefined(listRequestedByDiffUser, 'listRequestedByDiffUser')
+
+    withAuth(reviewer)
+
+    test('should return error', async ({ request }) => {
+      const approveListResponse = await approveList(request, {
+        owner: listRequestedByDiffUser.owner,
+        repo: listRequestedByDiffUser.repo,
+      })
 
       expect(approveListResponse.ok()).toBe(false)
     })
   })
 })
 
-test.describe('given signed in but no role', () => {
-  withAuth(findTestUser(({ hasNoRole }) => hasNoRole).any())
+test.describe(approveListApiConfig.name, () => {
+  test.describe('given signed in as reviewer and list is unappoved and requested by a same user', () => {
+    const reviewers = testUserFinder.all(({ hasRole }) => hasRole('REVIEWER'))
+    const { reviewer, listRequestedBySameUser } =
+      reviewers
+        .map((reviewer) => {
+          const listRequestedBySameUser = testListFinder.peek(({ isRequestedBy, isApproved, and, not }) =>
+            and(not(isApproved), isRequestedBy(reviewer.email)),
+          )
 
-  test.describe('when approve list', () => {
-    test('should receive error', async ({ request }) => {
-      const approveListResponse = await getApproveListResponse(request, 'owner', 'repo')
+          return { reviewer, listRequestedBySameUser }
+        })
+        .find(({ listRequestedBySameUser }) => !!listRequestedBySameUser) ?? {}
+
+    assertDefined(reviewer, 'reviewer')
+    assertDefined(listRequestedBySameUser, 'listRequestedBySameUser')
+
+    withAuth(reviewer)
+
+    test('should return error', async ({ request }) => {
+      const approveListResponse = await approveList(request, {
+        owner: listRequestedBySameUser.owner,
+        repo: listRequestedBySameUser.repo,
+      })
+
+      expect(approveListResponse.ok()).toBe(false)
+    })
+  })
+})
+
+test.describe(approveListApiConfig.name, () => {
+  test.describe('given signed in but not reviewer', () => {
+    const users = testUserFinder.all(({ hasRole, not }) => not(hasRole('REVIEWER')))
+    const { user, listRequestedByDiffUser } =
+      users
+        .map((user) => {
+          const listRequestedByDiffUser = testListFinder.peek(({ isRequestedBy, isApproved, and, not }) =>
+            and(not(isApproved), not(isRequestedBy(user.email))),
+          )
+
+          return { user, listRequestedByDiffUser }
+        })
+        .find(({ listRequestedByDiffUser }) => !!listRequestedByDiffUser) ?? {}
+
+    assertDefined(user, 'user')
+    assertDefined(listRequestedByDiffUser, 'listRequestedByDiffUser')
+
+    withAuth(user)
+
+    test('should return error', async ({ request }) => {
+      const approveListResponse = await approveList(request, {
+        owner: listRequestedByDiffUser.owner,
+        repo: listRequestedByDiffUser.repo,
+      })
 
       expect(approveListResponse.ok()).toBe(false)
     })

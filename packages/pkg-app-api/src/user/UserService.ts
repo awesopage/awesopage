@@ -33,13 +33,13 @@ export const findOrCreateUser = async (dbClient: DbClient, options: FindOrCreate
   return user
 }
 
-export type AssignUserRolesOptions = Readonly<{
+export type AssignRolesOptions = Readonly<{
   email: string
   roles: RoleEnum[]
   assignedByUser: User
 }>
 
-export const assignUserRoles = async (dbClient: DbClient, options: AssignUserRolesOptions): Promise<User> => {
+export const assignRoles = async (dbClient: DbClient, options: AssignRolesOptions): Promise<User> => {
   const { email, roles, assignedByUser } = options
 
   if (roles.includes('ADMIN')) {
@@ -47,7 +47,7 @@ export const assignUserRoles = async (dbClient: DbClient, options: AssignUserRol
       throw new Error(`${assignedByUser.email} cannot assign ADMIN role`)
     }
   } else {
-    requireRole(assignedByUser, 'ADMIN')
+    requireRole(assignedByUser, ['ADMIN'])
   }
 
   const user = await dbClient.user.update({

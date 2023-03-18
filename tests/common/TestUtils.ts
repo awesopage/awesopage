@@ -1,10 +1,13 @@
-import assert from 'node:assert'
 import fs from 'node:fs'
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 
+import type { APIRequestContext } from '@playwright/test'
 import { expect as baseExpect, test as baseTest } from 'playwright-test-coverage'
 import wretch from 'wretch'
+
+import type { ApiConfig } from 'pkg-app-shared/src/common/ApiConfig'
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 
 export const expect = baseExpect
 
@@ -18,9 +21,9 @@ export const test = baseTest.extend<CustomFixtures>({
   testData: [
     // eslint-disable-next-line no-empty-pattern
     async ({}, use, testInfo) => {
-      assert.ok(process.env.LOCAL_WORKSPACE_PATH)
-      assert.ok(process.env.DATABASE_OPERATION_LOG_PATH)
-      assert.ok(process.env.TEST_DATA_LOG_PATH)
+      assertDefined(process.env.LOCAL_WORKSPACE_PATH, 'LOCAL_WORKSPACE_PATH')
+      assertDefined(process.env.DATABASE_OPERATION_LOG_PATH, 'DATABASE_OPERATION_LOG_PATH')
+      assertDefined(process.env.TEST_DATA_LOG_PATH, 'TEST_DATA_LOG_PATH')
 
       const operationLogPath = path.join(process.env.LOCAL_WORKSPACE_PATH, process.env.DATABASE_OPERATION_LOG_PATH)
       const operations = fs.existsSync(operationLogPath)
@@ -76,4 +79,26 @@ const getOperationType = (operation: string): DB_OPERATION_TYPE => {
   }
 
   return operationType
+}
+
+export type TestApiResponse<T> = Readonly<{
+  url: () => string
+  ok: () => boolean
+  json: () => Promise<T>
+}>
+
+export const createTestApiRequest = <T, P>(apiConfig: ApiConfig<T, P>) => {
+  return async (request: APIRequestContext, params: P): Promise<TestApiResponse<T>> => {
+    const path = apiConfig.getPath(params)
+
+    const response = await request[apiConfig.method](path, {
+      ...(apiConfig.method === 'get' ? {} : { data: params }),
+    })
+
+    return {
+      url: () => response.url(),
+      ok: () => response.ok(),
+      json: () => response.json(),
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import type { ListStatusEnum } from 'pkg-app-model/client'
-import type { TestDataPredicate } from 'tests/data/TestDataFinder'
+import type { ListStatus } from 'pkg-app-shared/src/list/ListDTO'
+import type { Predicate } from 'tests/data/TestDataFinder'
 import { createTestDataFinder } from 'tests/data/TestDataFinder'
 
 export type TestList = Readonly<{
@@ -53,12 +54,28 @@ export const testLists: TestList[] = [
     requestedByEmail: 'admin2@example.com',
     currentStatus: 'INACTIVE',
   },
+  {
+    owner: 'owner3',
+    repo: 'repo5',
+    description: 'Awesome List 5 - Inactive',
+    starCount: 20_000,
+    tags: ['topic1', 'topic4'],
+    requestedByEmail: 'user2@example.com',
+    approvedByEmail: 'reviewer1@example.com',
+    currentStatus: 'INACTIVE',
+  },
 ]
 
-export const findTestList = createTestDataFinder(testLists, () => {
-  const isRequestedBy = (email: string): TestDataPredicate<TestList> => {
+export const testListFinder = createTestDataFinder(testLists, () => {
+  const isRequestedBy = (email: string): Predicate<TestList> => {
     return ({ requestedByEmail }) => requestedByEmail === email
   }
 
-  return { isRequestedBy }
+  const hasStatus = (status: ListStatus): Predicate<TestList> => {
+    return (list) => list.currentStatus === status
+  }
+
+  const isApproved: Predicate<TestList> = (list) => !!list.approvedByEmail
+
+  return { isRequestedBy, hasStatus, isApproved }
 })

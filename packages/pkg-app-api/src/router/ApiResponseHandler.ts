@@ -3,12 +3,12 @@ import type { NextApiResponse } from 'next'
 import { createLogger, formatError } from 'pkg-app-api/src/common/LoggingUtils'
 import type { ApiErrorDTO, ApiErrorType } from 'pkg-app-shared/src/common/ApiErrorDTO'
 
-const logger = createLogger('ApiResponse')
+const logger = createLogger('ApiResponseHandler')
 
 const STATUS_CODE_BY_ERROR_TYPE: Partial<Record<ApiErrorType, number>> = {
   UNAUTHORIZED: 401,
   ACCESS_DENIED: 403,
-  ROUTE_HANDLER_NOT_FOUND: 404,
+  ROUTE_HANDLER_NOT_FOUND: 400,
   INTERNAL_SERVER_ERROR: 500,
 }
 

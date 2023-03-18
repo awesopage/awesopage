@@ -28,6 +28,7 @@ importers:
       eslint-plugin-prettier: 4.2.1
       eslint-plugin-simple-import-sort: 10.0.0
       eslint-plugin-sonarjs: 0.18.0
+      fast-sort: 3.2.1
       http-server: 14.1.1
       kill-port: 2.0.1
       next: 13.2.3
@@ -45,6 +46,7 @@ importers:
     dependencies:
       '@hapi/iron': 7.0.1
       '@prisma/client': 4.11.0_prisma@4.11.0
+      fast-sort: 3.2.1
       next: 13.2.3_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -2573,6 +2575,10 @@ packages:
 
   /fast-safe-stringify/2.1.1:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
+    dev: false
+
+  /fast-sort/3.2.1:
+    resolution: {integrity: sha512-ECGwVH57yCv3C8v+4BQkQf65bNR4nFetxfGRRLYmzFEAK3oZBr7zCakBjOY/AptmmoU3ffMPJLLN1rdKdMHoUA==}
     dev: false
 
   /fastq/1.15.0:

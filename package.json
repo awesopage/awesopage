@@ -28,6 +28,7 @@
   "dependencies": {
     "@hapi/iron": "7.0.1",
     "@prisma/client": "4.11.0",
+    "fast-sort": "3.2.1",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

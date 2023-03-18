@@ -1,25 +1,49 @@
-export type TestDataPredicate<T> = (value: T) => boolean
+export type Predicate<T> = (value: T) => boolean
 
-const createTestDataFinderOperators = <T>() => ({
-  and: (...predicates: TestDataPredicate<T>[]) => {
+const createPredicateOperators = <T>() => ({
+  and: (...predicates: Predicate<T>[]) => {
     return (value: T) => predicates.every((predicate) => predicate(value))
   },
-  or: (...predicates: TestDataPredicate<T>[]) => {
+  or: (...predicates: Predicate<T>[]) => {
     return (value: T) => predicates.some((predicate) => predicate(value))
   },
-  not: (predicate: TestDataPredicate<T>) => {
+  not: (predicate: Predicate<T>) => {
     return (value: T) => !predicate(value)
   },
 })
 
-export type TestDataFinderOperators<T> = Readonly<ReturnType<typeof createTestDataFinderOperators<T>>>
+export type PredicateOperators<T> = Readonly<ReturnType<typeof createPredicateOperators<T>>>
 
-const createTestDataExtractor = <T>(matchedValues: T[]) => {
+export type PredicateBuilder<T, H> = (helpersWithOperators: H & PredicateOperators<T>) => Predicate<T>
+
+export type TestDataFinder<T, H> = Readonly<{
+  peek: (predicateBuilder?: PredicateBuilder<T, H>) => T | undefined
+  any: (predicateBuilder?: PredicateBuilder<T, H>) => T
+  all: (predicateBuilder?: PredicateBuilder<T, H>) => T[]
+}>
+
+export const createTestDataFinder = <T, H>(
+  data: T[],
+  helpersBuilder: (operators: PredicateOperators<T>) => H,
+): TestDataFinder<T, H> => {
+  const operators = createPredicateOperators<T>()
+
+  const helpersWithOperators: H & PredicateOperators<T> = {
+    ...helpersBuilder(operators),
+    ...operators,
+  }
+
+  const createAction = <R>(matchedValuesHandler: (matchedValues: T[]) => R) => {
+    return (predicateBuilder?: PredicateBuilder<T, H>) => {
+      return matchedValuesHandler(predicateBuilder ? data.filter(predicateBuilder(helpersWithOperators)) : data)
+    }
+  }
+
   return {
-    peek: () => {
+    peek: createAction((matchedValues: T[]): T | undefined => {
       return matchedValues[0]
-    },
-    any: () => {
+    }),
+    any: createAction((matchedValues: T[]): T => {
       const matchedValue = matchedValues[0]
 
       if (typeof matchedValue === 'undefined') {
@@ -27,37 +51,9 @@ const createTestDataExtractor = <T>(matchedValues: T[]) => {
       }
 
       return matchedValue
-    },
-    all: () => {
+    }),
+    all: createAction((matchedValues: T[]): T[] => {
       return matchedValues
-    },
-  }
-}
-
-export type TestDataExtractor<T> = Readonly<ReturnType<typeof createTestDataExtractor<T>>>
-
-export type TestDataFinder<T, H> = (
-  predicateBuilder: (helpersWithOperators: H & TestDataFinderOperators<T>) => TestDataPredicate<T>,
-) => TestDataExtractor<T>
-
-export const createTestDataFinder = <T, H>(
-  data: T[],
-  helpersBuilder: (operators: TestDataFinderOperators<T>) => H,
-): TestDataFinder<T, H> => {
-  const operators = createTestDataFinderOperators<T>()
-
-  const helpersWithOperators: H & TestDataFinderOperators<T> = {
-    ...helpersBuilder(operators),
-    ...operators,
-  }
-
-  return (
-    predicateBuilder: (helpers: H & TestDataFinderOperators<T>) => TestDataPredicate<T>,
-  ): TestDataExtractor<T> => {
-    const predicate = predicateBuilder(helpersWithOperators)
-
-    const matchedValues = data.filter(predicate)
-
-    return createTestDataExtractor(matchedValues)
+    }),
   }
 }
