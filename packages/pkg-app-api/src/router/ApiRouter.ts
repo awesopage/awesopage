@@ -1,13 +1,13 @@
 import { withIronSessionApiRoute } from 'iron-session/next'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import type { NextHandler } from 'next-connect'
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 import { createRouter } from 'next-connect'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
 import { createLogger } from 'pkg-app-api/src/common/LoggingUtils'
-import { sendApiError } from 'pkg-app-api/src/router/ApiResponse'
+import { sendApiError } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { findUserByEmail } from 'pkg-app-api/src/user/UserService'
 import type { User } from 'pkg-app-model/client'
+import type { ApiConfig } from 'pkg-app-shared/src/common/ApiConfig'
 import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 
 const logger = createLogger('ApiRouter')
@@ -17,37 +17,6 @@ declare module 'iron-session' {
   interface IronSessionData {
     email?: string
   }
-}
-
-export const checkSignedIn = () => {
-  return async (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
-    const reqWithUser = req as NextApiRequest & { currentUser?: User }
-    const { email } = reqWithUser.session
-
-    if (!email) {
-      logger.debug(`Session does not have email`)
-
-      return sendApiError(res, 'UNAUTHORIZED')
-    }
-
-    const user: User = await prismaClient.$transaction((dbClient) => {
-      return findUserByEmail(dbClient, email)
-    })
-
-    reqWithUser.currentUser = user
-
-    return next()
-  }
-}
-
-export const requireCurrentUser = (req: NextApiRequest): User => {
-  const { currentUser } = req as NextApiRequest & { currentUser: User }
-
-  if (!currentUser) {
-    throw new Error('Request does not have user')
-  }
-
-  return currentUser
 }
 
 export const createApiRouter = () => {
@@ -88,4 +57,43 @@ export const createApiRouter = () => {
   }
 
   return router
+}
+
+export const withApiConfig = <T, P>(config: ApiConfig<T, P>, handler: NextApiHandler<T>): NextApiHandler<T> => {
+  return async (req: NextApiRequest, res: NextApiResponse<T>) => {
+    const method = req.method?.toLowerCase()
+
+    if (method !== config.method) {
+      throw new Error(`Method does not match, expected ${config.method} but got ${method}`)
+    }
+
+    if (config.isSignInRequired) {
+      const reqWithUser = req as NextApiRequest & { currentUser?: User }
+      const { email } = reqWithUser.session
+
+      if (!email) {
+        logger.debug(`Session does not have email`)
+
+        return sendApiError(res, 'UNAUTHORIZED')
+      }
+
+      const user: User = await prismaClient.$transaction((dbClient) => {
+        return findUserByEmail(dbClient, email)
+      })
+
+      reqWithUser.currentUser = user
+    }
+
+    await handler(req, res)
+  }
+}
+
+export const requireCurrentUser = (req: NextApiRequest): User => {
+  const { currentUser } = req as NextApiRequest & { currentUser: User }
+
+  if (!currentUser) {
+    throw new Error('Request does not have user')
+  }
+
+  return currentUser
 }

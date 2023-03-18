@@ -1,12 +1,12 @@
 import 'scripts/lib/dotenv-loader.js'
 
-import assert from 'node:assert'
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 
 import killPort from 'kill-port'
 import wretch from 'wretch'
 
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { delay } from 'scripts/lib/script-utils'
 
 const globalTeardown = async () => {
@@ -16,7 +16,7 @@ const globalTeardown = async () => {
 
   const apiCoverageJSON = await wretch(process.env.INTERNAL_APP_BASE_URL).post({}, '/api/__test/coverage').text()
 
-  assert.ok(process.env.LOCAL_WORKSPACE_PATH)
+  assertDefined(process.env.LOCAL_WORKSPACE_PATH, 'LOCAL_WORKSPACE_PATH')
 
   const apiCoveragePath = path.join(process.env.LOCAL_WORKSPACE_PATH, 'output/test/coverage/tmp/api_coverage.json')
   await fsp.mkdir(path.dirname(apiCoveragePath), { recursive: true })

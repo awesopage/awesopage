@@ -58,11 +58,11 @@ export type UpdateListOptions = Readonly<{
 export const updateList = async (dbClient: DbClient, options: UpdateListOptions): Promise<List> => {
   const { owner, repo, description, starCount, tags, updatedByUser } = options
 
-  requireRole(updatedByUser, 'REVIEWER')
-
-  await dbClient.list.findUniqueOrThrow({
+  const existingList = await dbClient.list.findUniqueOrThrow({
     where: { owner_repo: { owner, repo } },
   })
+
+  requireRole(updatedByUser, existingList.isApproved ? ['ADMIN'] : ['ADMIN', 'REVIEWER'])
 
   const list = await dbClient.list.update({
     where: { owner_repo: { owner, repo } },
@@ -86,11 +86,15 @@ export type ApproveListOptions = Readonly<{
 export const approveList = async (dbClient: DbClient, options: ApproveListOptions): Promise<List> => {
   const { owner, repo, approvedByUser } = options
 
-  requireRole(approvedByUser, 'REVIEWER')
+  requireRole(approvedByUser, ['REVIEWER'])
 
   const existingList = await dbClient.list.findUniqueOrThrow({
     where: { owner_repo: { owner, repo } },
   })
+
+  if (existingList.isApproved) {
+    throw new Error(`List ${owner}/${repo} is already approved`)
+  }
 
   if (approvedByUser.id === existingList.requestedById) {
     throw new Error(`User ${approvedByUser.email} cannot approve their own requested list ${owner}/${repo}`)
@@ -116,15 +120,12 @@ export const findActiveLists = async (dbClient: DbClient): Promise<List[]> => {
   return lists
 }
 
-export type FindListByOwnerAndRepoOptions = Readonly<{
+export type FindListByKeyOptions = Readonly<{
   owner: string
   repo: string
 }>
 
-export const findListByOwnerAndRepo = async (
-  dbClient: DbClient,
-  options: FindListByOwnerAndRepoOptions,
-): Promise<ListDetails> => {
+export const findListByKey = async (dbClient: DbClient, options: FindListByKeyOptions): Promise<ListDetails> => {
   const { owner, repo } = options
 
   const list = await dbClient.list.findUniqueOrThrow({
@@ -148,13 +149,13 @@ export type SetListStatusOptions = Readonly<{
 export const setListStatus = async (dbClient: DbClient, options: SetListStatusOptions): Promise<List> => {
   const { owner, repo, status, updatedByUser } = options
 
-  requireRole(updatedByUser, 'ADMIN')
+  requireRole(updatedByUser, ['ADMIN'])
 
   const existingList = await dbClient.list.findUniqueOrThrow({
     where: { owner_repo: { owner, repo } },
   })
 
-  if (status !== 'INACTIVE' && !existingList.isApproved) {
+  if (status === 'ACTIVE' && !existingList.isApproved) {
     throw new Error(`Cannot set status ${status} for unapproved list ${owner}/${repo}`)
   }
 

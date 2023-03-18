@@ -1,28 +1,31 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { requireListOwnerAndRepo } from 'pkg-app-api/src/list/ListApiHelper'
-import { mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
-import { approveList } from 'pkg-app-api/src/list/ListService'
-import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponse'
-import { checkSignedIn, createApiRouter, requireCurrentUser } from 'pkg-app-api/src/router/ApiRouter'
-import type { List } from 'pkg-app-model/client'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
+import { requireListKey } from 'pkg-app-api/src/list/ListApiHelper'
+import { mapListDetailsToDTO } from 'pkg-app-api/src/list/ListMapper'
+import type { ListDetails } from 'pkg-app-api/src/list/ListService'
+import { approveList, findListByKey } from 'pkg-app-api/src/list/ListService'
+import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
+import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
+import { approveListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApprovalApiConfig'
 
 export const listByKeyApprovalApiHandler: NextApiHandler = createApiRouter()
-  .use(checkSignedIn())
-  .post(async (req, res: NextApiResponse<ListDTO>) => {
-    const currentUser = requireCurrentUser(req)
-    const { owner, repo } = requireListOwnerAndRepo(req)
+  .post(
+    withApiConfig(approveListApiConfig, async (req, res) => {
+      const currentUser = requireCurrentUser(req)
+      const { owner, repo } = requireListKey(req)
 
-    const list: List = await prismaClient.$transaction((dbClient) => {
-      return approveList(dbClient, {
-        owner,
-        repo,
-        approvedByUser: currentUser,
+      const listDetails: ListDetails = await prismaClient.$transaction(async (dbClient) => {
+        await approveList(dbClient, {
+          owner,
+          repo,
+          approvedByUser: currentUser,
+        })
+
+        return findListByKey(dbClient, { owner, repo })
       })
-    })
 
-    sendApiResponse(res, mapListToDTO(list))
-  })
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
+    }),
+  )
   .handler()

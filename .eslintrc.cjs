@@ -61,7 +61,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.spec.ts'],
+      files: ['tests/**/*.ts'],
       rules: {
         'sonarjs/cognitive-complexity': 'off',
         'sonarjs/no-duplicate-string': 'off',

@@ -1,53 +1,97 @@
-import type { APIRequestContext, APIResponse } from '@playwright/test'
+import { setListStatusApiConfig } from 'pkg-app-shared/src/list/ListByKeyStatusApiConfig'
+import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
+import { testListFinder } from 'tests/data/TestListData'
+import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
-import type { SetListStatusDTO } from 'pkg-app-shared/src/list/ListApiOptions'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
-import { expect, test } from 'tests/common/TestUtils'
-import { findTestUser, withAuth } from 'tests/data/TestUserData'
+const setListStatus = createTestApiRequest(setListStatusApiConfig)
 
-const getSetListStatusResponse = async (
-  request: APIRequestContext,
-  owner: string,
-  repo: string,
-  options: SetListStatusDTO,
-): Promise<APIResponse> => {
-  return request.put(`/api/lists/${owner}/${repo}/status`, { data: options })
-}
+test.describe(setListStatusApiConfig.name, () => {
+  test.describe('given signed in as admin and status is ACTIVE and list is inactive and approved', () => {
+    const testList = testListFinder.any(({ hasStatus, isApproved, and }) => and(hasStatus('INACTIVE'), isApproved))
 
-test.describe('given signed in as admin', () => {
-  withAuth(findTestUser(({ hasRole }) => hasRole('ADMIN')).any())
+    withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-  test.describe('when set approved-list status', () => {
-    test('should receive correct list', async ({ request }) => {
-      const setStatusListResponse = await getSetListStatusResponse(request, 'owner1', 'repo1', { status: 'ACTIVE' })
-
-      const list: ListDTO = await setStatusListResponse.json()
-
-      expect(list).toMatchObject({
-        owner: 'owner1',
-        repo: 'repo1',
+    test('should return correct list', async ({ request }) => {
+      const setListStatusResponse = await setListStatus(request, {
+        owner: testList.owner,
+        repo: testList.repo,
         status: 'ACTIVE',
       })
-    })
-  })
+      const listDetails = await setListStatusResponse.json()
 
-  test.describe('when set unapproved-list status', () => {
-    test('should receive error', async ({ request }) => {
-      const setStatusListResponse = await getSetListStatusResponse(request, 'owner2', 'repo4', { status: 'ACTIVE' })
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: testList.owner,
+        repo: testList.repo,
+        status: 'ACTIVE',
+        isApproved: true,
+      }
 
-      expect(setStatusListResponse.ok()).toBe(false)
+      expect(listDetails).toMatchObject(expectedListDetails)
     })
   })
 })
 
-test.describe('given signed in but not admin', () => {
-  withAuth(findTestUser(({ hasRole, not }) => not(hasRole('ADMIN'))).any())
+test.describe(setListStatusApiConfig.name, () => {
+  test.describe('given signed in as admin and status is ACTIVE and list is inactive and unapproved', () => {
+    const testList = testListFinder.any(({ hasStatus, isApproved, and, not }) =>
+      and(hasStatus('INACTIVE'), not(isApproved)),
+    )
 
-  test.describe('when set list status', () => {
-    test('should receive error', async ({ request }) => {
-      const setStatusListResponse = await getSetListStatusResponse(request, 'owner1', 'repo1', { status: 'ACTIVE' })
+    withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-      expect(setStatusListResponse.ok()).toBe(false)
+    test('should return error', async ({ request }) => {
+      const setListStatusResponse = await setListStatus(request, {
+        owner: testList.owner,
+        repo: testList.repo,
+        status: 'ACTIVE',
+      })
+
+      expect(setListStatusResponse.ok()).toBe(false)
+    })
+  })
+})
+
+test.describe(setListStatusApiConfig.name, () => {
+  test.describe('given signed in as admin and status is INACTIVE and list is active and approved', () => {
+    const testList = testListFinder.any(({ hasStatus, isApproved, and }) => and(hasStatus('ACTIVE'), isApproved))
+
+    withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
+
+    test('should return correct list', async ({ request }) => {
+      const setListStatusResponse = await setListStatus(request, {
+        owner: testList.owner,
+        repo: testList.repo,
+        status: 'INACTIVE',
+      })
+      const listDetails = await setListStatusResponse.json()
+
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: testList.owner,
+        repo: testList.repo,
+        status: 'INACTIVE',
+        isApproved: true,
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
+    })
+  })
+})
+
+test.describe(setListStatusApiConfig.name, () => {
+  test.describe('given signed in but not admin', () => {
+    const testList = testListFinder.any(({ hasStatus, isApproved, and }) => and(hasStatus('INACTIVE'), isApproved))
+
+    withAuth(testUserFinder.any(({ hasRole, not }) => not(hasRole('ADMIN'))))
+
+    test('should return error', async ({ request }) => {
+      const setListStatusResponse = await setListStatus(request, {
+        owner: testList.owner,
+        repo: testList.repo,
+        status: 'ACTIVE',
+      })
+
+      expect(setListStatusResponse.ok()).toBe(false)
     })
   })
 })

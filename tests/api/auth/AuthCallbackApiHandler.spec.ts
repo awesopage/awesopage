@@ -1,81 +1,106 @@
 import * as iron from '@hapi/iron'
-import type { APIRequestContext, APIResponse } from '@playwright/test'
 
 import type { AuthInfo } from 'pkg-app-api/src/auth/AuthService'
+import { handleAuthTokenApiConfig } from 'pkg-app-shared/src/auth/AuthCallbackApiConfig'
+import { getCurrentUserApiConfig } from 'pkg-app-shared/src/auth/AuthMeApiConfig'
+import type { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
 import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
-import { expect, test } from 'tests/common/TestUtils'
+import type { TestApiResponse } from 'tests/common/TestUtils'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 
-const getAuthCallbackResponse = async (request: APIRequestContext, token: string): Promise<APIResponse> => {
-  return request.post(`/api/auth/callback?token=${encodeURIComponent(token)}`)
-}
+const handleAuthToken = createTestApiRequest(handleAuthTokenApiConfig)
+const getCurrentUser = createTestApiRequest(getCurrentUserApiConfig)
 
 const testReturnUrl = `${process.env.NEXT_PUBLIC_APP_BASE_URL}/welcome`
 
-test.describe('given not signed in', () => {
-  test.describe('when provide valid token to auth callback', () => {
-    test('should receive correct user', async ({ request }) => {
+test.describe(handleAuthTokenApiConfig.name, () => {
+  test.describe('given valid token without return url', () => {
+    test('should create session and return correct user', async ({ request }) => {
       const token = await getAuthToken({
         email: 'test_user@example.com',
         displayName: 'Test User',
       })
 
-      const authCallbackResponse = await getAuthCallbackResponse(request, token)
-      const user: UserDTO = await authCallbackResponse.json()
+      const handleAuthTokenResponse = await handleAuthToken(request, token)
+      const user = await handleAuthTokenResponse.json()
 
-      expect(user).toMatchObject({
+      const expectedUser: Partial<UserDTO> = {
         email: 'test_user@example.com',
         displayName: 'Test User',
-      })
+      }
+
+      expect(user).toMatchObject(expectedUser)
+
+      const getCurrentUserResponse = await getCurrentUser(request)
+      const authMe = await getCurrentUserResponse.json()
+
+      expect(authMe.user).toMatchObject(expectedUser)
     })
   })
+})
 
-  test.describe('when provide valid token with return url to auth callback', () => {
-    test('should receive session and be moved to correct url', async ({ request }) => {
+test.describe(handleAuthTokenApiConfig.name, () => {
+  test.describe('given valid token with return url', () => {
+    test('should create session and redirect to correct url', async ({ request }) => {
       const token = await getAuthToken({
         email: 'test_user@example.com',
         returnUrl: testReturnUrl,
       })
 
-      const authCallbackResponse = await getAuthCallbackResponse(request, token)
+      const handleAuthTokenResponse = await handleAuthToken(request, token)
 
-      expect(authCallbackResponse.url()).toBe(testReturnUrl)
+      expect(handleAuthTokenResponse.url()).toBe(testReturnUrl)
+
+      const getCurrentUserResponse = await getCurrentUser(request)
+      const authMe = await getCurrentUserResponse.json()
+
+      expect(authMe.user).toBeDefined()
     })
   })
+})
 
-  test.describe('when provide valid token but with invalid email to auth callback', () => {
-    test('should receive error', async ({ request }) => {
+test.describe(handleAuthTokenApiConfig.name, () => {
+  test.describe('given valid token but with invalid email', () => {
+    test('should create no session and redirect to auth error page', async ({ request }) => {
       const token = await getAuthToken({
         email: 'test_user',
         returnUrl: testReturnUrl,
       })
 
-      const authCallbackResponse = await getAuthCallbackResponse(request, token)
+      const handleAuthTokenResponse = await handleAuthToken(request, token)
+      const getCurrentUserResponse = await getCurrentUser(request)
 
-      await expectAuthCallbackError(authCallbackResponse)
+      await expectAuthCallbackError(handleAuthTokenResponse, getCurrentUserResponse)
     })
   })
+})
 
-  test.describe('when provide valid token but from different secret to auth callback', () => {
-    test('should receive error', async ({ request }) => {
+test.describe(handleAuthTokenApiConfig.name, () => {
+  test.describe('given valid token but from different secret', () => {
+    test('should create no session and redirect to auth error page', async ({ request }) => {
       const token = await getAuthToken(
         {
-          email: 'test_user',
+          email: 'test_user@example.com',
           returnUrl: testReturnUrl,
         },
         'local__app__auth__different__secret',
       )
 
-      const authCallbackResponse = await getAuthCallbackResponse(request, token)
+      const handleAuthTokenResponse = await handleAuthToken(request, token)
+      const getCurrentUserResponse = await getCurrentUser(request)
 
-      await expectAuthCallbackError(authCallbackResponse)
+      await expectAuthCallbackError(handleAuthTokenResponse, getCurrentUserResponse)
     })
   })
+})
 
-  test.describe('when provide invalid token to auth callback', () => {
-    test('should receive error', async ({ request }) => {
-      const authCallbackResponse = await getAuthCallbackResponse(request, 'test_token')
+test.describe(handleAuthTokenApiConfig.name, () => {
+  test.describe('given invalid token', () => {
+    test('should create no session and redirect to auth error page', async ({ request }) => {
+      const handleAuthTokenResponse = await handleAuthToken(request, 'test_token')
+      const getCurrentUserResponse = await getCurrentUser(request)
 
-      await expectAuthCallbackError(authCallbackResponse)
+      await expectAuthCallbackError(handleAuthTokenResponse, getCurrentUserResponse)
     })
   })
 })
@@ -87,6 +112,13 @@ const getAuthToken = (authInfo: AuthInfo, secret?: string): Promise<string> => {
   })
 }
 
-const expectAuthCallbackError = async (authCallbackResponse: APIResponse) => {
-  expect(authCallbackResponse.url()).toBe(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth-error`)
+const expectAuthCallbackError = async (
+  handleAuthTokenResponse: TestApiResponse<UserDTO>,
+  getCurrentUserResponse: TestApiResponse<AuthMeDTO>,
+) => {
+  expect(handleAuthTokenResponse.url()).toBe(`${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth-error`)
+
+  const authMe = await getCurrentUserResponse.json()
+
+  expect(authMe.user).toBeUndefined()
 }

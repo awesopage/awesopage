@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponse'
+import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter } from 'pkg-app-api/src/router/ApiRouter'
 import { createTestLists } from 'tests/data/TestListService'
 import { createTestUsers } from 'tests/data/TestUserService'

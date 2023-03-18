@@ -1,22 +1,21 @@
-import type { APIRequestContext, APIResponse } from '@playwright/test'
-
+import { getHealthStatusApiConfig } from 'pkg-app-shared/src/server/HealthApiConfig'
 import type { HealthStatusDTO } from 'pkg-app-shared/src/server/HealthStatusDTO'
-import { expect, test } from 'tests/common/TestUtils'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 
-const getHealthStatusResponse = async (request: APIRequestContext): Promise<APIResponse> => {
-  return request.get('/api/server/health')
-}
+const getHealthStatus = createTestApiRequest(getHealthStatusApiConfig)
 
-test.describe('given working system', () => {
-  test.describe('when get health status', () => {
-    test('should receive correct status', async ({ request }) => {
-      const healthStatusResponse = await getHealthStatusResponse(request)
-      const healthStatus: HealthStatusDTO = await healthStatusResponse.json()
+test.describe(getHealthStatusApiConfig.name, () => {
+  test.describe('given working system', () => {
+    test('should return correct status', async ({ request }) => {
+      const getHealthStatusResponse = await getHealthStatus(request)
+      const healthStatus = await getHealthStatusResponse.json()
 
-      expect(healthStatus).toEqual({
+      const expectedHealthStatus: HealthStatusDTO = {
         ok: true,
         database: true,
-      })
+      }
+
+      expect(healthStatus).toEqual(expectedHealthStatus)
     })
   })
 })

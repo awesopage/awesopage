@@ -2,7 +2,7 @@ import * as iron from '@hapi/iron'
 import type { NextApiHandler } from 'next'
 
 import type { AuthInfo } from 'pkg-app-api/src/auth/AuthService'
-import { redirectApiResponse } from 'pkg-app-api/src/router/ApiResponse'
+import { redirectApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter } from 'pkg-app-api/src/router/ApiRouter'
 import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 

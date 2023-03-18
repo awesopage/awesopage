@@ -1,41 +1,45 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { requireListOwnerAndRepo } from 'pkg-app-api/src/list/ListApiHelper'
-import { mapListDetailsToDTO, mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
+import { requireListKey } from 'pkg-app-api/src/list/ListApiHelper'
+import { mapListDetailsToDTO } from 'pkg-app-api/src/list/ListMapper'
 import type { ListDetails } from 'pkg-app-api/src/list/ListService'
-import { findListByOwnerAndRepo, updateList } from 'pkg-app-api/src/list/ListService'
-import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponse'
-import { checkSignedIn, createApiRouter, requireCurrentUser } from 'pkg-app-api/src/router/ApiRouter'
-import type { List } from 'pkg-app-model/client'
-import type { UpdateListOptionsDTO } from 'pkg-app-shared/src/list/ListApiOptions'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
+import { findListByKey, updateList } from 'pkg-app-api/src/list/ListService'
+import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
+import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
+import type { UpdateListOptionsDTO } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
+import { findListByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
 
 export const listByKeyApiHandler: NextApiHandler = createApiRouter()
-  .get(async (req, res: NextApiResponse<ListDTO>) => {
-    const { owner, repo } = requireListOwnerAndRepo(req)
+  .patch(
+    withApiConfig(updateListApiConfig, async (req, res) => {
+      const { description, starCount, tags } = req.body as UpdateListOptionsDTO
+      const currentUser = requireCurrentUser(req)
+      const { owner, repo } = requireListKey(req)
 
-    const listDetails: ListDetails = await findListByOwnerAndRepo(prismaClient, { owner, repo })
+      const listDetails: ListDetails = await prismaClient.$transaction(async (dbClient) => {
+        await updateList(dbClient, {
+          owner,
+          repo,
+          description,
+          starCount,
+          tags,
+          updatedByUser: currentUser,
+        })
 
-    sendApiResponse(res, mapListDetailsToDTO(listDetails))
-  })
-  .use(checkSignedIn())
-  .patch(async (req, res: NextApiResponse<ListDTO>) => {
-    const { description, starCount, tags } = req.body as UpdateListOptionsDTO
-    const currentUser = requireCurrentUser(req)
-    const { owner, repo } = requireListOwnerAndRepo(req)
-
-    const list: List = await prismaClient.$transaction((dbClient) => {
-      return updateList(dbClient, {
-        owner,
-        repo,
-        description,
-        starCount,
-        tags,
-        updatedByUser: currentUser,
+        return findListByKey(dbClient, { owner, repo })
       })
-    })
 
-    sendApiResponse(res, mapListToDTO(list))
-  })
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
+    }),
+  )
+  .get(
+    withApiConfig(findListByKeyApiConfig, async (req, res) => {
+      const { owner, repo } = requireListKey(req)
+
+      const listDetails: ListDetails = await findListByKey(prismaClient, { owner, repo })
+
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
+    }),
+  )
   .handler()

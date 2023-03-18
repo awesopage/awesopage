@@ -1,28 +1,29 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponse'
-import { checkSignedIn, createApiRouter, requireCurrentUser } from 'pkg-app-api/src/router/ApiRouter'
+import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
+import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
 import { mapUserToDTO } from 'pkg-app-api/src/user/UserMapper'
-import { assignUserRoles } from 'pkg-app-api/src/user/UserService'
+import { assignRoles } from 'pkg-app-api/src/user/UserService'
 import type { User } from 'pkg-app-model/client'
-import type { AssignUserRolesOptionsDTO } from 'pkg-app-shared/src/user/RoleApiOptions'
-import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import type { AssignRolesOptionsDTO } from 'pkg-app-shared/src/user/RolesApiConfig'
+import { assignRolesApiConfig } from 'pkg-app-shared/src/user/RolesApiConfig'
 
 export const rolesApiHandler: NextApiHandler = createApiRouter()
-  .use(checkSignedIn())
-  .post(async (req, res: NextApiResponse<UserDTO>) => {
-    const { email, roles } = req.body as AssignUserRolesOptionsDTO
-    const currentUser = requireCurrentUser(req)
+  .post(
+    withApiConfig(assignRolesApiConfig, async (req, res) => {
+      const { email, roles } = req.body as AssignRolesOptionsDTO
+      const currentUser = requireCurrentUser(req)
 
-    const user: User = await prismaClient.$transaction((dbClient) => {
-      return assignUserRoles(dbClient, {
-        email,
-        roles,
-        assignedByUser: currentUser,
+      const user: User = await prismaClient.$transaction((dbClient) => {
+        return assignRoles(dbClient, {
+          email,
+          roles,
+          assignedByUser: currentUser,
+        })
       })
-    })
 
-    sendApiResponse(res, mapUserToDTO(user))
-  })
+      sendApiResponse(res, mapUserToDTO(user))
+    }),
+  )
   .handler()

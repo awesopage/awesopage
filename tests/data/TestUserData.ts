@@ -1,8 +1,7 @@
-import assert from 'node:assert'
-
 import type { RoleEnum } from 'pkg-app-model/client'
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { test } from 'tests/common/TestUtils'
-import type { TestDataPredicate } from 'tests/data/TestDataFinder'
+import type { Predicate } from 'tests/data/TestDataFinder'
 import { createTestDataFinder } from 'tests/data/TestDataFinder'
 
 export type TestUser = Readonly<{
@@ -48,16 +47,16 @@ export const withAuth = (testUser: TestUser) => {
   })
 }
 
-export const findTestUser = createTestDataFinder(testUsers, ({ and }) => {
-  assert.ok(process.env.APP_ROLE_MANAGER_EMAIL)
+export const testUserFinder = createTestDataFinder(testUsers, ({ and }) => {
+  assertDefined(process.env.APP_ROLE_MANAGER_EMAIL, 'APP_ROLE_MANAGER_EMAIL')
 
-  const hasRole = (role: RoleEnum): TestDataPredicate<TestUser> => {
+  const hasRole = (role: RoleEnum): Predicate<TestUser> => {
     return ({ roles }) => !!roles?.includes(role)
   }
 
-  const hasNoRole: TestDataPredicate<TestUser> = ({ roles }) => !roles?.length
+  const hasNoRole: Predicate<TestUser> = ({ roles }) => !roles?.length
 
-  const isRoleManager: TestDataPredicate<TestUser> = and(
+  const isRoleManager: Predicate<TestUser> = and(
     hasRole('ADMIN'),
     ({ email }) => email === process.env.APP_ROLE_MANAGER_EMAIL,
   )

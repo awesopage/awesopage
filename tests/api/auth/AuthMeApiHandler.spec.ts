@@ -1,36 +1,36 @@
-import type { APIRequestContext, APIResponse } from '@playwright/test'
+import { getCurrentUserApiConfig } from 'pkg-app-shared/src/auth/AuthMeApiConfig'
+import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
+import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
-import type { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
-import { expect, test } from 'tests/common/TestUtils'
-import { findTestUser, withAuth } from 'tests/data/TestUserData'
+const getCurrentUser = createTestApiRequest(getCurrentUserApiConfig)
 
-const getAuthMeResponse = async (request: APIRequestContext): Promise<APIResponse> => {
-  return request.get('/api/auth/me')
-}
+test.describe(getCurrentUserApiConfig.name, () => {
+  test.describe('given signed in', () => {
+    const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
 
-test.describe('given signed in', () => {
-  const user = findTestUser(({ hasNoRole }) => hasNoRole).any()
+    withAuth(user)
 
-  withAuth(user)
+    test('should return correct user', async ({ request }) => {
+      const getCurrentUserResponse = await getCurrentUser(request)
+      const authMe = await getCurrentUserResponse.json()
 
-  test.describe('when get current user', () => {
-    test('should receive correct user', async ({ request }) => {
-      const authMeResponse = await getAuthMeResponse(request)
-      const authMe: AuthMeDTO = await authMeResponse.json()
-
-      expect(authMe.user).toMatchObject({
+      const expectedUser: Partial<UserDTO> = {
         email: user.email,
         displayName: user.displayName,
-      })
+        roles: user.roles ?? [],
+      }
+
+      expect(authMe.user).toMatchObject(expectedUser)
     })
   })
 })
 
-test.describe('given not signed in', () => {
-  test.describe('when get current user', () => {
-    test('should receive no user', async ({ request }) => {
-      const authMeResponse = await getAuthMeResponse(request)
-      const authMe: AuthMeDTO = await authMeResponse.json()
+test.describe(getCurrentUserApiConfig.name, () => {
+  test.describe('given not signed in', () => {
+    test('should return no user', async ({ request }) => {
+      const getCurrentUserResponse = await getCurrentUser(request)
+      const authMe = await getCurrentUserResponse.json()
 
       expect(authMe.user).toBeUndefined()
     })

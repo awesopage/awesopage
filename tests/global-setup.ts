@@ -1,12 +1,12 @@
 import 'scripts/lib/dotenv-loader.js'
 
-import assert from 'node:assert'
 import fs from 'node:fs'
 import fsp from 'node:fs/promises'
 import path from 'node:path'
 
 import { request } from '@playwright/test'
 
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { runCommand } from 'scripts/lib/script-utils'
 
 // All user names from tests/data/TestUserData.ts
@@ -32,9 +32,9 @@ const collectAuthStates = async () => {
 }
 
 const globalSetup = async () => {
-  assert.ok(process.env.LOCAL_WORKSPACE_PATH)
-  assert.ok(process.env.DATABASE_OPERATION_LOG_PATH)
-  assert.ok(process.env.TEST_DATA_LOG_PATH)
+  assertDefined(process.env.LOCAL_WORKSPACE_PATH, 'LOCAL_WORKSPACE_PATH')
+  assertDefined(process.env.DATABASE_OPERATION_LOG_PATH, 'DATABASE_OPERATION_LOG_PATH')
+  assertDefined(process.env.TEST_DATA_LOG_PATH, 'TEST_DATA_LOG_PATH')
 
   const operationLogPath = path.join(process.env.LOCAL_WORKSPACE_PATH, process.env.DATABASE_OPERATION_LOG_PATH)
   const testDataLogPath = path.join(process.env.LOCAL_WORKSPACE_PATH, process.env.TEST_DATA_LOG_PATH)

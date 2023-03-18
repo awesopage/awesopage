@@ -1,35 +1,41 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
-import { createList, findActiveLists } from 'pkg-app-api/src/list/ListService'
-import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponse'
-import { checkSignedIn, createApiRouter, requireCurrentUser } from 'pkg-app-api/src/router/ApiRouter'
+import { mapListDetailsToDTO, mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
+import type { ListDetails } from 'pkg-app-api/src/list/ListService'
+import { createList, findActiveLists, findListByKey } from 'pkg-app-api/src/list/ListService'
+import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
+import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
 import type { List } from 'pkg-app-model/client'
-import type { CreateListOptionsDTO } from 'pkg-app-shared/src/list/ListApiOptions'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
+import type { CreateListOptionsDTO } from 'pkg-app-shared/src/list/ListsApiConfig'
+import { createListApiConfig, findActiveListsApiConfig } from 'pkg-app-shared/src/list/ListsApiConfig'
 
 export const listsApiHandler: NextApiHandler = createApiRouter()
-  .get(async (req, res: NextApiResponse<ListDTO[]>) => {
-    const lists: List[] = await prismaClient.$transaction((dbClient) => {
-      return findActiveLists(dbClient)
-    })
-
-    sendApiResponse(res, lists.map(mapListToDTO))
-  })
-  .use(checkSignedIn())
-  .post(async (req, res: NextApiResponse<ListDTO>) => {
-    const { owner, repo } = req.body as CreateListOptionsDTO
-    const currentUser = requireCurrentUser(req)
-
-    const list: List = await prismaClient.$transaction((dbClient) => {
-      return createList(dbClient, {
-        owner,
-        repo,
-        requestedByUser: currentUser,
+  .get(
+    withApiConfig(findActiveListsApiConfig, async (req, res) => {
+      const lists: List[] = await prismaClient.$transaction((dbClient) => {
+        return findActiveLists(dbClient)
       })
-    })
 
-    sendApiResponse(res, mapListToDTO(list))
-  })
+      sendApiResponse(res, lists.map(mapListToDTO))
+    }),
+  )
+  .post(
+    withApiConfig(createListApiConfig, async (req, res) => {
+      const { owner, repo } = req.body as CreateListOptionsDTO
+      const currentUser = requireCurrentUser(req)
+
+      const listDetails: ListDetails = await prismaClient.$transaction(async (dbClient) => {
+        await createList(dbClient, {
+          owner,
+          repo,
+          requestedByUser: currentUser,
+        })
+
+        return findListByKey(dbClient, { owner, repo })
+      })
+
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
+    }),
+  )
   .handler()
