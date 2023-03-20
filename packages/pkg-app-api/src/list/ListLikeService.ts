@@ -1,14 +1,14 @@
 import type { DbClient } from 'pkg-app-api/src/common/DbClient'
 import type { List, ListLike, User } from 'pkg-app-model/client'
 
-export type FindOrCreateListFollowerOptions = Readonly<{
+export type FindOrCreateListLikeOptions = Readonly<{
   list: List
   user: User
 }>
 
 export const findOrCreateListLike = async (
   dbClient: DbClient,
-  options: FindOrCreateListFollowerOptions,
+  options: FindOrCreateListLikeOptions,
 ): Promise<ListLike> => {
   const { list, user } = options
 

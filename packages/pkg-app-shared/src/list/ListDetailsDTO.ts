@@ -3,6 +3,7 @@ import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
 
 export type ListDetailsDTO = ListDTO &
   Readonly<{
+    likeCount: number
     requestedBy: UserDTO
     approvedBy?: UserDTO
   }>

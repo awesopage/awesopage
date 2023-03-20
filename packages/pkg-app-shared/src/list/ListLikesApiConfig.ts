@@ -1,17 +1,17 @@
 import type { ApiConfig } from 'pkg-app-shared/src/common/ApiConfig'
+import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
 import type { ListKeyDTO } from 'pkg-app-shared/src/list/ListKeyDTO'
-import type { ListLikeDTO } from 'pkg-app-shared/src/list/ListLikeDTO'
 
-export const likeListApiConfig: ApiConfig<ListLikeDTO, ListKeyDTO> = {
+export const likeListApiConfig: ApiConfig<ListDetailsDTO, ListKeyDTO> = {
   name: 'like list',
-  method: 'put',
-  getPath: ({ owner, repo }) => `/api/lists/${owner}/${repo}/like`,
+  method: 'post',
+  getPath: ({ owner, repo }) => `/api/lists/${owner}/${repo}/likes`,
   isSignInRequired: true,
 }
 
-export const unlikeListApiConfig: ApiConfig<void, ListKeyDTO> = {
+export const unlikeListApiConfig: ApiConfig<ListDetailsDTO, ListKeyDTO> = {
   name: 'unlike list',
   method: 'delete',
-  getPath: ({ owner, repo }) => `/api/lists/${owner}/${repo}/like`,
+  getPath: ({ owner, repo }) => `/api/lists/${owner}/${repo}/likes`,
   isSignInRequired: true,
 }

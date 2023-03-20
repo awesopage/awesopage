@@ -1,32 +1,33 @@
-import type { NextApiHandler, NextApiResponse } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
 import { requireListKey } from 'pkg-app-api/src/list/ListApiHelper'
-import { mapListLikeToDTO } from 'pkg-app-api/src/list/ListLikeMapper'
 import { findOrCreateListLike, removeListLike } from 'pkg-app-api/src/list/ListLikeService'
-import { findListByKey } from 'pkg-app-api/src/list/ListService'
+import { mapListDetailsToDTO } from 'pkg-app-api/src/list/ListMapper'
+import type { ListDetails } from 'pkg-app-api/src/list/ListService'
+import { findListByKey, findListDetailsByKey } from 'pkg-app-api/src/list/ListService'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
-import type { ListLike } from 'pkg-app-model/client'
-import type { ListLikeDTO } from 'pkg-app-shared/src/list/ListLikeDTO'
 import { likeListApiConfig, unlikeListApiConfig } from 'pkg-app-shared/src/list/ListLikesApiConfig'
 
 export const listLikesApiHandler: NextApiHandler = createApiRouter()
-  .put(
-    withApiConfig(likeListApiConfig, async (req, res: NextApiResponse<ListLikeDTO>) => {
+  .post(
+    withApiConfig(likeListApiConfig, async (req, res) => {
       const currentUser = requireCurrentUser(req)
       const { owner, repo } = requireListKey(req)
 
-      const listLike: ListLike = await prismaClient.$transaction(async (dbClient) => {
+      const listDetails: ListDetails = await prismaClient.$transaction(async (dbClient) => {
         const list = await findListByKey(dbClient, { owner, repo })
 
-        return findOrCreateListLike(dbClient, {
+        await findOrCreateListLike(dbClient, {
           list,
           user: currentUser,
         })
+
+        return findListDetailsByKey(dbClient, { owner, repo })
       })
 
-      sendApiResponse(res, mapListLikeToDTO(listLike))
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
     }),
   )
   .delete(
@@ -34,16 +35,18 @@ export const listLikesApiHandler: NextApiHandler = createApiRouter()
       const currentUser = requireCurrentUser(req)
       const { owner, repo } = requireListKey(req)
 
-      await prismaClient.$transaction(async (dbClient) => {
+      const listDetails: ListDetails = await prismaClient.$transaction(async (dbClient) => {
         const list = await findListByKey(dbClient, { owner, repo })
 
-        return removeListLike(dbClient, {
+        await removeListLike(dbClient, {
           list,
           user: currentUser,
         })
+
+        return findListDetailsByKey(dbClient, { owner, repo })
       })
 
-      sendApiResponse(res, undefined)
+      sendApiResponse(res, mapListDetailsToDTO(listDetails))
     }),
   )
   .handler()

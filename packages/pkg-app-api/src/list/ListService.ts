@@ -10,6 +10,7 @@ export type ListKey = Readonly<{
 
 export type ListDetails = List &
   Readonly<{
+    likeCount: number
     requestedBy: User
     approvedBy?: User
   }>
@@ -131,13 +132,20 @@ export const findListByKey = async (dbClient: DbClient, key: ListKey): Promise<L
 }
 
 export const findListDetailsByKey = async (dbClient: DbClient, key: ListKey): Promise<ListDetails> => {
-  const list = await dbClient.list.findUniqueOrThrow({
+  const { _count, ...list } = await dbClient.list.findUniqueOrThrow({
     where: { owner_repo: key },
-    include: { requestedBy: true, approvedBy: true },
+    include: {
+      requestedBy: true,
+      approvedBy: true,
+      _count: {
+        select: { likes: true },
+      },
+    },
   })
 
   return {
     ...list,
+    likeCount: _count.likes,
     approvedBy: maybe(list.approvedBy),
   }
 }

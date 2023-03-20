@@ -4,7 +4,7 @@ import { findListByKey } from 'pkg-app-api/src/list/ListService'
 import { findUserByEmail } from 'pkg-app-api/src/user/UserService'
 import { testListLikes } from 'tests/data/TestListLikeData'
 
-export const createTestListLikes = async () => {
+export const likedByEmails = async () => {
   await prismaClient.$transaction(async (dbClient) => {
     for (const testListLike of testListLikes) {
       const { owner, repo, likeEmails } = testListLike
