@@ -61,12 +61,6 @@ export const createApiRouter = () => {
 
 export const withApiConfig = <T, P>(config: ApiConfig<T, P>, handler: NextApiHandler<T>): NextApiHandler<T> => {
   return async (req: NextApiRequest, res: NextApiResponse<T>) => {
-    const method = req.method?.toLowerCase()
-
-    if (method !== config.method) {
-      throw new Error(`Method does not match, expected ${config.method} but got ${method}`)
-    }
-
     if (config.isSignInRequired) {
       const reqWithUser = req as NextApiRequest & { currentUser?: User }
       const { email } = reqWithUser.session
