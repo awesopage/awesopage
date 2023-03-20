@@ -5,5 +5,27 @@
   "javascript.format.semicolons": "remove",
   "typescript.format.semicolons": "remove",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 4922,
+      "driver": "CockroachDB",
+      "name": "ap_local",
+      "database": "defaultdb",
+      "username": "root",
+      "password": ""
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 4822,
+      "driver": "CockroachDB",
+      "name": "ap_test",
+      "database": "defaultdb",
+      "username": "root",
+      "password": ""
+    }
+  ]
 }
