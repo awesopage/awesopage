@@ -100,14 +100,15 @@ model Resource {
 
 model ResourceLink {
   id BigInt @id @default(autoincrement())
-  description String
-  tags String[]
   resourceId BigInt @map("resource_id")
   listId BigInt @map("list_id")
+  description String
+  tags String[]
 
   list List @relation(fields: [listId], references: [id])
   resource Resource @relation(fields: [resourceId], references: [id])
 
+  @@unique([resourceId, listId])
   @@map("resource_link")
 }
 

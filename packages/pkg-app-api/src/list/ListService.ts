@@ -122,6 +122,14 @@ export const findActiveLists = async (dbClient: DbClient): Promise<List[]> => {
   return lists
 }
 
+export const findListByKey = async (dbClient: DbClient, key: ListKey): Promise<List> => {
+  const list = await dbClient.list.findUniqueOrThrow({
+    where: { owner_repo: key },
+  })
+
+  return list
+}
+
 export const findListDetailsByKey = async (dbClient: DbClient, key: ListKey): Promise<ListDetails> => {
   const list = await dbClient.list.findUniqueOrThrow({
     where: { owner_repo: key },
