@@ -1,11 +1,11 @@
-import { findListByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
+import { findListDetailsByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
 import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const updateList = createTestApiRequest(updateListApiConfig)
-const findListByKey = createTestApiRequest(findListByKeyApiConfig)
+const findListDetailsByKey = createTestApiRequest(findListDetailsByKeyApiConfig)
 
 test.describe(updateListApiConfig.name, () => {
   test.describe('given signed in as reviewer and list is unapproved', () => {
@@ -107,16 +107,16 @@ test.describe(updateListApiConfig.name, () => {
   })
 })
 
-test.describe(findListByKeyApiConfig.name, () => {
+test.describe(findListDetailsByKeyApiConfig.name, () => {
   test.describe('given valid key', () => {
     const testList = testListFinder.any()
 
     test('should return correct list', async ({ request }) => {
-      const findListByKeyResponse = await findListByKey(request, {
+      const findListDetailsByKeyResponse = await findListDetailsByKey(request, {
         owner: testList.owner,
         repo: testList.repo,
       })
-      const listDetails = await findListByKeyResponse.json()
+      const listDetails = await findListDetailsByKeyResponse.json()
 
       const expectedListDetails: Partial<ListDetailsDTO> = {
         owner: testList.owner,
@@ -133,15 +133,15 @@ test.describe(findListByKeyApiConfig.name, () => {
   })
 })
 
-test.describe(findListByKeyApiConfig.name, () => {
+test.describe(findListDetailsByKeyApiConfig.name, () => {
   test.describe('given invalid key', () => {
     test('should return error', async ({ request }) => {
-      const findListByKeyResponse = await findListByKey(request, {
+      const findListDetailsByKeyResponse = await findListDetailsByKey(request, {
         owner: 'unknown_owner',
         repo: 'unknown_repo',
       })
 
-      expect(findListByKeyResponse.ok()).toBe(false)
+      expect(findListDetailsByKeyResponse.ok()).toBe(false)
     })
   })
 })

@@ -3,17 +3,21 @@ import { maybe } from 'pkg-app-api/src/common/DbClient'
 import { requireRole } from 'pkg-app-api/src/user/RoleChecker'
 import type { List, ListStatusEnum, User } from 'pkg-app-model/client'
 
+export type ListKey = Readonly<{
+  owner: string
+  repo: string
+}>
+
 export type ListDetails = List &
   Readonly<{
     requestedBy: User
     approvedBy?: User
   }>
 
-export type CreateListOptions = Readonly<{
-  owner: string
-  repo: string
-  requestedByUser: User
-}>
+export type CreateListOptions = ListKey &
+  Readonly<{
+    requestedByUser: User
+  }>
 
 export const createList = async (dbClient: DbClient, options: CreateListOptions): Promise<List> => {
   const { owner, repo, requestedByUser } = options
@@ -46,14 +50,13 @@ export const createList = async (dbClient: DbClient, options: CreateListOptions)
   return list
 }
 
-export type UpdateListOptions = Readonly<{
-  owner: string
-  repo: string
-  description?: string
-  starCount?: number
-  tags?: string[]
-  updatedByUser: User
-}>
+export type UpdateListOptions = ListKey &
+  Readonly<{
+    description?: string
+    starCount?: number
+    tags?: string[]
+    updatedByUser: User
+  }>
 
 export const updateList = async (dbClient: DbClient, options: UpdateListOptions): Promise<List> => {
   const { owner, repo, description, starCount, tags, updatedByUser } = options
@@ -77,11 +80,10 @@ export const updateList = async (dbClient: DbClient, options: UpdateListOptions)
   return list
 }
 
-export type ApproveListOptions = Readonly<{
-  owner: string
-  repo: string
-  approvedByUser: User
-}>
+export type ApproveListOptions = ListKey &
+  Readonly<{
+    approvedByUser: User
+  }>
 
 export const approveList = async (dbClient: DbClient, options: ApproveListOptions): Promise<List> => {
   const { owner, repo, approvedByUser } = options
@@ -120,16 +122,9 @@ export const findActiveLists = async (dbClient: DbClient): Promise<List[]> => {
   return lists
 }
 
-export type FindListByKeyOptions = Readonly<{
-  owner: string
-  repo: string
-}>
-
-export const findListByKey = async (dbClient: DbClient, options: FindListByKeyOptions): Promise<ListDetails> => {
-  const { owner, repo } = options
-
+export const findListDetailsByKey = async (dbClient: DbClient, key: ListKey): Promise<ListDetails> => {
   const list = await dbClient.list.findUniqueOrThrow({
-    where: { owner_repo: { owner, repo } },
+    where: { owner_repo: key },
     include: { requestedBy: true, approvedBy: true },
   })
 
@@ -139,12 +134,11 @@ export const findListByKey = async (dbClient: DbClient, options: FindListByKeyOp
   }
 }
 
-export type SetListStatusOptions = Readonly<{
-  owner: string
-  repo: string
-  status: ListStatusEnum
-  updatedByUser: User
-}>
+export type SetListStatusOptions = ListKey &
+  Readonly<{
+    status: ListStatusEnum
+    updatedByUser: User
+  }>
 
 export const setListStatus = async (dbClient: DbClient, options: SetListStatusOptions): Promise<List> => {
   const { owner, repo, status, updatedByUser } = options

@@ -1,11 +1,9 @@
 import type { ApiConfig } from 'pkg-app-shared/src/common/ApiConfig'
 import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
 import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
+import type { ListKeyDTO } from 'pkg-app-shared/src/list/ListKeyDTO'
 
-export type CreateListOptionsDTO = Readonly<{
-  owner: string
-  repo: string
-}>
+export type CreateListOptionsDTO = ListKeyDTO
 
 export const createListApiConfig: ApiConfig<ListDetailsDTO, CreateListOptionsDTO> = {
   name: 'create list',

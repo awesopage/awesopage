@@ -4,7 +4,7 @@ import { prismaClient } from 'pkg-app-api/src/common/DbClient'
 import { requireListKey } from 'pkg-app-api/src/list/ListApiHelper'
 import { mapListDetailsToDTO } from 'pkg-app-api/src/list/ListMapper'
 import type { ListDetails } from 'pkg-app-api/src/list/ListService'
-import { approveList, findListByKey } from 'pkg-app-api/src/list/ListService'
+import { approveList, findListDetailsByKey } from 'pkg-app-api/src/list/ListService'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
 import { approveListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApprovalApiConfig'
@@ -22,7 +22,7 @@ export const listByKeyApprovalApiHandler: NextApiHandler = createApiRouter()
           approvedByUser: currentUser,
         })
 
-        return findListByKey(dbClient, { owner, repo })
+        return findListDetailsByKey(dbClient, { owner, repo })
       })
 
       sendApiResponse(res, mapListDetailsToDTO(listDetails))

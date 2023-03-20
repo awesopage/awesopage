@@ -3,7 +3,7 @@ import type { NextApiHandler } from 'next'
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
 import { mapListDetailsToDTO, mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
 import type { ListDetails } from 'pkg-app-api/src/list/ListService'
-import { createList, findActiveLists, findListByKey } from 'pkg-app-api/src/list/ListService'
+import { createList, findActiveLists, findListDetailsByKey } from 'pkg-app-api/src/list/ListService'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
 import type { List } from 'pkg-app-model/client'
@@ -32,7 +32,7 @@ export const listsApiHandler: NextApiHandler = createApiRouter()
           requestedByUser: currentUser,
         })
 
-        return findListByKey(dbClient, { owner, repo })
+        return findListDetailsByKey(dbClient, { owner, repo })
       })
 
       sendApiResponse(res, mapListDetailsToDTO(listDetails))

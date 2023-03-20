@@ -16,8 +16,8 @@ export const updateListApiConfig: ApiConfig<ListDetailsDTO, UpdateListOptionsDTO
   isSignInRequired: true,
 }
 
-export const findListByKeyApiConfig: ApiConfig<ListDetailsDTO, ListKeyDTO> = {
-  name: 'find list by key',
+export const findListDetailsByKeyApiConfig: ApiConfig<ListDetailsDTO, ListKeyDTO> = {
+  name: 'find list details by key',
   method: 'get',
   getPath: ({ owner, repo }) => `/api/lists/${owner}/${repo}`,
   isSignInRequired: false,
