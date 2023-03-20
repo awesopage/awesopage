@@ -8,25 +8,23 @@ import { request } from '@playwright/test'
 
 import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { runCommand } from 'scripts/lib/script-utils'
-
-// All user names from tests/data/TestUserData.ts
-const TEST_USER_NAMES = ['admin1', 'admin2', 'reviewer1', 'reviewer2', 'user1', 'user2']
+import { testUsers } from 'tests/data/TestUserData'
 
 const collectAuthStates = async () => {
   console.log()
-  console.log(`Collecting auth states for ${TEST_USER_NAMES.length} users...`)
+  console.log(`Collecting auth states for ${testUsers.length} users...`)
   console.log()
 
-  for (const testUserName of TEST_USER_NAMES) {
+  for (const testUser of testUsers) {
     const requestContext = await request.newContext()
 
     await requestContext.post(`${process.env.INTERNAL_APP_BASE_URL}/api/__test/auth`, {
-      data: {
-        email: `${testUserName}@example.com`,
-      },
+      data: { email: testUser.email },
     })
 
-    await requestContext.storageState({ path: `output/test/playwright/setup/${testUserName}-auth-state.json` })
+    await requestContext.storageState({
+      path: `output/test/playwright/setup/${testUser.email.split('@')[0]}-auth-state.json`,
+    })
     await requestContext.dispose()
   }
 }

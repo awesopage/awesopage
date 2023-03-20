@@ -11,7 +11,9 @@ import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 
 export const expect = baseExpect
 
-export const testDataApi = wretch(`${process.env.INTERNAL_APP_BASE_URL}/api/__test/data`)
+export const resetTestData = async () => {
+  await wretch(process.env.INTERNAL_APP_BASE_URL).post({}, '/api/__test/data/reset').res()
+}
 
 type CustomFixtures = Readonly<{
   testData: void
@@ -35,7 +37,7 @@ export const test = baseTest.extend<CustomFixtures>({
       const isDatabaseDirty = !!writeOperationCount
 
       if (isDatabaseDirty) {
-        await testDataApi.post({}, '/reset').res()
+        await resetTestData()
       }
 
       const testDataLogPath = path.join(process.env.LOCAL_WORKSPACE_PATH, process.env.TEST_DATA_LOG_PATH)

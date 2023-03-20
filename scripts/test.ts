@@ -9,7 +9,7 @@ import wretch from 'wretch'
 
 import { isMainModule, runScript } from 'scripts/lib/script-runner.js'
 import { waitFor } from 'scripts/lib/script-utils'
-import { testDataApi } from 'tests/common/TestUtils'
+import { resetTestData } from 'tests/common/TestUtils'
 
 const getTestStats = (summary: JSONReport) => {
   const stats = {
@@ -59,7 +59,7 @@ const taskById: Record<string, (argv: string[]) => Promise<void>> = {
       return true
     })
 
-    await testDataApi.post({}, '/reset').res()
+    await resetTestData()
   },
   'run-with-app': async (argv) => {
     const testArgv = argv.map((argv) => `"${argv}"`).join(' ')

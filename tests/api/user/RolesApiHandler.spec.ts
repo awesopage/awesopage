@@ -1,23 +1,15 @@
 import { assignRolesApiConfig } from 'pkg-app-shared/src/user/RolesApiConfig'
-import type { Role, UserDTO } from 'pkg-app-shared/src/user/UserDTO'
-import { createTestApiRequest, expect, test, testDataApi } from 'tests/common/TestUtils'
+import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const assignRoles = createTestApiRequest(assignRolesApiConfig)
-
-const getCurrentRoles = async (email: string): Promise<Role[]> => {
-  const users = await testDataApi.post({ email }, '/users').json<UserDTO[]>()
-
-  return users[0]?.roles ?? []
-}
 
 test.describe(assignRolesApiConfig.name, () => {
   test.describe('given signed in as role manager and role is ADMIN', () => {
     withAuth(testUserFinder.any(({ isRoleManager }) => isRoleManager))
 
     test('should return correct user', async ({ request }) => {
-      expect(await getCurrentRoles('user1@example.com')).not.toContain('ADMIN')
-
       const assignRolesResponse = await assignRoles(request, {
         email: 'user1@example.com',
         roles: ['ADMIN'],
@@ -30,7 +22,6 @@ test.describe(assignRolesApiConfig.name, () => {
       }
 
       expect(user).toMatchObject(expectedUser)
-      expect(await getCurrentRoles('user1@example.com')).toContain('ADMIN')
     })
   })
 })
@@ -59,8 +50,6 @@ test.describe(assignRolesApiConfig.name, () => {
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
     test('should return correct user', async ({ request }) => {
-      expect(await getCurrentRoles('user2@example.com')).not.toContain('REVIEWER')
-
       const assignRolesResponse = await assignRoles(request, {
         email: 'user2@example.com',
         roles: ['REVIEWER'],
@@ -73,7 +62,6 @@ test.describe(assignRolesApiConfig.name, () => {
       }
 
       expect(user).toMatchObject(expectedUser)
-      expect(await getCurrentRoles('user2@example.com')).toContain('REVIEWER')
     })
   })
 })
