@@ -38,10 +38,11 @@ export const mapListToDTO = (list: List): ListDTO => {
 }
 
 export const mapListDetailsToDTO = (listDetails: ListDetails): ListDetailsDTO => {
-  const { requestedBy, approvedBy } = listDetails
+  const { requestedBy, approvedBy, likeCount } = listDetails
 
   return {
     ...mapListToDTO(listDetails),
+    likeCount,
     requestedBy: mapUserToDTO(requestedBy),
     approvedBy: approvedBy ? mapUserToDTO(approvedBy) : undefined,
   }
