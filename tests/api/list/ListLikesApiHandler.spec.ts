@@ -8,9 +8,9 @@ const unlikeList = createTestApiRequest(unlikeListApiConfig)
 
 test.describe(likeListApiConfig.name, () => {
   test.describe('given signed in and list is not liked yet', () => {
-    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
-
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
+
+    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
 
     withAuth(user)
 
@@ -26,9 +26,9 @@ test.describe(likeListApiConfig.name, () => {
 
 test.describe(likeListApiConfig.name, () => {
   test.describe('given signed in and list is already liked', () => {
-    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
-
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
+
+    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
 
     withAuth(user)
 
@@ -56,9 +56,9 @@ test.describe(likeListApiConfig.name, () => {
 
 test.describe(unlikeListApiConfig.name, () => {
   test.describe('given signed in and list is not liked yet', () => {
-    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
-
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
+
+    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
 
     withAuth(user)
 
@@ -74,9 +74,9 @@ test.describe(unlikeListApiConfig.name, () => {
 
 test.describe(unlikeListApiConfig.name, () => {
   test.describe('given signed in and list is already liked', () => {
-    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
-
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
+
+    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
 
     withAuth(user)
 
