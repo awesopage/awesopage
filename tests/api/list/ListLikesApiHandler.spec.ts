@@ -8,13 +8,13 @@ const unlikeList = createTestApiRequest(unlikeListApiConfig)
 
 test.describe(likeListApiConfig.name, () => {
   test.describe('given signed in and list is not liked yet', () => {
+    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
+
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
 
     withAuth(user)
 
-    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
-
-    test('should receive correct list like', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const likeListResponse = await likeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
       const listDetails = await likeListResponse.json()
@@ -22,15 +22,17 @@ test.describe(likeListApiConfig.name, () => {
       expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length + 1)
     })
   })
+})
 
+test.describe(likeListApiConfig.name, () => {
   test.describe('given signed in and list is already liked', () => {
+    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
+
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
 
     withAuth(user)
 
-    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
-
-    test('should receive correct list like', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const likeListResponse = await likeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
       const listDetails = await likeListResponse.json()
@@ -38,7 +40,9 @@ test.describe(likeListApiConfig.name, () => {
       expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length)
     })
   })
+})
 
+test.describe(likeListApiConfig.name, () => {
   test.describe('given not signed in', () => {
     const testList = testListLikeFinder.any()
 
@@ -52,13 +56,13 @@ test.describe(likeListApiConfig.name, () => {
 
 test.describe(unlikeListApiConfig.name, () => {
   test.describe('given signed in and list is not liked yet', () => {
+    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
+
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
 
     withAuth(user)
 
-    const testListLike = testListLikeFinder.any(({ isLikedBy, not }) => not(isLikedBy(user.email)))
-
-    test('should receive correct list unlike', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const unlikeListResponse = await unlikeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
       const listDetails = await unlikeListResponse.json()
@@ -66,15 +70,17 @@ test.describe(unlikeListApiConfig.name, () => {
       expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length)
     })
   })
+})
 
+test.describe(unlikeListApiConfig.name, () => {
   test.describe('given signed in and list is already liked', () => {
+    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
+
     const user = testUserFinder.any(({ hasNoRole }) => hasNoRole)
 
     withAuth(user)
 
-    const testListLike = testListLikeFinder.any(({ isLikedBy }) => isLikedBy(user.email))
-
-    test('should receive correct list unlike', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const unlikeListResponse = await unlikeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
       const listDetails = await unlikeListResponse.json()
@@ -82,7 +88,9 @@ test.describe(unlikeListApiConfig.name, () => {
       expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length - 1)
     })
   })
+})
 
+test.describe(unlikeListApiConfig.name, () => {
   test.describe('given not signed in', () => {
     const testList = testListLikeFinder.any()
 
