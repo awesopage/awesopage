@@ -1,3 +1,4 @@
+import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
 import { likeListApiConfig, unlikeListApiConfig } from 'pkg-app-shared/src/list/ListLikesApiConfig'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListLikeFinder } from 'tests/data/TestListLikeData'
@@ -19,7 +20,13 @@ test.describe(likeListApiConfig.name, () => {
 
       const listDetails = await likeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length + 1)
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: testListLike.owner,
+        repo: testListLike.repo,
+        likeCount: testListLike.likedByEmails.length + 1,
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
     })
   })
 })
@@ -37,7 +44,13 @@ test.describe(likeListApiConfig.name, () => {
 
       const listDetails = await likeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length)
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: testListLike.owner,
+        repo: testListLike.repo,
+        likeCount: testListLike.likedByEmails.length,
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
     })
   })
 })
@@ -46,7 +59,7 @@ test.describe(likeListApiConfig.name, () => {
   test.describe('given not signed in', () => {
     const testList = testListLikeFinder.any()
 
-    test('should receive error', async ({ request }) => {
+    test('should return error', async ({ request }) => {
       const likeListResponse = await likeList(request, { owner: testList.owner, repo: testList.repo })
 
       expect(likeListResponse.ok()).toBe(false)
@@ -67,7 +80,13 @@ test.describe(unlikeListApiConfig.name, () => {
 
       const listDetails = await unlikeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length)
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: testListLike.owner,
+        repo: testListLike.repo,
+        likeCount: testListLike.likedByEmails.length,
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
     })
   })
 })
@@ -85,7 +104,13 @@ test.describe(unlikeListApiConfig.name, () => {
 
       const listDetails = await unlikeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length - 1)
+      const expectedListDetails: Partial<ListDetailsDTO> = {
+        owner: testListLike.owner,
+        repo: testListLike.repo,
+        likeCount: testListLike.likedByEmails.length - 1,
+      }
+
+      expect(listDetails).toMatchObject(expectedListDetails)
     })
   })
 })
@@ -94,7 +119,7 @@ test.describe(unlikeListApiConfig.name, () => {
   test.describe('given not signed in', () => {
     const testList = testListLikeFinder.any()
 
-    test('should receive error', async ({ request }) => {
+    test('should return error', async ({ request }) => {
       const unlikeListResponse = await unlikeList(request, { owner: testList.owner, repo: testList.repo })
 
       expect(unlikeListResponse.ok()).toBe(false)
