@@ -4,30 +4,30 @@ import { createTestDataFinder } from 'tests/data/TestDataFinder'
 export type TestListLike = Readonly<{
   owner: string
   repo: string
-  likeEmails: string[]
+  likedByEmails: string[]
 }>
 
 export const testListLikes: TestListLike[] = [
   {
     owner: 'owner1',
     repo: 'repo1',
-    likeEmails: ['user1@example.com'],
+    likedByEmails: ['user1@example.com'],
   },
   {
     owner: 'owner1',
     repo: 'repo2',
-    likeEmails: ['user2@example.com'],
+    likedByEmails: ['user2@example.com'],
   },
   {
     owner: 'owner2',
     repo: 'repo3',
-    likeEmails: ['user1@example.com', 'user2@example.com'],
+    likedByEmails: ['user1@example.com', 'user2@example.com'],
   },
 ]
 
 export const testListLikeFinder = createTestDataFinder(testListLikes, () => {
   const isLikedBy = (email: string): Predicate<TestListLike> => {
-    return ({ likeEmails }) => likeEmails.includes(email)
+    return ({ likedByEmails }) => likedByEmails.includes(email)
   }
 
   return { isLikedBy }

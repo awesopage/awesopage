@@ -3,7 +3,7 @@ import type { NextApiHandler } from 'next'
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter } from 'pkg-app-api/src/router/ApiRouter'
-import { likedByEmails } from 'tests/data/TestListLikeService'
+import { createTestListLikes } from 'tests/data/TestListLikeService'
 import { createTestLists } from 'tests/data/TestListService'
 import { createTestResources } from 'tests/data/TestResourceService'
 import { createTestUsers } from 'tests/data/TestUserService'
@@ -23,7 +23,7 @@ const resetTestData = async () => {
   await createTestUsers()
   await createTestLists()
   await createTestResources()
-  await likedByEmails()
+  await createTestListLikes()
 }
 
 const truncateAllTables = async (): Promise<string[]> => {

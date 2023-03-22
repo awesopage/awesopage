@@ -38,7 +38,7 @@ export type RemoveListLikeOptions = Readonly<{
 export const removeListLike = async (dbClient: DbClient, options: RemoveListLikeOptions) => {
   const { list, user } = options
 
-  // delete issue: https://github.com/prisma/prisma/issues/9460
+  // Use deleteMany due to https://github.com/prisma/prisma/issues/9460
   await dbClient.listLike.deleteMany({
     where: {
       listId: list.id,

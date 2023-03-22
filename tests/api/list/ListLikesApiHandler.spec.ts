@@ -19,7 +19,7 @@ test.describe(likeListApiConfig.name, () => {
 
       const listDetails = await likeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likeEmails.length + 1)
+      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length + 1)
     })
   })
 
@@ -35,7 +35,7 @@ test.describe(likeListApiConfig.name, () => {
 
       const listDetails = await likeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likeEmails.length)
+      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length)
     })
   })
 
@@ -63,7 +63,7 @@ test.describe(unlikeListApiConfig.name, () => {
 
       const listDetails = await unlikeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likeEmails.length)
+      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length)
     })
   })
 
@@ -79,7 +79,7 @@ test.describe(unlikeListApiConfig.name, () => {
 
       const listDetails = await unlikeListResponse.json()
 
-      expect(listDetails.likeCount).toEqual(testListLike.likeEmails.length - 1)
+      expect(listDetails.likeCount).toEqual(testListLike.likedByEmails.length - 1)
     })
   })
 

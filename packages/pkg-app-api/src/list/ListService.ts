@@ -132,7 +132,7 @@ export const findListByKey = async (dbClient: DbClient, key: ListKey): Promise<L
 }
 
 export const findListDetailsByKey = async (dbClient: DbClient, key: ListKey): Promise<ListDetails> => {
-  const { _count, ...list } = await dbClient.list.findUniqueOrThrow({
+  const { _count, ...listDetails } = await dbClient.list.findUniqueOrThrow({
     where: { owner_repo: key },
     include: {
       requestedBy: true,
@@ -144,9 +144,9 @@ export const findListDetailsByKey = async (dbClient: DbClient, key: ListKey): Pr
   })
 
   return {
-    ...list,
+    ...listDetails,
     likeCount: _count.likes,
-    approvedBy: maybe(list.approvedBy),
+    approvedBy: maybe(listDetails.approvedBy),
   }
 }
 
