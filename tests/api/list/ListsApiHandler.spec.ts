@@ -16,7 +16,7 @@ test.describe(createListApiConfig.name, () => {
 
     withAuth(user)
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const createListResponse = await createList(request, {
         owner: 'test_owner',
         repo: 'test_repo',

@@ -26,7 +26,7 @@ test.describe(approveListApiConfig.name, () => {
 
     withAuth(reviewer)
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const approveListResponse = await approveList(request, {
         owner: listRequestedByDiffUser.owner,
         repo: listRequestedByDiffUser.repo,

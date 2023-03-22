@@ -12,7 +12,7 @@ test.describe(setListStatusApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const setListStatusResponse = await setListStatus(request, {
         owner: testList.owner,
         repo: testList.repo,
@@ -58,7 +58,7 @@ test.describe(setListStatusApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const setListStatusResponse = await setListStatus(request, {
         owner: testList.owner,
         repo: testList.repo,

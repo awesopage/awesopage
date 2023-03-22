@@ -13,7 +13,7 @@ test.describe(updateListApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('REVIEWER')))
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const updateListResponse = await updateList(request, {
         owner: testList.owner,
         repo: testList.repo,
@@ -63,7 +63,7 @@ test.describe(updateListApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const updateListResponse = await updateList(request, {
         owner: testList.owner,
         repo: testList.repo,
@@ -111,7 +111,7 @@ test.describe(findListDetailsByKeyApiConfig.name, () => {
   test.describe('given valid key', () => {
     const testList = testListFinder.any()
 
-    test('should return correct list', async ({ request }) => {
+    test('should return correct list details', async ({ request }) => {
       const findListDetailsByKeyResponse = await findListDetailsByKey(request, {
         owner: testList.owner,
         repo: testList.repo,
