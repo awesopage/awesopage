@@ -1,6 +1,7 @@
 import parseUrl from 'parse-url'
 
 import type { DbClient } from 'pkg-app-api/src/common/DbClient'
+import type { ListKey } from 'pkg-app-api/src/list/ListService'
 import type { List, Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
 
 export type CreateResourceOptions = Readonly<{
@@ -65,4 +66,67 @@ export const linkResource = async (dbClient: DbClient, options: LinkResourceOpti
   })
 
   return resourceLink
+}
+
+export type ResourceLinkWithList = ResourceLink &
+  Readonly<{
+    list: List
+  }>
+
+export type ResourceWithLinks = Resource &
+  Readonly<{
+    links: ResourceLinkWithList[]
+  }>
+
+export const findResources = async (dbClient: DbClient): Promise<ResourceWithLinks[]> => {
+  const resources = await dbClient.resource.findMany({
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resources
+}
+
+export const findResourceById = async (dbClient: DbClient, resourceId: bigint): Promise<ResourceWithLinks> => {
+  const resource = await dbClient.resource.findUniqueOrThrow({
+    where: { id: resourceId },
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resource
+}
+
+export const findResourcesByListKey = async (dbClient: DbClient, key: ListKey): Promise<ResourceWithLinks[]> => {
+  const resources = await dbClient.resource.findMany({
+    where: {
+      links: {
+        some: {
+          list: {
+            owner: key.owner,
+            repo: key.repo,
+          },
+        },
+      },
+    },
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resources
 }

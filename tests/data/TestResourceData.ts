@@ -1,4 +1,5 @@
 import type { ResourceTypeEnum } from 'pkg-app-model/client'
+import type { Predicate } from 'tests/data/TestDataFinder'
 import { createTestDataFinder } from 'tests/data/TestDataFinder'
 
 export type TestResourceLink = Readonly<{
@@ -196,5 +197,9 @@ export const testResources: TestResource[] = testListContents.reduce((resources:
 }, [])
 
 export const testResourceFinder = createTestDataFinder(testResources, () => {
-  return {}
+  const hasListKey = (owner: string, repo: string): Predicate<TestResource> => {
+    return ({ links }) => !!links.find((link) => link.listOwner === owner && link.listRepo === repo)
+  }
+
+  return { hasListKey }
 })
