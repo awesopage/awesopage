@@ -64,7 +64,7 @@
     "playwright-test-coverage": "1.2.12",
     "prettier": "2.8.7",
     "prisma": "4.11.0",
-    "swc-plugin-coverage-instrument": "0.0.15",
+    "swc-plugin-coverage-instrument": "0.0.14",
     "tsx": "3.12.6",
     "typescript": "4.9.5"
   }

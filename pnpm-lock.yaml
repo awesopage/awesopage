@@ -39,7 +39,7 @@ importers:
       prisma: 4.11.0
       react: 18.2.0
       react-dom: 18.2.0
-      swc-plugin-coverage-instrument: 0.0.15
+      swc-plugin-coverage-instrument: 0.0.14
       tsx: 3.12.6
       typescript: 4.9.5
       wretch: 2.5.1
@@ -81,7 +81,7 @@ importers:
       playwright-test-coverage: 1.2.12_@playwright+test@1.32.1
       prettier: 2.8.7
       prisma: 4.11.0
-      swc-plugin-coverage-instrument: 0.0.15
+      swc-plugin-coverage-instrument: 0.0.14
       tsx: 3.12.6
       typescript: 4.9.5
 
@@ -4662,8 +4662,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /swc-plugin-coverage-instrument/0.0.15:
-    resolution: {integrity: sha512-SFyCGr75EwfSBLPdI0/3E1dxaxwVbcsgFym/xg9plSxopCpmpXjsiqZedeF7i2qXM1ciR4khrSs1SgiBaAtClQ==}
+  /swc-plugin-coverage-instrument/0.0.14:
+    resolution: {integrity: sha512-bTti+296N3Okb7GOjZMn034nAaptywz3GgPF5WTp3b8FWOCuO9I9wldoBYFYPqk0tWNFbeNQKtxREMOnGEWTMg==}
     dev: true
 
   /synckit/0.8.5:
