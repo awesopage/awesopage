@@ -1,4 +1,8 @@
+import fastSort from 'fast-sort'
+
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { getResourcesByListKeyApiConfig } from 'pkg-app-shared/src/list/ListByKeyResourcesApiConfig'
+import type { ResourceDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListFinder } from 'tests/data/TestListData'
 import { testResourceFinder } from 'tests/data/TestResourceData'
@@ -10,22 +14,35 @@ test.describe(getResourcesByListKeyApiConfig.name, () => {
     const testActiveLists = testListFinder.all(({ hasStatus }) => hasStatus('ACTIVE'))
     const testList = testActiveLists.find(
       (testActiveList) =>
-        !!testResourceFinder.any(({ hasListKey }) => hasListKey(testActiveList.owner, testActiveList.repo)),
+        !!testResourceFinder.any(({ hasLinkToList }) => hasLinkToList(testActiveList.owner, testActiveList.repo)),
     )
 
+    assertDefined(testList, 'testList')
+
+    const testResources = testResourceFinder.all(({ hasLinkToList }) => hasLinkToList(testList.owner, testList.repo))
+    fastSort.inPlaceSort(testResources).asc(['url'])
+
     test('should return correct resources', async ({ request }) => {
-      expect(testList).toBeTruthy()
-      const owner = testList?.owner || ''
-      const repo = testList?.repo || ''
-
-      const getResourcesByListKeyResponse = await getResourcesByListKey(request, { owner, repo })
+      const getResourcesByListKeyResponse = await getResourcesByListKey(request, {
+        owner: testList.owner,
+        repo: testList.repo,
+      })
       const resources = await getResourcesByListKeyResponse.json()
+      fastSort.inPlaceSort(resources).asc(['url'])
 
-      const expectedResources = testResourceFinder.all(({ hasListKey }) => hasListKey(owner, repo))
+      const expectedResources = testResources.map(
+        (testResource): Partial<ResourceDTO> => ({
+          url: testResource.url,
+          type: testResource.type,
+          links: testResource.links,
+        }),
+      )
 
-      expect(resources.length).toBe(expectedResources.length)
+      expect(resources.length).toBe(testResources.length)
 
-      expect(resources).toMatchObject(expectedResources)
+      resources.forEach((resource, index) => {
+        expect(resource).toMatchObject(expectedResources[index] ?? {})
+      })
     })
   })
 })

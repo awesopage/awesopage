@@ -197,9 +197,9 @@ export const testResources: TestResource[] = testListContents.reduce((resources:
 }, [])
 
 export const testResourceFinder = createTestDataFinder(testResources, () => {
-  const hasListKey = (owner: string, repo: string): Predicate<TestResource> => {
-    return ({ links }) => !!links.find((link) => link.listOwner === owner && link.listRepo === repo)
+  const hasLinkToList = (owner: string, repo: string): Predicate<TestResource> => {
+    return ({ links }) => links.some((link) => link.listOwner === owner && link.listRepo === repo)
   }
 
-  return { hasListKey }
+  return { hasLinkToList }
 })

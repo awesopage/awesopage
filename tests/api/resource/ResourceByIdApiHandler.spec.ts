@@ -1,3 +1,4 @@
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { findResourceByIdApiConfig } from 'pkg-app-shared/src/resource/ResourceByIdApiConfig'
 import type { ResourceDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
 import { findResourcesApiConfig } from 'pkg-app-shared/src/resource/ResourcesApiConfig'
@@ -14,11 +15,10 @@ test.describe(findResourceByIdApiConfig.name, () => {
     test('should return correct resource details', async ({ request }) => {
       const findResourcesResponse = await findResources(request)
       const resources = await findResourcesResponse.json()
-      const resourceId = resources.find((resource) => resource.url === testResource.url)?.id || ''
+      const foundResource = resources.find((resource) => resource.url === testResource.url)
+      assertDefined(foundResource, 'foundResource')
 
-      expect(resourceId).toBeTruthy()
-
-      const findResourceByIdResponse = await findResourceById(request, resourceId)
+      const findResourceByIdResponse = await findResourceById(request, foundResource.id)
       const resource = await findResourceByIdResponse.json()
 
       const expectedResource: Partial<ResourceDTO> = {
