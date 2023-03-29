@@ -1,6 +1,5 @@
 import fastSort from 'fast-sort'
 
-import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
 import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createListApiConfig, findActiveListsApiConfig } from 'pkg-app-shared/src/list/ListsApiConfig'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
@@ -16,14 +15,14 @@ test.describe(createListApiConfig.name, () => {
 
     withAuth(user)
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const createListResponse = await createList(request, {
         owner: 'test_owner',
         repo: 'test_repo',
       })
-      const listDetails = await createListResponse.json()
+      const list = await createListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: 'test_owner',
         repo: 'test_repo',
         status: 'INACTIVE',
@@ -33,8 +32,8 @@ test.describe(createListApiConfig.name, () => {
         isApproved: false,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
-      expect(listDetails.requestedBy.email).toBe(user.email)
+      expect(list).toMatchObject(expectedList)
+      expect(list.requestedBy.email).toBe(user.email)
     })
   })
 })
@@ -90,7 +89,7 @@ test.describe(findActiveListsApiConfig.name, () => {
       }),
     )
 
-    expect(activeLists.length).toBe(testActiveLists.length)
+    expect(activeLists.length).toBe(expectedActiveLists.length)
 
     activeLists.forEach((activeList, index) => {
       expect(activeList).toMatchObject(expectedActiveLists[index] ?? {})

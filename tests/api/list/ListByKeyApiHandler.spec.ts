@@ -1,11 +1,11 @@
-import { findListDetailsByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
-import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
+import { findListByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
+import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const updateList = createTestApiRequest(updateListApiConfig)
-const findListDetailsByKey = createTestApiRequest(findListDetailsByKeyApiConfig)
+const findListByKey = createTestApiRequest(findListByKeyApiConfig)
 
 test.describe(updateListApiConfig.name, () => {
   test.describe('given signed in as reviewer and list is unapproved', () => {
@@ -13,7 +13,7 @@ test.describe(updateListApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('REVIEWER')))
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const updateListResponse = await updateList(request, {
         owner: testList.owner,
         repo: testList.repo,
@@ -21,9 +21,9 @@ test.describe(updateListApiConfig.name, () => {
         starCount: 99,
         tags: ['test_tag'],
       })
-      const listDetails = await updateListResponse.json()
+      const list = await updateListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testList.owner,
         repo: testList.repo,
         description: 'test_description',
@@ -32,7 +32,7 @@ test.describe(updateListApiConfig.name, () => {
         isApproved: false,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
@@ -63,7 +63,7 @@ test.describe(updateListApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const updateListResponse = await updateList(request, {
         owner: testList.owner,
         repo: testList.repo,
@@ -71,9 +71,9 @@ test.describe(updateListApiConfig.name, () => {
         starCount: 99,
         tags: ['test_tag'],
       })
-      const listDetails = await updateListResponse.json()
+      const list = await updateListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testList.owner,
         repo: testList.repo,
         description: 'test_description',
@@ -82,7 +82,7 @@ test.describe(updateListApiConfig.name, () => {
         isApproved: true,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
@@ -107,18 +107,18 @@ test.describe(updateListApiConfig.name, () => {
   })
 })
 
-test.describe(findListDetailsByKeyApiConfig.name, () => {
+test.describe(findListByKeyApiConfig.name, () => {
   test.describe('given valid key', () => {
     const testList = testListFinder.any()
 
-    test('should return correct list details', async ({ request }) => {
-      const findListDetailsByKeyResponse = await findListDetailsByKey(request, {
+    test('should return correct list', async ({ request }) => {
+      const findListByKeyResponse = await findListByKey(request, {
         owner: testList.owner,
         repo: testList.repo,
       })
-      const listDetails = await findListDetailsByKeyResponse.json()
+      const list = await findListByKeyResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testList.owner,
         repo: testList.repo,
         status: testList.currentStatus,
@@ -128,20 +128,20 @@ test.describe(findListDetailsByKeyApiConfig.name, () => {
         tags: testList.tags,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
 
-test.describe(findListDetailsByKeyApiConfig.name, () => {
+test.describe(findListByKeyApiConfig.name, () => {
   test.describe('given invalid key', () => {
     test('should return error', async ({ request }) => {
-      const findListDetailsByKeyResponse = await findListDetailsByKey(request, {
+      const findListByKeyResponse = await findListByKey(request, {
         owner: 'unknown_owner',
         repo: 'unknown_repo',
       })
 
-      expect(findListDetailsByKeyResponse.ok()).toBe(false)
+      expect(findListByKeyResponse.ok()).toBe(false)
     })
   })
 })

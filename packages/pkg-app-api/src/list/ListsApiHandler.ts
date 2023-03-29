@@ -1,23 +1,22 @@
 import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
-import { mapListDetailsToDTO, mapListToDTO } from 'pkg-app-api/src/list/ListMapper'
+import { mapListDetailsToDTO } from 'pkg-app-api/src/list/ListMapper'
 import type { ListDetails } from 'pkg-app-api/src/list/ListService'
-import { createList, findActiveLists, findListDetailsByKey } from 'pkg-app-api/src/list/ListService'
+import { createList, findActiveListDetails, findListDetailsByKey } from 'pkg-app-api/src/list/ListService'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
-import type { List } from 'pkg-app-model/client'
 import type { CreateListOptionsDTO } from 'pkg-app-shared/src/list/ListsApiConfig'
 import { createListApiConfig, findActiveListsApiConfig } from 'pkg-app-shared/src/list/ListsApiConfig'
 
 export const listsApiHandler: NextApiHandler = createApiRouter()
   .get(
     withApiConfig(findActiveListsApiConfig, async (req, res) => {
-      const lists: List[] = await prismaClient.$transaction((dbClient) => {
-        return findActiveLists(dbClient)
+      const activeLists: ListDetails[] = await prismaClient.$transaction((dbClient) => {
+        return findActiveListDetails(dbClient)
       })
 
-      sendApiResponse(res, lists.map(mapListToDTO))
+      sendApiResponse(res, activeLists.map(mapListDetailsToDTO))
     }),
   )
   .post(
