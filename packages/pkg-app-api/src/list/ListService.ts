@@ -115,12 +115,23 @@ export const approveList = async (dbClient: DbClient, options: ApproveListOption
   return list
 }
 
-export const findActiveLists = async (dbClient: DbClient): Promise<List[]> => {
+export const findActiveListDetails = async (dbClient: DbClient): Promise<ListDetails[]> => {
   const lists = await dbClient.list.findMany({
     where: { status: 'ACTIVE' },
+    include: {
+      requestedBy: true,
+      approvedBy: true,
+      _count: {
+        select: { likes: true },
+      },
+    },
   })
 
-  return lists
+  return lists.map(({ _count, ...listDetails }) => ({
+    ...listDetails,
+    likeCount: _count.likes,
+    approvedBy: maybe(listDetails.approvedBy),
+  }))
 }
 
 export const findListByKey = async (dbClient: DbClient, key: ListKey): Promise<List> => {

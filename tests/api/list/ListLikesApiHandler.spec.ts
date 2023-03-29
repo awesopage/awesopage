@@ -1,4 +1,4 @@
-import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
+import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { likeListApiConfig, unlikeListApiConfig } from 'pkg-app-shared/src/list/ListLikesApiConfig'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListLikeFinder } from 'tests/data/TestListLikeData'
@@ -15,18 +15,18 @@ test.describe(likeListApiConfig.name, () => {
 
     withAuth(user)
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const likeListResponse = await likeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
-      const listDetails = await likeListResponse.json()
+      const list = await likeListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length + 1,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
@@ -39,18 +39,18 @@ test.describe(likeListApiConfig.name, () => {
 
     withAuth(user)
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const likeListResponse = await likeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
-      const listDetails = await likeListResponse.json()
+      const list = await likeListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
@@ -75,18 +75,18 @@ test.describe(unlikeListApiConfig.name, () => {
 
     withAuth(user)
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const unlikeListResponse = await unlikeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
-      const listDetails = await unlikeListResponse.json()
+      const list = await unlikeListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
@@ -99,18 +99,18 @@ test.describe(unlikeListApiConfig.name, () => {
 
     withAuth(user)
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const unlikeListResponse = await unlikeList(request, { owner: testListLike.owner, repo: testListLike.repo })
 
-      const listDetails = await unlikeListResponse.json()
+      const list = await unlikeListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length - 1,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
