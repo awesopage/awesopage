@@ -1,5 +1,5 @@
 import { setListStatusApiConfig } from 'pkg-app-shared/src/list/ListByKeyStatusApiConfig'
-import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
+import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
@@ -12,22 +12,22 @@ test.describe(setListStatusApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const setListStatusResponse = await setListStatus(request, {
         owner: testList.owner,
         repo: testList.repo,
         status: 'ACTIVE',
       })
-      const listDetails = await setListStatusResponse.json()
+      const list = await setListStatusResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testList.owner,
         repo: testList.repo,
         status: 'ACTIVE',
         isApproved: true,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })
@@ -58,22 +58,22 @@ test.describe(setListStatusApiConfig.name, () => {
 
     withAuth(testUserFinder.any(({ hasRole }) => hasRole('ADMIN')))
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const setListStatusResponse = await setListStatus(request, {
         owner: testList.owner,
         repo: testList.repo,
         status: 'INACTIVE',
       })
-      const listDetails = await setListStatusResponse.json()
+      const list = await setListStatusResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: testList.owner,
         repo: testList.repo,
         status: 'INACTIVE',
         isApproved: true,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
+      expect(list).toMatchObject(expectedList)
     })
   })
 })

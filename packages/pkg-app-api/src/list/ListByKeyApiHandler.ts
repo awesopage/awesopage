@@ -8,7 +8,7 @@ import { findListDetailsByKey, updateList } from 'pkg-app-api/src/list/ListServi
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter, requireCurrentUser, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
 import type { UpdateListOptionsDTO } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
-import { findListDetailsByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
+import { findListByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
 
 export const listByKeyApiHandler: NextApiHandler = createApiRouter()
   .patch(
@@ -34,7 +34,7 @@ export const listByKeyApiHandler: NextApiHandler = createApiRouter()
     }),
   )
   .get(
-    withApiConfig(findListDetailsByKeyApiConfig, async (req, res) => {
+    withApiConfig(findListByKeyApiConfig, async (req, res) => {
       const { owner, repo } = requireListKey(req)
 
       const listDetails: ListDetails = await findListDetailsByKey(prismaClient, { owner, repo })

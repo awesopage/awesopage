@@ -1,6 +1,6 @@
 import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import { approveListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApprovalApiConfig'
-import type { ListDetailsDTO } from 'pkg-app-shared/src/list/ListDetailsDTO'
+import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
@@ -26,21 +26,21 @@ test.describe(approveListApiConfig.name, () => {
 
     withAuth(reviewer)
 
-    test('should return correct list details', async ({ request }) => {
+    test('should return correct list', async ({ request }) => {
       const approveListResponse = await approveList(request, {
         owner: listRequestedByDiffUser.owner,
         repo: listRequestedByDiffUser.repo,
       })
-      const listDetails = await approveListResponse.json()
+      const list = await approveListResponse.json()
 
-      const expectedListDetails: Partial<ListDetailsDTO> = {
+      const expectedList: Partial<ListDTO> = {
         owner: listRequestedByDiffUser.owner,
         repo: listRequestedByDiffUser.repo,
         isApproved: true,
       }
 
-      expect(listDetails).toMatchObject(expectedListDetails)
-      expect(listDetails.approvedBy?.email).toBe(reviewer.email)
+      expect(list).toMatchObject(expectedList)
+      expect(list.approvedBy?.email).toBe(reviewer.email)
     })
   })
 })
