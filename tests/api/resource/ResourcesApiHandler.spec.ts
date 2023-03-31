@@ -5,14 +5,14 @@ import { findResourcesApiConfig } from 'pkg-app-shared/src/resource/ResourcesApi
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testResourceFinder } from 'tests/data/TestResourceData'
 
-const findResources = createTestApiRequest(findResourcesApiConfig)
+const findResourceDetails = createTestApiRequest(findResourcesApiConfig)
 
 test.describe(findResourcesApiConfig.name, () => {
   const testResources = testResourceFinder.all()
   fastSort.inPlaceSort(testResources).asc(['url'])
 
   test('should return correct lists', async ({ request }) => {
-    const findResourcesResponse = await findResources(request)
+    const findResourcesResponse = await findResourceDetails(request)
     const resources = await findResourcesResponse.json()
     fastSort.inPlaceSort(resources).asc(['url'])
 

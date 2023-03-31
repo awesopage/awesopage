@@ -68,17 +68,17 @@ export const linkResource = async (dbClient: DbClient, options: LinkResourceOpti
   return resourceLink
 }
 
-export type ResourceLinkWithList = ResourceLink &
+export type ResourceLinkDetails = ResourceLink &
   Readonly<{
     list: List
   }>
 
 export type ResourceDetails = Resource &
   Readonly<{
-    links: ResourceLinkWithList[]
+    links: ResourceLinkDetails[]
   }>
 
-export const findResources = async (dbClient: DbClient): Promise<ResourceDetails[]> => {
+export const findResourceDetails = async (dbClient: DbClient): Promise<ResourceDetails[]> => {
   const resources = await dbClient.resource.findMany({
     include: {
       links: {
@@ -92,7 +92,7 @@ export const findResources = async (dbClient: DbClient): Promise<ResourceDetails
   return resources
 }
 
-export const findResourceById = async (dbClient: DbClient, resourceId: bigint): Promise<ResourceDetails> => {
+export const findResourceDetailsById = async (dbClient: DbClient, resourceId: bigint): Promise<ResourceDetails> => {
   const resource = await dbClient.resource.findUniqueOrThrow({
     where: { id: resourceId },
     include: {
