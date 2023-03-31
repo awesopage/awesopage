@@ -47,8 +47,8 @@ export const testLists: TestList[] = [
   },
   {
     owner: 'owner2',
-    repo: 'repo4-inactive',
-    description: 'Awesome List 4 - Inactive',
+    repo: 'repo4',
+    description: 'Awesome List 4',
     starCount: 10_000,
     tags: ['topic2', 'topic4'],
     requestedByEmail: 'admin2@example.com',
@@ -57,7 +57,7 @@ export const testLists: TestList[] = [
   {
     owner: 'owner3',
     repo: 'repo5',
-    description: 'Awesome List 5 - Inactive',
+    description: 'Awesome List 5',
     starCount: 20_000,
     tags: ['topic1', 'topic4'],
     requestedByEmail: 'user2@example.com',
