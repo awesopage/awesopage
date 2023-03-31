@@ -1,8 +1,8 @@
 import { mapTimestampToString, mapValueToString } from 'pkg-app-api/src/common/MapperUtils'
-import type { ResourceWithLinks } from 'pkg-app-api/src/resource/ResourceService'
+import type { ResourceDetails } from 'pkg-app-api/src/resource/ResourceService'
 import type { ResourceDTO, ResourceLinkDTO } from 'pkg-app-shared/src/resource/ResourceDTO'
 
-export const mapResourceToDTO = (resource: ResourceWithLinks): ResourceDTO => {
+export const mapResourceDetailsToDTO = (resource: ResourceDetails): ResourceDTO => {
   const { id, domain, type, url, createdAt, links } = resource
 
   return {

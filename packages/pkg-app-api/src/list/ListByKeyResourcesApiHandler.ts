@@ -2,8 +2,8 @@ import type { NextApiHandler } from 'next'
 
 import { prismaClient } from 'pkg-app-api/src/common/DbClient'
 import { requireListKey } from 'pkg-app-api/src/list/ListApiHelper'
-import { mapResourceToDTO } from 'pkg-app-api/src/resource/ResourceMapper'
-import type { ResourceWithLinks } from 'pkg-app-api/src/resource/ResourceService'
+import { mapResourceDetailsToDTO } from 'pkg-app-api/src/resource/ResourceMapper'
+import type { ResourceDetails } from 'pkg-app-api/src/resource/ResourceService'
 import { findResourcesByListKey } from 'pkg-app-api/src/resource/ResourceService'
 import { sendApiResponse } from 'pkg-app-api/src/router/ApiResponseHandler'
 import { createApiRouter, withApiConfig } from 'pkg-app-api/src/router/ApiRouter'
@@ -14,14 +14,14 @@ export const listByKeyResourcesApiHandler: NextApiHandler = createApiRouter()
     withApiConfig(getResourcesByListKeyApiConfig, async (req, res) => {
       const { owner, repo } = requireListKey(req)
 
-      const resources: ResourceWithLinks[] = await prismaClient.$transaction(async (dbClient) => {
+      const resources: ResourceDetails[] = await prismaClient.$transaction(async (dbClient) => {
         return findResourcesByListKey(dbClient, {
           owner,
           repo,
         })
       })
 
-      sendApiResponse(res, resources.map(mapResourceToDTO))
+      sendApiResponse(res, resources.map(mapResourceDetailsToDTO))
     }),
   )
   .handler()

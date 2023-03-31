@@ -24,7 +24,7 @@ test.describe(findResourcesApiConfig.name, () => {
       }),
     )
 
-    expect(resources.length).toBe(testResources.length)
+    expect(resources.length).toBe(expectedResources.length)
 
     resources.forEach((resource, index) => {
       expect(resource).toMatchObject(expectedResources[index] ?? {})
