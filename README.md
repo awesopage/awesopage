@@ -19,7 +19,7 @@
 ### Set up environment
 
 - Install Node.js v18.
-- Install pnpm v7 https://pnpm.io/installation.
+- Install pnpm v8 https://pnpm.io/installation.
 - Run `pnpm install` to install all dependencies.
 - Run `pnpm install-tools` to install additional development tools.
 - Run `pnpm boot` to bootstrap the environment.

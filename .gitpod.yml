@@ -12,6 +12,7 @@ tasks:
       nvm install 18 &&
       nvm alias default 18 &&
       echo "nvm use default" >> ~/.bashrc.d/51-nvm-fix &&
+      curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@8 &&
       pnpm install &&
       gp sync-done install &&
       pnpm boot &&

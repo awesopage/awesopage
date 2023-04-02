@@ -20,7 +20,7 @@ jobs:
           node-version: '18'
       - run:
           name: Install pnpm
-          command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@7
+          command: curl -L https://pnpm.js.org/pnpm.js | node - add --global pnpm@8
       - restore_cache:
           name: Restore pnpm cache
           key: pnpm_cache
