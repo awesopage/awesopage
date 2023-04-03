@@ -66,3 +66,63 @@ export const linkResource = async (dbClient: DbClient, options: LinkResourceOpti
 
   return resourceLink
 }
+
+export type ResourceLinkDetails = ResourceLink &
+  Readonly<{
+    list: List
+  }>
+
+export type ResourceDetails = Resource &
+  Readonly<{
+    links: ResourceLinkDetails[]
+  }>
+
+export const findResourceDetails = async (dbClient: DbClient): Promise<ResourceDetails[]> => {
+  const resourceDetails = await dbClient.resource.findMany({
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resourceDetails
+}
+
+export const findResourceDetailsById = async (dbClient: DbClient, resourceId: bigint): Promise<ResourceDetails> => {
+  const resourceDetails = await dbClient.resource.findUniqueOrThrow({
+    where: { id: resourceId },
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resourceDetails
+}
+
+export const findResourceDetailsByList = async (dbClient: DbClient, list: List): Promise<ResourceDetails[]> => {
+  const resourceDetails = await dbClient.resource.findMany({
+    where: {
+      links: {
+        some: {
+          listId: list.id,
+        },
+      },
+    },
+    include: {
+      links: {
+        include: {
+          list: true,
+        },
+      },
+    },
+  })
+
+  return resourceDetails
+}
