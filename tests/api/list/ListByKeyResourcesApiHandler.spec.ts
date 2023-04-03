@@ -55,9 +55,7 @@ test.describe(getResourcesByListKeyApiConfig.name, () => {
         repo: 'unknown_repo',
       })
 
-      const resources = await getResourcesByListKeyResponse.json()
-
-      expect(resources.length).toBe(0)
+      expect(getResourcesByListKeyResponse.ok()).toBe(false)
     })
   })
 })

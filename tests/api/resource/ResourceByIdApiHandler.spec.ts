@@ -5,20 +5,20 @@ import { findResourcesApiConfig } from 'pkg-app-shared/src/resource/ResourcesApi
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
 import { testResourceFinder } from 'tests/data/TestResourceData'
 
-const findResourceDetailsById = createTestApiRequest(findResourceByIdApiConfig)
-const findResourceDetails = createTestApiRequest(findResourcesApiConfig)
+const findResourceById = createTestApiRequest(findResourceByIdApiConfig)
+const findResources = createTestApiRequest(findResourcesApiConfig)
 
 test.describe(findResourceByIdApiConfig.name, () => {
   test.describe('given valid resource id', () => {
     const testResource = testResourceFinder.any()
 
-    test('should return correct resource details', async ({ request }) => {
-      const findResourcesResponse = await findResourceDetails(request)
+    test('should return correct resources', async ({ request }) => {
+      const findResourcesResponse = await findResources(request)
       const resources = await findResourcesResponse.json()
       const foundResource = resources.find((resource) => resource.url === testResource.url)
       assertDefined(foundResource, 'foundResource')
 
-      const findResourceByIdResponse = await findResourceDetailsById(request, foundResource.id)
+      const findResourceByIdResponse = await findResourceById(request, foundResource.id)
       const resource = await findResourceByIdResponse.json()
 
       const expectedResource: Partial<ResourceDTO> = {
@@ -35,7 +35,7 @@ test.describe(findResourceByIdApiConfig.name, () => {
 test.describe(findResourceByIdApiConfig.name, () => {
   test.describe('given invalid id', () => {
     test('should return error', async ({ request }) => {
-      const findResourceByIdResponse = await findResourceDetailsById(request, 'invalid_id')
+      const findResourceByIdResponse = await findResourceById(request, '-1')
 
       expect(findResourceByIdResponse.ok()).toBe(false)
     })

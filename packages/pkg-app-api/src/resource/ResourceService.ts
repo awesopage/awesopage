@@ -1,7 +1,6 @@
 import parseUrl from 'parse-url'
 
 import type { DbClient } from 'pkg-app-api/src/common/DbClient'
-import type { ListKey } from 'pkg-app-api/src/list/ListService'
 import type { List, Resource, ResourceLink, ResourceTypeEnum } from 'pkg-app-model/client'
 
 export type CreateResourceOptions = Readonly<{
@@ -79,7 +78,7 @@ export type ResourceDetails = Resource &
   }>
 
 export const findResourceDetails = async (dbClient: DbClient): Promise<ResourceDetails[]> => {
-  const resources = await dbClient.resource.findMany({
+  const resourceDetails = await dbClient.resource.findMany({
     include: {
       links: {
         include: {
@@ -89,11 +88,11 @@ export const findResourceDetails = async (dbClient: DbClient): Promise<ResourceD
     },
   })
 
-  return resources
+  return resourceDetails
 }
 
 export const findResourceDetailsById = async (dbClient: DbClient, resourceId: bigint): Promise<ResourceDetails> => {
-  const resource = await dbClient.resource.findUniqueOrThrow({
+  const resourceDetails = await dbClient.resource.findUniqueOrThrow({
     where: { id: resourceId },
     include: {
       links: {
@@ -104,18 +103,15 @@ export const findResourceDetailsById = async (dbClient: DbClient, resourceId: bi
     },
   })
 
-  return resource
+  return resourceDetails
 }
 
-export const findResourcesByListKey = async (dbClient: DbClient, key: ListKey): Promise<ResourceDetails[]> => {
-  const resources = await dbClient.resource.findMany({
+export const findResourceDetailsByList = async (dbClient: DbClient, list: List): Promise<ResourceDetails[]> => {
+  const resourceDetails = await dbClient.resource.findMany({
     where: {
       links: {
         some: {
-          list: {
-            owner: key.owner,
-            repo: key.repo,
-          },
+          listId: list.id,
         },
       },
     },
@@ -128,5 +124,5 @@ export const findResourcesByListKey = async (dbClient: DbClient, key: ListKey): 
     },
   })
 
-  return resources
+  return resourceDetails
 }
