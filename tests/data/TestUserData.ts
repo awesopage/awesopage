@@ -1,6 +1,9 @@
+import type { PartialDeep } from 'type-fest'
+
 import type { RoleEnum } from 'pkg-app-model/client'
 import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
-import { test } from 'tests/common/TestUtils'
+import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import { expect, test } from 'tests/common/TestUtils'
 import type { Predicate } from 'tests/data/TestDataFinder'
 import { createTestDataFinder } from 'tests/data/TestDataFinder'
 
@@ -45,6 +48,26 @@ export const withAuth = (testUser: TestUser) => {
   test.use({
     storageState: `output/test/playwright/setup/${testUser.email.split('@')[0] ?? ''}-auth-state.json`,
   })
+}
+
+export const createExpectedUser = (testUser: TestUser, overrides?: PartialDeep<UserDTO>): PartialDeep<UserDTO> => {
+  const { email, displayName, roles } = testUser
+
+  return {
+    email,
+    displayName,
+    roles: roles ?? [],
+    ...overrides,
+  }
+}
+
+export const assertUser = (user: UserDTO, expectedUser?: PartialDeep<UserDTO>) => {
+  expect(user.id).toBeDefined()
+  expect(user.updatedAt >= user.createdAt).toBe(true)
+
+  if (expectedUser) {
+    expect(user).toMatchObject(expectedUser)
+  }
 }
 
 export const testUserFinder = createTestDataFinder(testUsers, ({ and }) => {

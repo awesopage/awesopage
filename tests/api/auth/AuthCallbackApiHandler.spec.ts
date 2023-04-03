@@ -4,9 +4,11 @@ import type { AuthInfo } from 'pkg-app-api/src/auth/AuthService'
 import { handleAuthTokenApiConfig } from 'pkg-app-shared/src/auth/AuthCallbackApiConfig'
 import { getCurrentUserApiConfig } from 'pkg-app-shared/src/auth/AuthMeApiConfig'
 import type { AuthMeDTO } from 'pkg-app-shared/src/auth/AuthMeDTO'
+import { assertDefined } from 'pkg-app-shared/src/common/AssertUtils'
 import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
 import type { TestApiResponse } from 'tests/common/TestUtils'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
+import { assertUser } from 'tests/data/TestUserData'
 
 const handleAuthToken = createTestApiRequest(handleAuthTokenApiConfig)
 const getCurrentUser = createTestApiRequest(getCurrentUserApiConfig)
@@ -29,12 +31,13 @@ test.describe(handleAuthTokenApiConfig.name, () => {
         displayName: 'Test User',
       }
 
-      expect(user).toMatchObject(expectedUser)
+      assertUser(user, expectedUser)
 
       const getCurrentUserResponse = await getCurrentUser(request)
       const authMe = await getCurrentUserResponse.json()
 
-      expect(authMe.user).toMatchObject(expectedUser)
+      assertDefined(authMe.user, 'authMe.user')
+      assertUser(authMe.user, expectedUser)
     })
   })
 })
