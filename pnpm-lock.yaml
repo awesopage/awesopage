@@ -119,6 +119,9 @@ importers:
       tsx:
         specifier: 3.12.6
         version: 3.12.6
+      type-fest:
+        specifier: 3.7.2
+        version: 3.7.2
       typescript:
         specifier: 4.9.5
         version: 4.9.5
@@ -4795,6 +4798,11 @@ packages:
   /type-fest@1.4.0:
     resolution: {integrity: sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==}
     engines: {node: '>=10'}
+    dev: true
+
+  /type-fest@3.7.2:
+    resolution: {integrity: sha512-f9BHrLjRJ4MYkfOsnC/53PNDzZJcVo14MqLp2+hXE39p5bgwqohxR5hDZztwxlbxmIVuvC2EFAKrAkokq23PLA==}
+    engines: {node: '>=14.16'}
     dev: true
 
   /typed-array-length@1.0.4:

@@ -1,7 +1,6 @@
 import { findListByKeyApiConfig, updateListApiConfig } from 'pkg-app-shared/src/list/ListByKeyApiConfig'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
-import { testListFinder } from 'tests/data/TestListData'
+import { assertList, createExpectedList, testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const updateList = createTestApiRequest(updateListApiConfig)
@@ -23,16 +22,15 @@ test.describe(updateListApiConfig.name, () => {
       })
       const list = await updateListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
-        owner: testList.owner,
-        repo: testList.repo,
-        description: 'test_description',
-        starCount: 99,
-        tags: ['test_tag'],
-        isApproved: false,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      assertList(
+        list,
+        createExpectedList(testList, {
+          description: 'test_description',
+          starCount: 99,
+          tags: ['test_tag'],
+          isApproved: false,
+        }),
+      )
     })
   })
 })
@@ -73,16 +71,15 @@ test.describe(updateListApiConfig.name, () => {
       })
       const list = await updateListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
-        owner: testList.owner,
-        repo: testList.repo,
-        description: 'test_description',
-        starCount: 99,
-        tags: ['test_tag'],
-        isApproved: true,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      assertList(
+        list,
+        createExpectedList(testList, {
+          description: 'test_description',
+          starCount: 99,
+          tags: ['test_tag'],
+          isApproved: true,
+        }),
+      )
     })
   })
 })
@@ -118,17 +115,7 @@ test.describe(findListByKeyApiConfig.name, () => {
       })
       const list = await findListByKeyResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
-        owner: testList.owner,
-        repo: testList.repo,
-        status: testList.currentStatus,
-        isApproved: !!testList.approvedByEmail,
-        description: testList.description,
-        starCount: testList.starCount,
-        tags: testList.tags,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      assertList(list, createExpectedList(testList))
     })
   })
 })

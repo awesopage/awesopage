@@ -1,9 +1,8 @@
 import fastSort from 'fast-sort'
 
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createListApiConfig, findActiveListsApiConfig } from 'pkg-app-shared/src/list/ListsApiConfig'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
-import { testListFinder } from 'tests/data/TestListData'
+import { assertList, createExpectedList, testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const createList = createTestApiRequest(createListApiConfig)
@@ -22,7 +21,7 @@ test.describe(createListApiConfig.name, () => {
       })
       const list = await createListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
+      assertList(list, {
         owner: 'test_owner',
         repo: 'test_repo',
         status: 'INACTIVE',
@@ -30,10 +29,10 @@ test.describe(createListApiConfig.name, () => {
         starCount: 0,
         tags: [],
         isApproved: false,
-      }
-
-      expect(list).toMatchObject(expectedList)
-      expect(list.requestedBy.email).toBe(user.email)
+        requestedBy: {
+          email: user.email,
+        },
+      })
     })
   })
 })
@@ -77,22 +76,16 @@ test.describe(findActiveListsApiConfig.name, () => {
     const activeLists = await findActiveListsResponse.json()
     fastSort.inPlaceSort(activeLists).asc(['owner', 'repo'])
 
-    const expectedActiveLists = testActiveLists.map(
-      (testActiveList): Partial<ListDTO> => ({
-        owner: testActiveList.owner,
-        repo: testActiveList.repo,
+    const expectedActiveLists = testActiveLists.map((testActiveList) =>
+      createExpectedList(testActiveList, {
         status: 'ACTIVE',
-        isApproved: true,
-        description: testActiveList.description,
-        starCount: testActiveList.starCount,
-        tags: testActiveList.tags,
       }),
     )
 
     expect(activeLists.length).toBe(expectedActiveLists.length)
 
     activeLists.forEach((activeList, index) => {
-      expect(activeList).toMatchObject(expectedActiveLists[index] ?? {})
+      assertList(activeList, expectedActiveLists[index])
     })
   })
 })

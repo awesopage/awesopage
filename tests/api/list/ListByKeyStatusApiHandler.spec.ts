@@ -1,7 +1,6 @@
 import { setListStatusApiConfig } from 'pkg-app-shared/src/list/ListByKeyStatusApiConfig'
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
-import { testListFinder } from 'tests/data/TestListData'
+import { assertList, createExpectedList, testListFinder } from 'tests/data/TestListData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const setListStatus = createTestApiRequest(setListStatusApiConfig)
@@ -20,14 +19,13 @@ test.describe(setListStatusApiConfig.name, () => {
       })
       const list = await setListStatusResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
-        owner: testList.owner,
-        repo: testList.repo,
-        status: 'ACTIVE',
-        isApproved: true,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      assertList(
+        list,
+        createExpectedList(testList, {
+          status: 'ACTIVE',
+          isApproved: true,
+        }),
+      )
     })
   })
 })
@@ -66,14 +64,13 @@ test.describe(setListStatusApiConfig.name, () => {
       })
       const list = await setListStatusResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
-        owner: testList.owner,
-        repo: testList.repo,
-        status: 'INACTIVE',
-        isApproved: true,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      assertList(
+        list,
+        createExpectedList(testList, {
+          status: 'INACTIVE',
+          isApproved: true,
+        }),
+      )
     })
   })
 })

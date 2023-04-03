@@ -1,7 +1,6 @@
 import { assignRolesApiConfig } from 'pkg-app-shared/src/user/RolesApiConfig'
-import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
-import { testUserFinder, withAuth } from 'tests/data/TestUserData'
+import { assertUser, testUserFinder, withAuth } from 'tests/data/TestUserData'
 
 const assignRoles = createTestApiRequest(assignRolesApiConfig)
 
@@ -16,12 +15,10 @@ test.describe(assignRolesApiConfig.name, () => {
       })
       const user = await assignRolesResponse.json()
 
-      const expectedUser: Partial<UserDTO> = {
+      assertUser(user, {
         email: 'user1@example.com',
         roles: ['ADMIN'],
-      }
-
-      expect(user).toMatchObject(expectedUser)
+      })
     })
   })
 })
@@ -56,12 +53,10 @@ test.describe(assignRolesApiConfig.name, () => {
       })
       const user = await assignRolesResponse.json()
 
-      const expectedUser: Partial<UserDTO> = {
+      assertUser(user, {
         email: 'user2@example.com',
         roles: ['REVIEWER'],
-      }
-
-      expect(user).toMatchObject(expectedUser)
+      })
     })
   })
 })

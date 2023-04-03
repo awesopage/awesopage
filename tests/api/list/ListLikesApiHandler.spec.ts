@@ -1,6 +1,6 @@
-import type { ListDTO } from 'pkg-app-shared/src/list/ListDTO'
 import { likeListApiConfig, unlikeListApiConfig } from 'pkg-app-shared/src/list/ListLikesApiConfig'
 import { createTestApiRequest, expect, test } from 'tests/common/TestUtils'
+import { assertList } from 'tests/data/TestListData'
 import { testListLikeFinder } from 'tests/data/TestListLikeData'
 import { testUserFinder, withAuth } from 'tests/data/TestUserData'
 
@@ -20,13 +20,11 @@ test.describe(likeListApiConfig.name, () => {
 
       const list = await likeListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
+      assertList(list, {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length + 1,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      })
     })
   })
 })
@@ -44,13 +42,11 @@ test.describe(likeListApiConfig.name, () => {
 
       const list = await likeListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
+      assertList(list, {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      })
     })
   })
 })
@@ -80,13 +76,11 @@ test.describe(unlikeListApiConfig.name, () => {
 
       const list = await unlikeListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
+      assertList(list, {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      })
     })
   })
 })
@@ -104,13 +98,11 @@ test.describe(unlikeListApiConfig.name, () => {
 
       const list = await unlikeListResponse.json()
 
-      const expectedList: Partial<ListDTO> = {
+      assertList(list, {
         owner: testListLike.owner,
         repo: testListLike.repo,
         likeCount: testListLike.likedByEmails.length - 1,
-      }
-
-      expect(list).toMatchObject(expectedList)
+      })
     })
   })
 })

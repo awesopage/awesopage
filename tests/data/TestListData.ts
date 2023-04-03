@@ -1,7 +1,12 @@
+import type { PartialDeep } from 'type-fest'
+
 import type { ListStatusEnum } from 'pkg-app-model/client'
-import type { ListStatus } from 'pkg-app-shared/src/list/ListDTO'
+import type { ListDTO, ListStatus } from 'pkg-app-shared/src/list/ListDTO'
+import type { UserDTO } from 'pkg-app-shared/src/user/UserDTO'
+import { expect } from 'tests/common/TestUtils'
 import type { Predicate } from 'tests/data/TestDataFinder'
 import { createTestDataFinder } from 'tests/data/TestDataFinder'
+import { assertUser } from 'tests/data/TestUserData'
 
 export type TestList = Readonly<{
   owner: string
@@ -65,6 +70,50 @@ export const testLists: TestList[] = [
     currentStatus: 'INACTIVE',
   },
 ]
+
+export const createExpectedList = (testList: TestList, overrides?: PartialDeep<ListDTO>): PartialDeep<ListDTO> => {
+  const { owner, repo, description, starCount, tags, requestedByEmail, approvedByEmail, currentStatus } = testList
+
+  const requestedBy: Partial<UserDTO> = {
+    email: requestedByEmail,
+  }
+
+  const approvedBy: Partial<UserDTO> | undefined = approvedByEmail
+    ? {
+        email: approvedByEmail,
+      }
+    : undefined
+
+  return {
+    owner,
+    repo,
+    status: currentStatus,
+    description,
+    starCount,
+    tags,
+    requestedBy,
+    isApproved: !!approvedByEmail,
+    ...(approvedBy ? { approvedBy } : {}),
+    ...overrides,
+  }
+}
+
+export const assertList = (list: ListDTO, expectedList?: PartialDeep<ListDTO>) => {
+  expect(list.id).toBeDefined()
+  expect(list.updatedAt >= list.requestedAt).toBe(true)
+
+  if (expectedList) {
+    if (list.requestedBy) {
+      assertUser(list.requestedBy, expectedList.requestedBy)
+    }
+
+    if (list.approvedBy) {
+      assertUser(list.approvedBy, expectedList.approvedBy)
+    }
+
+    expect(list).toMatchObject(expectedList)
+  }
+}
 
 export const testListFinder = createTestDataFinder(testLists, () => {
   const isRequestedBy = (email: string): Predicate<TestList> => {
